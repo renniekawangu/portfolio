@@ -1,17 +1,27 @@
 export default function Home() {
   return (
-    <main className="container mx-auto px-4 py-8">
-      <section className="text-center py-20">
-        <h1 className="text-4xl font-bold mb-4">Welcome to My Portfolio</h1>
-        <p className="text-lg mb-8">I am a Full-Stack Web Developer, Cybersecurity Specialist, and Bug Bounty Hunter with a strong passion for building secure, scalable, and high-performance web applications. I specialize in developing modern web systems while identifying and mitigating real-world security vulnerabilities before they can be exploited.
-
-With hands-on experience in offensive security, I actively discover and responsibly disclose vulnerabilities such as Broken Access Control (BOLA/BIDOR), Privilege Escalation, Authentication Flaws, API Security Issues, and Client-Side Trust Vulnerabilities. I approach security with a practical, attacker-mindset, ensuring applications are resilient against modern threats.
-
-On the development side, I design and implement end-to-end web solutions, from responsive user interfaces to robust backend APIs and databases, always following secure-by-design principles. My combined skill set allows me to bridge the gap between development and security, delivering systems that are both functional and hardened.
-
-I am continuously learning, testing, and refining my skills through real-world projects, capture-the-flag challenges, and bug bounty programs, with a strong focus on ethical hacking and responsible disclosure.</p>
-        <a href="/about" className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">Learn More About Me</a>
-      </section>
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center">
+      <div className="container mx-auto px-4 py-16">
+        <section className="text-center max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-white">
+            Welcome to My Portfolio
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
+            I am a Full-Stack Web Developer, Cybersecurity Specialist, and Bug Bounty Hunter with a strong passion for building secure, scalable, and high-performance web applications. I specialize in developing modern web systems while identifying and mitigating real-world security vulnerabilities before they can be exploited.
+          </p>
+          <p className="text-lg text-gray-400 mb-12 leading-relaxed">
+            With hands-on experience in offensive security, I actively discover and responsibly disclose vulnerabilities such as Broken Access Control (BOLA/BIDOR), Privilege Escalation, Authentication Flaws, API Security Issues, and Client-Side Trust Vulnerabilities. I approach security with a practical, attacker-mindset, ensuring applications are resilient against modern threats.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/about" className="bg-gray-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-600 transition duration-300 shadow-lg">
+              Learn More About Me
+            </a>
+            <a href="/projects" className="border-2 border-gray-500 text-gray-300 px-8 py-3 rounded-full font-semibold hover:bg-gray-500 hover:text-white transition duration-300">
+              View My Projects
+            </a>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
