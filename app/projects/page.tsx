@@ -11,7 +11,7 @@ export default function Projects() {
         <div className="border p-4 rounded">
           <h2 className="text-xl font-semibold mb-2">React2shell scanner/exploit</h2>
           <p>Placeholder: Description of project 2. Replace with actual project details.</p>
-          <a href="#" className="text-blue-500">View Project</a>
+          <a href="https://github.com/renniekawangu/react2shell" className="text-blue-500">View Project</a>
         </div>
         <div className="border p-4 rounded">
           <h2 className="text-xl font-semibold mb-2">Project 3</h2>
