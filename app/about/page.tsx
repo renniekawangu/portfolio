@@ -31,37 +31,37 @@ export default function About() {
           <motion.div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white" variants={itemVariants}>
             <motion.h3 className="text-2xl font-semibold mb-4 text-center text-gray-300" variants={itemVariants}>💻 Full-Stack Development</motion.h3>
             <motion.ul className="space-y-2" variants={containerVariants}>
-              <motion.li variants={itemVariants} className="text-gray-700">Frontend: HTML5, CSS3, JavaScript, React</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Backend: Node.js, Express, Flask</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Databases: SQLite, MySQL, PostgreSQL</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">RESTful API design & integration</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Authentication & Authorization (JWT, Sessions, Tokens)</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Secure file uploads & data handling</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Frontend: HTML5, CSS3, JavaScript, React</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Backend: Node.js, Express, Flask</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Databases: SQLite, MySQL, PostgreSQL</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">RESTful API design & integration</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Authentication & Authorization (JWT, Sessions, Tokens)</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Secure file uploads & data handling</motion.li>
             </motion.ul>
           </motion.div>
 
           <motion.div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white" variants={itemVariants}>
             <motion.h3 className="text-2xl font-semibold mb-4 text-center text-gray-300" variants={itemVariants}>🔐 Cybersecurity & Bug Bounty</motion.h3>
             <motion.ul className="space-y-2" variants={containerVariants}>
-              <motion.li variants={itemVariants} className="text-gray-700">Web Application Penetration Testing</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">API Security Testing</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Broken Access Control (BOLA/BIDOR)</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Privilege Escalation & Authorization Flaws</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Authentication & Session Management Vulnerabilities</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">OWASP Top 10</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Burp Suite, Postman, Nmap</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Responsible Vulnerability Disclosure</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Web Application Penetration Testing</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">API Security Testing</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Broken Access Control (BOLA/BIDOR)</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Privilege Escalation & Authorization Flaws</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Authentication & Session Management Vulnerabilities</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">OWASP Top 10</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Burp Suite, Postman, Nmap</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Responsible Vulnerability Disclosure</motion.li>
             </motion.ul>
           </motion.div>
 
           <motion.div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white" variants={itemVariants}>
             <motion.h3 className="text-2xl font-semibold mb-4 text-center text-gray-300" variants={itemVariants}>🛠️ Tools & Technologies</motion.h3>
             <motion.ul className="space-y-2" variants={containerVariants}>
-              <motion.li variants={itemVariants} className="text-gray-700">Git & GitHub</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Linux (Kali Linux)</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Docker (basic)</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">CI/CD fundamentals</motion.li>
-              <motion.li variants={itemVariants} className="text-gray-700">Secure coding best practices</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Git & GitHub</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Linux (Kali Linux)</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Docker (basic)</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">CI/CD fundamentals</motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300">Secure coding best practices</motion.li>
             </motion.ul>
           </motion.div>
         </div>
