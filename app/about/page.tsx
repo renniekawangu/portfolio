@@ -68,6 +68,12 @@ export default function About() {
         </div>
       </motion.div>
 
+      <motion.div className="text-center mb-16" variants={itemVariants}>
+        <a href="/assets/resume/resume.pdf" download className="inline-block bg-orange-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-orange-500 transition duration-300 shadow-lg text-lg">
+          📄 Download My Resume
+        </a>
+      </motion.div>
+
       <motion.h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-center text-white" variants={itemVariants}>Achievements</motion.h2>
       <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" variants={containerVariants}>
         <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
@@ -95,7 +101,6 @@ export default function About() {
           <a href="#" className="text-blue-500">View Certificate</a>
         </motion.div>
       </motion.div>
-      <p>Replace the placeholder images (/placeholder-certificate.jpg) with your actual certificate images and update the details.</p>
       </div>
     </motion.div>
   );

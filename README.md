@@ -33,6 +33,7 @@ Replace the placeholder content in each page with your actual information:
 - Update bio and details in `app/about/page.tsx`
 - Add your projects in `app/projects/page.tsx`
 - Update contact information in `app/contact/page.tsx`
+- Replace the placeholder resume (`public/assets/resume/resume.pdf`) with your actual resume PDF
 - Modify the header title in `app/components/Header.tsx`
 
 ## Build

@@ -37,6 +37,9 @@ export default function Home() {
             With hands-on experience in offensive security, I actively discover and responsibly disclose vulnerabilities such as Broken Access Control (BOLA/BIDOR), Privilege Escalation, Authentication Flaws, API Security Issues, and Client-Side Trust Vulnerabilities. I approach security with a practical, attacker-mindset, ensuring applications are resilient against modern threats.
           </motion.p>
           <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" variants={itemVariants}>
+            <a href="/assets/resume/resume.pdf" download className="bg-orange-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-500 transition duration-300 shadow-lg">
+              Download Resume
+            </a>
             <a href="/about" className="bg-gray-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-600 transition duration-300 shadow-lg">
               Learn More About Me
             </a>
