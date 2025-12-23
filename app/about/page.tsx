@@ -1,5 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 export default function About() {
   const containerVariants = {
@@ -70,25 +71,25 @@ export default function About() {
       <motion.h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-center text-white" variants={itemVariants}>Achievements</motion.h2>
       <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" variants={containerVariants}>
         <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
-          <img src="/assets/achivements/cyberSec-1.png" alt="Certificate 1" className="w-full h-48 object-cover mb-2" />
+          <Image src="/assets/achivements/cyberSec-1.png" alt="Certificate 1" width={400} height={192} className="w-full h-48 object-cover mb-2" />
           <h3 className="text-xl font-semibold mb-2">Cyber Security</h3>
           <p className="mb-2">Issued by Issuer</p>
           <a href="#" className="text-blue-500">View Certificate</a>
         </motion.div>
         <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
-          <img src="/assets/achivements/fullStackDev-1.png" alt="Certificate 2" className="w-full h-48 object-cover mb-2" />
+          <Image src="/assets/achivements/fullStackDev-1.png" alt="Certificate 2" width={400} height={192} className="w-full h-48 object-cover mb-2" />
           <h3 className="text-xl font-semibold mb-2">Full Stack Web Developer</h3>
           <p className="mb-2">Issued by Issuer</p>
           <a href="#" className="text-blue-500">View Certificate</a>
         </motion.div>
         <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
-          <img src="/assets/achivements/wwCtf25-1.png" alt="Certificate 3" className="w-full h-48 object-cover mb-2" />
+          <Image src="/assets/achivements/wwCtf25-1.png" alt="Certificate 3" width={400} height={192} className="w-full h-48 object-cover mb-2" />
           <h3 className="text-xl font-semibold mb-2">World Wide CTF 2025</h3>
           <p className="mb-2">Issued by Issuer</p>
           <a href="#" className="text-blue-500">View Certificate</a>
         </motion.div>
          <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
-          <img src="/assets/achivements/bugbounty.jpeg" alt="Certificate 3" className="w-full h-48 object-cover mb-2" />
+          <Image src="/assets/achivements/bugbounty.jpeg" alt="Certificate 4" width={400} height={192} className="w-full h-48 object-cover mb-2" />
           <h3 className="text-xl font-semibold mb-2">BudBounty</h3>
           <p className="mb-2">Issued by Issuer</p>
           <a href="#" className="text-blue-500">View Certificate</a>

@@ -35,7 +35,7 @@ export default function Projects() {
           </motion.div>
           <motion.div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border border-gray-700 text-white" variants={itemVariants}>
             <h2 className="text-2xl font-semibold mb-3 text-gray-100">React2shell scanner/exploit</h2>
-            <p className="text-gray-300 mb-4">React2shell is a React-based scanner and exploit tool designed to identify vulnerabilities in web applications and perform automated exploitation.</p>
+            <p className="text-gray-300 mb-4">React2shell is a NodeJS CLI scanner and exploit tool designed to identify vulnerabilities in web applications and perform automated exploitation.</p>
             <a href="https://github.com/renniekawangu/react2shell" className="inline-block bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500 transition duration-300">View Project</a>
           </motion.div>
           <motion.div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border border-gray-700 text-white" variants={itemVariants}>
