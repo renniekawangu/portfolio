@@ -79,7 +79,7 @@ export default function About() {
         <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
           <Image src="/assets/achivements/cyberSec-1.png" alt="Certificate 1" width={400} height={192} className="w-full h-48 object-cover mb-2" />
           <h3 className="text-xl font-semibold mb-2">Cyber Security</h3>
-          <p className="mb-2">Issued by Issuer</p>
+          <p className="mb-2">Issued by <a href="https://wilsescybersecurity.com/" className="text-blue-500">Wilses Cyber Solution</a></p>
           <a href="#" className="text-blue-500">View Certificate</a>
         </motion.div>
         <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
