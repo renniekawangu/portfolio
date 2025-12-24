@@ -13,7 +13,7 @@ export default function Header() {
   return (
     <header className="bg-gray-900 shadow-lg">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white hover:text-gray-300 transition duration-300">My Portfolio</Link>
+        <Link href="/" className="text-2xl font-bold text-white hover:text-gray-300 transition duration-300">b34st</Link>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6">

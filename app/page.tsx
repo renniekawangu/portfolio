@@ -28,7 +28,7 @@ export default function Home() {
       <div className="container mx-auto px-4 py-16">
         <section className="text-center max-w-4xl mx-auto">
           <motion.h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-white" variants={itemVariants}>
-            Welcome to My Portfolio
+            Welcome
           </motion.h1>
           <motion.p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed" variants={itemVariants}>
             My name is Rennie Kawangu, I am a Full-Stack Web Developer, Cybersecurity Specialist, and Bug Bounty Hunter with a strong passion for building secure, scalable, and high-performance web applications. I specialize in developing modern web systems while identifying and mitigating real-world security vulnerabilities before they can be exploited.
