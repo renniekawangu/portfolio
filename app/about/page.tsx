@@ -85,19 +85,19 @@ export default function About() {
         <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
           <Image src="/assets/achivements/fullStackDev-1.png" alt="Certificate 2" width={400} height={192} className="w-full h-48 object-cover mb-2" />
           <h3 className="text-xl font-semibold mb-2">Full Stack Web Developer</h3>
-          <p className="mb-2">Issued by Issuer</p>
+          <p className="mb-2">Issued by <a href="https://www.scienceexplorationzambia.com" className="text-blue-500">Science Exploration Zambia</a></p>
           <a href="#" className="text-blue-500">View Certificate</a>
         </motion.div>
         <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
           <Image src="/assets/achivements/wwCtf25-1.png" alt="Certificate 3" width={400} height={192} className="w-full h-48 object-cover mb-2" />
           <h3 className="text-xl font-semibold mb-2">World Wide CTF 2025</h3>
-          <p className="mb-2">Issued by Issuer</p>
+          <p className="mb-2">Issued by <a href="#" className="text-blue-500">World Wide Flags</a></p>
           <a href="#" className="text-blue-500">View Certificate</a>
         </motion.div>
          <motion.div className="border border-gray-700 p-4 rounded bg-gray-800 text-white" variants={itemVariants}>
           <Image src="/assets/achivements/bugbounty.jpeg" alt="Certificate 4" width={400} height={192} className="w-full h-48 object-cover mb-2" />
           <h3 className="text-xl font-semibold mb-2">BudBounty</h3>
-          <p className="mb-2">Issued by Issuer</p>
+          <p className="mb-2">Issued by <a href="https://zedbounty.com" className="text-blue-500">Zedbounty</a></p>
           <a href="#" className="text-blue-500">View Certificate</a>
         </motion.div>
       </motion.div>
