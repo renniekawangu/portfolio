@@ -31,7 +31,7 @@ export default function Home() {
             Welcome to My Portfolio
           </motion.h1>
           <motion.p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed" variants={itemVariants}>
-            I am a Full-Stack Web Developer, Cybersecurity Specialist, and Bug Bounty Hunter with a strong passion for building secure, scalable, and high-performance web applications. I specialize in developing modern web systems while identifying and mitigating real-world security vulnerabilities before they can be exploited.
+            My name is Rennie Kawangu, I am a Full-Stack Web Developer, Cybersecurity Specialist, and Bug Bounty Hunter with a strong passion for building secure, scalable, and high-performance web applications. I specialize in developing modern web systems while identifying and mitigating real-world security vulnerabilities before they can be exploited.
           </motion.p>
           <motion.p className="text-lg text-gray-400 mb-12 leading-relaxed" variants={itemVariants}>
             With hands-on experience in offensive security, I actively discover and responsibly disclose vulnerabilities such as Broken Access Control (BOLA/BIDOR), Privilege Escalation, Authentication Flaws, API Security Issues, and Client-Side Trust Vulnerabilities. I approach security with a practical, attacker-mindset, ensuring applications are resilient against modern threats.
