@@ -39,9 +39,9 @@ export default function Projects() {
             <a href="https://github.com/renniekawangu/react2shell" className="inline-block bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500 transition duration-300">View Project</a>
           </motion.div>
           <motion.div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border border-gray-700 text-white" variants={itemVariants}>
-            <h2 className="text-2xl font-semibold mb-3 text-gray-100">uNet</h2>
-            <p className="text-gray-300 mb-4">A full-stack web application built with React and Node.js, featuring a modern UI and secure backend services.</p>
-            <a href="https://github.com/renniekawangu/uNet" className="inline-block bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500 transition duration-300">View Project</a>
+            <h2 className="text-2xl font-semibold mb-3 text-gray-100">School Management System</h2>
+            <p className="text-gray-300 mb-4">A full-featured school management system built with modern web technologies to streamline administrative tasks and enhance communication. Built with EJS, Express, and MongoDB.</p>
+            <a href="https://sms-kjd1.onrender.com/" className="inline-block bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500 transition duration-300">View Project</a>
           </motion.div>
         </motion.div>
       </div>
