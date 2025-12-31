@@ -47,7 +47,6 @@ export default function Services() {
             className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
             variants={itemVariants}
           >
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">💻</div>
             <h2 className="text-2xl font-semibold mb-4 text-white">Full-Stack Development</h2>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Building modern, responsive web applications using cutting-edge technologies like React, Next.js, Node.js, and Express. From frontend to backend, I deliver complete solutions.
@@ -64,7 +63,6 @@ export default function Services() {
             className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
             variants={itemVariants}
           >
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">🔐</div>
             <h2 className="text-2xl font-semibold mb-4 text-white">Cybersecurity & Penetration Testing</h2>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Comprehensive security assessments to identify vulnerabilities in your web applications and APIs. Helping businesses secure their digital assets with thorough testing and detailed reports.
@@ -81,7 +79,6 @@ export default function Services() {
             className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
             variants={itemVariants}
           >
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">🚀</div>
             <h2 className="text-2xl font-semibold mb-4 text-white">DevOps & Deployment</h2>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Streamline your development workflow with automated CI/CD pipelines, cloud deployments, and infrastructure management. Get your applications to production faster and more reliably.
@@ -98,7 +95,6 @@ export default function Services() {
             className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
             variants={itemVariants}
           >
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">🎨</div>
             <h2 className="text-2xl font-semibold mb-4 text-white">UI/UX Design & Implementation</h2>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Creating beautiful, intuitive user interfaces with modern design principles. Transforming ideas into pixel-perfect, responsive designs that provide excellent user experiences.
@@ -115,7 +111,6 @@ export default function Services() {
             className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
             variants={itemVariants}
           >
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">🔧</div>
             <h2 className="text-2xl font-semibold mb-4 text-white">Technical Consulting</h2>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Expert guidance on technology stack selection, architecture design, and best practices. Help your team make informed decisions and avoid common pitfalls in software development.
@@ -132,7 +127,6 @@ export default function Services() {
             className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
             variants={itemVariants}
           >
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">📱</div>
             <h2 className="text-2xl font-semibold mb-4 text-white">API Development & Integration</h2>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Design and build robust APIs or integrate third-party services into your applications. Ensuring secure, scalable, and well-documented API solutions for your business needs.
@@ -156,7 +150,7 @@ export default function Services() {
           </p>
           <a 
             href="/contact" 
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white px-8 py-4 rounded-lg hover:from-orange-500 hover:to-orange-400 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 btn-gradient text-white px-8 py-4 rounded-lg hover:shadow-xl transition-all duration-300 font-semibold shadow-lg transform hover:-translate-y-0.5"
           >
             💬 Get in Touch
           </a>

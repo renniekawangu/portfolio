@@ -31,7 +31,6 @@ export default function Projects() {
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" variants={containerVariants}>
           <motion.div className="group bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" variants={itemVariants}>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">🛒</span>
               <h2 className="text-2xl font-semibold text-gray-100">E-Commerce Store</h2>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">Full-stack e-commerce application built with React and Node.js, featuring secure payment processing and user authentication.</p>
@@ -39,7 +38,6 @@ export default function Projects() {
           </motion.div>
           <motion.div className="group bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" variants={itemVariants}>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">🔍</span>
               <h2 className="text-2xl font-semibold text-gray-100">React2shell Scanner</h2>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">NodeJS CLI scanner and exploit tool designed to identify vulnerabilities in web applications and perform automated exploitation.</p>
@@ -47,7 +45,6 @@ export default function Projects() {
           </motion.div>
           <motion.div className="group bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" variants={itemVariants}>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">🎓</span>
               <h2 className="text-2xl font-semibold text-gray-100">School Management System</h2>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">A full-featured school management system built with EJS, Express, and MongoDB to streamline administrative tasks and enhance communication.</p>

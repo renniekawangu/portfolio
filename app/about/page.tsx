@@ -31,7 +31,7 @@ export default function About() {
       <motion.div className="mb-16" variants={containerVariants}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <motion.div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-gray-700 hover:border-gray-600 text-white transition-all duration-300 hover:shadow-xl" variants={itemVariants}>
-            <motion.h3 className="text-2xl font-semibold mb-6 text-center text-white flex items-center justify-center gap-2" variants={itemVariants}><span className="text-3xl">💻</span> Full-Stack Development</motion.h3>
+            <motion.h3 className="text-2xl font-semibold mb-6 text-center text-white flex items-center justify-center gap-2" variants={itemVariants}> Full-Stack Development</motion.h3>
             <motion.ul className="space-y-3" variants={containerVariants}>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Frontend: HTML5, CSS3, JavaScript, React</span></motion.li>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Backend: Node.js, Express, Flask</span></motion.li>
@@ -43,7 +43,7 @@ export default function About() {
           </motion.div>
 
           <motion.div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-gray-700 hover:border-gray-600 text-white transition-all duration-300 hover:shadow-xl" variants={itemVariants}>
-            <motion.h3 className="text-2xl font-semibold mb-6 text-center text-white flex items-center justify-center gap-2" variants={itemVariants}><span className="text-3xl">🔐</span> Cybersecurity & Bug Bounty</motion.h3>
+            <motion.h3 className="text-2xl font-semibold mb-6 text-center text-white flex items-center justify-center gap-2" variants={itemVariants}> Cybersecurity & Bug Bounty</motion.h3>
             <motion.ul className="space-y-3" variants={containerVariants}>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Web Application Penetration Testing</span></motion.li>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>API Security Testing</span></motion.li>
@@ -57,7 +57,7 @@ export default function About() {
           </motion.div>
 
           <motion.div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-gray-700 hover:border-gray-600 text-white transition-all duration-300 hover:shadow-xl" variants={itemVariants}>
-            <motion.h3 className="text-2xl font-semibold mb-6 text-center text-white flex items-center justify-center gap-2" variants={itemVariants}><span className="text-3xl">🛠️</span> Tools & Technologies</motion.h3>
+            <motion.h3 className="text-2xl font-semibold mb-6 text-center text-white flex items-center justify-center gap-2" variants={itemVariants}> Tools & Technologies</motion.h3>
             <motion.ul className="space-y-3" variants={containerVariants}>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Git & GitHub</span></motion.li>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Linux (Kali Linux)</span></motion.li>
@@ -70,8 +70,8 @@ export default function About() {
       </motion.div>
 
       <motion.div className="text-center mb-16" variants={itemVariants}>
-        <a href="/assets/resume/resume.pdf" download className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white px-8 py-4 rounded-lg font-semibold hover:from-orange-500 hover:to-orange-400 transition-all duration-300 shadow-lg hover:shadow-xl text-lg transform hover:-translate-y-0.5">
-          📄 Download My Resume
+        <a href="/assets/resume/resume.pdf" download className="inline-flex items-center gap-2 btn-gradient text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-lg transform hover:-translate-y-0.5">
+         Download My Resume
         </a>
       </motion.div>
 
