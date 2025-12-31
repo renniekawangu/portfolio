@@ -20,6 +20,7 @@ export default function Header() {
           <li><Link href="/" className="text-gray-300 hover:text-white transition duration-300 font-medium">Home</Link></li>
           <li><Link href="/about" className="text-gray-300 hover:text-white transition duration-300 font-medium">About</Link></li>
           <li><Link href="/projects" className="text-gray-300 hover:text-white transition duration-300 font-medium">Projects</Link></li>
+          <li><Link href="/services" className="text-gray-300 hover:text-white transition duration-300 font-medium">Services</Link></li>
           <li><Link href="/contact" className="text-gray-300 hover:text-white transition duration-300 font-medium">Contact</Link></li>
         </ul>
 
@@ -43,6 +44,7 @@ export default function Header() {
           <li><Link href="/" className="block text-gray-300 hover:text-white transition duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
           <li><Link href="/about" className="block text-gray-300 hover:text-white transition duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>About</Link></li>
           <li><Link href="/projects" className="block text-gray-300 hover:text-white transition duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>Projects</Link></li>
+          <li><Link href="/services" className="block text-gray-300 hover:text-white transition duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>Services</Link></li>
           <li><Link href="/contact" className="block text-gray-300 hover:text-white transition duration-300 font-medium" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
         </ul>
       </div>
