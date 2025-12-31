@@ -20,12 +20,12 @@ export default function Projects() {
 
   return (
     <motion.main
-      className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-16"
+      className="min-h-screen py-16 relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative z-10">
         <motion.h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>My Projects</motion.h1>
         <motion.p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" variants={itemVariants}>A showcase of my recent work in web development and security tools</motion.p>
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" variants={containerVariants}>

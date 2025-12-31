@@ -20,12 +20,12 @@ export default function Services() {
 
   return (
     <motion.main
-      className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-16"
+      className="min-h-screen py-16 relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative z-10">
         <motion.h1 
           className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" 
           variants={itemVariants}

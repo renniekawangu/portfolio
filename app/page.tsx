@@ -20,12 +20,12 @@ export default function Home() {
 
   return (
     <motion.main
-      className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center"
+      className="min-h-screen flex items-center relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-16 relative z-10">
         <section className="text-center max-w-5xl mx-auto">
           <motion.div className="mb-6" variants={itemVariants}>
             <span className="inline-block bg-orange-600/10 text-orange-400 px-4 py-2 rounded-full text-sm font-semibold border border-orange-600/20">Full-Stack Developer & Security Specialist</span>

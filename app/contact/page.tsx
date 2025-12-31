@@ -38,8 +38,8 @@ export default function Contact() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-16">
-      <div className="container mx-auto px-4 max-w-3xl">
+    <main className="min-h-screen py-16 relative">
+      <div className="container mx-auto px-4 max-w-3xl relative z-10">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white">Get In Touch</h1>
         <p className="text-xl text-center text-gray-300 mb-12 max-w-2xl mx-auto">Have a project in mind or want to collaborate? I'd love to hear from you!</p>
 

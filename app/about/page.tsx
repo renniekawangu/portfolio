@@ -20,12 +20,12 @@ export default function About() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-16"
+      className="min-h-screen py-16 relative"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative z-10">
         <motion.h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>Skills & Expertise</motion.h2>
         <motion.p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" variants={itemVariants}>A comprehensive overview of my technical capabilities and specializations</motion.p>
       <motion.div className="mb-16" variants={containerVariants}>
