@@ -152,7 +152,7 @@ export default function Services() {
             href="/contact" 
             className="inline-flex items-center gap-2 btn-gradient text-white px-8 py-4 rounded-lg hover:shadow-xl transition-all duration-300 font-semibold shadow-lg transform hover:-translate-y-0.5"
           >
-            💬 Get in Touch
+             Get in Touch
           </a>
         </motion.div>
       </div>

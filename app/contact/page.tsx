@@ -47,11 +47,11 @@ export default function Contact() {
           <form onSubmit={handleSubmit} className="mb-10">
             <div className="mb-6">
               <label htmlFor="name" className="block text-sm font-semibold mb-2 text-gray-200">Your Name</label>
-              <input type="text" id="name" name="name" required placeholder="John Doe" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
+              <input type="text" id="name" name="name" required placeholder="Rennie Kawangu" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
             </div>
             <div className="mb-6">
               <label htmlFor="email" className="block text-sm font-semibold mb-2 text-gray-200">Email Address</label>
-              <input type="email" id="email" name="email" required placeholder="john@example.com" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
+              <input type="email" id="email" name="email" required placeholder="rennie@example.com" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
             </div>
             <div className="mb-6">
               <label htmlFor="message" className="block text-sm font-semibold mb-2 text-gray-200">Your Message</label>
@@ -62,7 +62,7 @@ export default function Contact() {
               disabled={formStatus === 'sending'}
               className="w-full btn-gradient text-white py-4 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              {formStatus === 'sending' ? '📤 Sending...' : formStatus === 'success' ? '✅ Message Sent!' : formStatus === 'error' ? '❌ Error Sending' : '📨 Send Message'}
+              {formStatus === 'sending' ? 'np Sending...' : formStatus === 'success' ? ' Message Sent!' : formStatus === 'error' ? ' Error Sending' : ' Send Message'}
             </button>
           </form>
 
