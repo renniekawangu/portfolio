@@ -2,6 +2,7 @@
 
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa'
 import { useState } from 'react'
+import { sub } from 'framer-motion/client'
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
@@ -13,6 +14,7 @@ export default function Contact() {
     const formData = new FormData(e.currentTarget)
     const data = {
       name: formData.get('name'),
+      subject: formData.get('subject'),
       email: formData.get('email'),
       message: formData.get('message')
     }
@@ -48,6 +50,10 @@ export default function Contact() {
             <div className="mb-6">
               <label htmlFor="name" className="block text-sm font-semibold mb-2 text-gray-200">Your Name</label>
               <input type="text" id="name" name="name" required placeholder="Rennie Kawangu" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="subject" className="block text-sm font-semibold mb-2 text-gray-200">Subject</label>
+              <input type="text" id="subject" name="subject" required placeholder="Project Inquiry" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
             </div>
             <div className="mb-6">
               <label htmlFor="email" className="block text-sm font-semibold mb-2 text-gray-200">Email Address</label>

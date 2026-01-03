@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "b34st tech services",
-  description: "b34st tech services",
+  title: "b34st web services",
+  description: "b34st web services",
 };
 
 export default function RootLayout({

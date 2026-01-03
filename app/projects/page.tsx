@@ -165,7 +165,7 @@ export default function Projects() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-gray-700 text-white px-5 py-2.5 rounded-lg hover:bg-gray-600 transition-all duration-300 group-hover:bg-orange-600 font-medium w-fit"
                 >
-                  View Project <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  View Live Project <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </a>
               </div>
             </motion.div>

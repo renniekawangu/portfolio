@@ -13,15 +13,15 @@ export default function Header() {
   return (
     <header className="bg-gray-900 shadow-lg">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white hover:text-gray-300 transition duration-300">b34st</Link>
+        <Link href="/" className="text-2xl font-bold text-white hover:text-orange-500 transition duration-300">b34st</Link>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6">
-          <li><Link href="/" className="text-gray-300 hover:text-white transition duration-300 font-medium">Home</Link></li>
-          <li><Link href="/about" className="text-gray-300 hover:text-white transition duration-300 font-medium">About</Link></li>
-          <li><Link href="/projects" className="text-gray-300 hover:text-white transition duration-300 font-medium">Projects</Link></li>
-          <li><Link href="/services" className="text-gray-300 hover:text-white transition duration-300 font-medium">Services</Link></li>
-          <li><Link href="/contact" className="text-gray-300 hover:text-white transition duration-300 font-medium">Contact</Link></li>
+          <li><Link href="/" className="text-gray-300 hover:text-orange-500 transition duration-300 font-medium">Home</Link></li>
+          <li><Link href="/about" className="text-gray-300 hover:text-orange-500 transition duration-300 font-medium">About</Link></li>
+          <li><Link href="/projects" className="text-gray-300 hover:text-orange-500 transition duration-300 font-medium">Projects</Link></li>
+          <li><Link href="/services" className="text-gray-300 hover:text-orange-500 transition duration-300 font-medium">Services</Link></li>
+          <li><Link href="/contact" className="text-gray-300 hover:text-orange-500 transition duration-300 font-medium">Contact</Link></li>
         </ul>
 
         {/* Mobile Menu Button */}
