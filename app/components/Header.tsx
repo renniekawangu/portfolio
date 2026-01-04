@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -13,7 +14,16 @@ export default function Header() {
   return (
     <header className="bg-gray-900 shadow-lg">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white hover:text-orange-500 transition duration-300">b34st</Link>
+        <Link href="/">
+          <Image
+            src="/b34st_logo.png"
+            alt="b34st"
+            width={80}
+            height={80}
+            priority
+            className="w-20 h-auto object-contain opacity-85 hover:opacity-100 transition duration-300 drop-shadow-sm"
+          />
+        </Link>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6">
