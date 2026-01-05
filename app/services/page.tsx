@@ -127,15 +127,15 @@ export default function Services() {
             className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
             variants={itemVariants}
           >
-            <h2 className="text-2xl font-semibold mb-4 text-white">API Development & Integration</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-white">Graphic Design</h2>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              Design and build robust APIs or integrate third-party services into your applications. Ensuring secure, scalable, and well-documented API solutions for your business needs.
+              Crafting visually appealing graphics for your brand, including logos, social media assets, and marketing materials. Elevate your brand identity with professional design services.
             </p>
             <ul className="text-gray-400 text-sm space-y-2.5">
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>RESTful API Design</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>API Integration</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Authentication & Authorization</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>API Documentation</span></li>
+              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Logo Design</span></li>
+              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Social Media Graphics</span></li>
+              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Marketing Materials</span></li>
+              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Brand Identity Development</span></li>
             </ul>
           </motion.div>
         </motion.div>

@@ -4,10 +4,10 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold text-white mb-2">Rennie Kawangu</h3>
-            <p className="text-gray-400 text-sm">Full-Stack Developer & Security Specialist</p>
+            <h3 className="text-xl font-bold text-white mb-2">b34st Web Services</h3>
+            <p className="text-gray-400 text-sm">Full-Stack Web Development & Security</p>
           </div>
-          <div className="flex flex-wrap justify-center gap-6">
+          <div className="flex flex-wrap justify-center gap-6"> Developer contacts:
             <a href="https://github.com/renniekawangu" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors duration-300 font-medium">
               GitHub
             </a>

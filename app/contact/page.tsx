@@ -1,6 +1,6 @@
 'use client'
 
-import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa'
+import { FaLinkedin, FaGithub, FaEnvelope, FaFacebook, FaInstagram } from 'react-icons/fa'
 import { useState } from 'react'
 import { sub } from 'framer-motion/client'
 
@@ -73,19 +73,15 @@ export default function Contact() {
           </form>
 
           <div className="border-t border-gray-700 pt-8">
-            <h2 className="text-2xl font-semibold mb-6 text-center text-white">Or Connect With Me</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-center text-white">Or Connect with us</h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:renniekawangu@gmail.com" className="flex items-center justify-center gap-3 bg-gray-700/50 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-300 text-gray-300 hover:text-white group">
-                <FaEnvelope className="text-orange-400 group-hover:scale-110 transition-transform" />
-                <span className="font-medium">Email</span>
+              <a href="https://www.instagram.com/b34st_web_services" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-gray-700/50 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-300 text-gray-300 hover:text-white group">
+                <FaInstagram className="text-orange-400 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Instagram</span>
               </a>
-              <a href="https://www.linkedin.com/in/rennie-kawangu-7a3195280/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-gray-700/50 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-300 text-gray-300 hover:text-white group">
-                <FaLinkedin className="text-orange-400 group-hover:scale-110 transition-transform" />
-                <span className="font-medium">LinkedIn</span>
-              </a>
-              <a href="https://github.com/renniekawangu" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-gray-700/50 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-300 text-gray-300 hover:text-white group">
-                <FaGithub className="text-orange-400 group-hover:scale-110 transition-transform" />
-                <span className="font-medium">GitHub</span>
+              <a href="https://web.facebook.com/profile.php?id=61586055807192" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-gray-700/50 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-300 text-gray-300 hover:text-white group">
+                <FaFacebook className="text-orange-400 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Facebook</span>
               </a>
             </div>
           </div>
