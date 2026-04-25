@@ -13,15 +13,15 @@ export default function Header() {
 
   return (
     <header className="bg-gray-900 shadow-lg">
-      <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/">
+      <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <Link href="/" className="flex-shrink-0">
           <Image
             src="/b34st_logo.png"
             alt="b34st"
-            width={50}
-            height={60}
+            width={45}
+            height={45}
             priority
-            className="w-20 h-auto object-contain opacity-85 hover:opacity-100 transition duration-300 drop-shadow-sm"
+            className="h-12 w-12 object-contain opacity-90 hover:opacity-100 transition duration-300 drop-shadow-md"
           />
         </Link>
 
