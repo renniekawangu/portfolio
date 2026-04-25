@@ -34,8 +34,8 @@ export default function About() {
             <motion.h3 className="text-2xl font-semibold mb-6 text-center text-white flex items-center justify-center gap-2" variants={itemVariants}> Full-Stack Development</motion.h3>
             <motion.ul className="space-y-3" variants={containerVariants}>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Frontend: HTML5, CSS3, JavaScript, React</span></motion.li>
-              <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Backend: Node.js, Express, Flask</span></motion.li>
-              <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Databases: SQLite, MySQL, PostgreSQL</span></motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Backend: Node.js, Express</span></motion.li>
+              <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Databases: SQLite, MySQL, MongoDB</span></motion.li>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>RESTful API design & integration</span></motion.li>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Authentication & Authorization (JWT, Sessions, Tokens)</span></motion.li>
               <motion.li variants={itemVariants} className="text-gray-300 flex items-start gap-2"><span className="text-orange-500 mt-1">▹</span><span>Secure file uploads & data handling</span></motion.li>

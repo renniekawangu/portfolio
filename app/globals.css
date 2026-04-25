@@ -19,7 +19,7 @@ body {
   position: relative;
 }
 
-/* Background image layer with blur */
+/* Background color layer */
 body::after {
   content: '';
   position: fixed;
@@ -27,16 +27,11 @@ body::after {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/_next/image?url=%2Fb34st.png&w=1920&q=75');
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(1px);
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
   z-index: -2;
 }
 
-/* Overlay for better text readability */
+/* Overlay for subtle depth */
 body::before {
   content: '';
   position: fixed;
@@ -44,7 +39,7 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(17, 24, 39, 0.88) 0%, rgba(31, 41, 55, 0.92) 100%);
+  background: radial-gradient(ellipse at 50% 50%, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
   pointer-events: none;
   z-index: -1;
 }
