@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { notFound } from 'next/navigation'
-import { use } from 'react'
+import { use, useState } from 'react'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -14,9 +14,33 @@ export default function BlogPost({ params }: PageProps) {
   const { slug } = use(params)
   const { blogPosts } = usePortfolioData()
   const post = blogPosts.find(p => p.slug === slug)
+  const [copied, setCopied] = useState(false)
 
   if (!post) {
     notFound()
+  }
+
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
+  const shareTitle = `Check out: ${post.title}`
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const shareOnTwitter = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`,
+      '_blank'
+    )
+  }
+
+  const shareOnLinkedIn = () => {
+    window.open(
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+      '_blank'
+    )
   }
 
   const categoryColors: { [key: string]: string } = {
@@ -73,6 +97,21 @@ export default function BlogPost({ params }: PageProps) {
           </motion.h1>
 
           <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-6 text-gray-400 mb-12 pb-8 border-b border-gray-700">
+            {post.difficulty && (
+              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${
+                post.difficulty === 'Critical' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
+                post.difficulty === 'High' ? 'bg-orange-600/20 text-orange-400 border-orange-600/30' :
+                post.difficulty === 'Medium' ? 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30' :
+                'bg-green-600/20 text-green-400 border-green-600/30'
+              }`}>
+                {post.difficulty}
+              </span>
+            )}
+            {post.bountyAmount && (
+              <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-green-600/20 text-green-400 border border-green-600/30">
+                ${post.bountyAmount.toLocaleString()} bounty
+              </span>
+            )}
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
               {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -83,40 +122,114 @@ export default function BlogPost({ params }: PageProps) {
             </span>
           </motion.div>
 
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-2 mb-8">
+              {post.tags.map((tag) => (
+                <span key={tag} className="inline-block px-3 py-1 rounded-full text-sm bg-gray-800 text-gray-300 border border-gray-700">
+                  #{tag}
+                </span>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Share Buttons */}
+          <motion.div variants={itemVariants} className="flex gap-3 mb-8 pb-8 border-b border-gray-700">
+            <button
+              onClick={shareOnTwitter}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300 font-semibold"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7" />
+              </svg>
+              Share
+            </button>
+            <button
+              onClick={shareOnLinkedIn}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition-colors duration-300 font-semibold"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+              Share
+            </button>
+            <button
+              onClick={handleCopyLink}
+              className={`inline-flex items-center gap-2 px-4 py-2 ${
+                copied ? 'bg-green-600' : 'bg-gray-700 hover:bg-gray-600'
+              } text-white rounded-lg transition-colors duration-300 font-semibold`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              {copied ? 'Copied!' : 'Copy'}
+            </button>
+          </motion.div>
+
           {/* Post Content */}
           <motion.div
             variants={itemVariants}
-            className="prose prose-invert max-w-none text-gray-300"
-            dangerouslySetInnerHTML={{
-              __html: post.content
-                .split('\n').map(line => {
-                  // Handle markdown-style headings
-                  if (line.startsWith('# ')) {
-                    return `<h1 class="text-3xl font-bold text-white mt-8 mb-4">${line.slice(2)}</h1>`
-                  }
-                  if (line.startsWith('## ')) {
-                    return `<h2 class="text-2xl font-bold text-white mt-6 mb-3">${line.slice(3)}</h2>`
-                  }
-                  if (line.startsWith('### ')) {
-                    return `<h3 class="text-xl font-bold text-white mt-4 mb-2">${line.slice(4)}</h3>`
-                  }
-                  if (line.startsWith('- ')) {
-                    return `<li class="ml-4">${line.slice(2)}</li>`
-                  }
-                  if (line.startsWith('`')) {
-                    return `<code class="bg-gray-800 px-2 py-1 rounded text-orange-400">${line.slice(1, -1)}</code>`
-                  }
-                  if (line.trim() === '') {
-                    return '<br />'
-                  }
-                  return `<p class="mb-4 leading-relaxed">${line}</p>`
-                })
-                .join('\n')
-                .replace(/<code[^>]*>[\s\S]*?<\/code>/g, (match) => {
-                  return `<code class="bg-gray-800 px-2 py-1 rounded text-orange-400">${match.slice(23, -7)}</code>`
-                })
-            }}
-          />
+            className="prose prose-invert max-w-none"
+          >
+            <div className="text-gray-300 space-y-4">
+              {post.content.split('\n\n').map((paragraph, idx) => {
+                // Handle code blocks
+                if (paragraph.startsWith('```')) {
+                  const codeContent = paragraph.replace(/```[a-z]*\n?/g, '').trim()
+                  const language = paragraph.match(/```([a-z]*)/)?.[1] || 'code'
+                  return (
+                    <pre key={idx} className="bg-gray-900 border border-gray-800 rounded-lg p-4 overflow-x-auto my-6">
+                      <code className={`text-sm font-mono text-orange-400`}>
+                        {codeContent}
+                      </code>
+                    </pre>
+                  )
+                }
+                
+                // Handle headings
+                if (paragraph.startsWith('# ')) {
+                  return <h1 key={idx} className="text-3xl font-bold text-white mt-8 mb-4">{paragraph.slice(2)}</h1>
+                }
+                if (paragraph.startsWith('## ')) {
+                  return <h2 key={idx} className="text-2xl font-bold text-white mt-6 mb-3">{paragraph.slice(3)}</h2>
+                }
+                if (paragraph.startsWith('### ')) {
+                  return <h3 key={idx} className="text-xl font-bold text-white mt-4 mb-2">{paragraph.slice(4)}</h3>
+                }
+                
+                // Handle bullet lists
+                if (paragraph.startsWith('- ')) {
+                  const items = paragraph.split('\n').filter(line => line.startsWith('- '))
+                  return (
+                    <ul key={idx} className="list-disc list-inside space-y-2 my-4 text-gray-300">
+                      {items.map((item, i) => (
+                        <li key={i} className="ml-4">{item.slice(2)}</li>
+                      ))}
+                    </ul>
+                  )
+                }
+                
+                // Handle paragraphs with basic text formatting
+                return (
+                  <p key={idx} className="mb-4 leading-relaxed text-gray-300">
+                    {paragraph.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/g).map((part, i) => {
+                      if (part.startsWith('**') && part.endsWith('**')) {
+                        return <strong key={i} className="font-bold text-white">{part.slice(2, -2)}</strong>
+                      }
+                      if (part.startsWith('*') && part.endsWith('*')) {
+                        return <em key={i} className="italic">{part.slice(1, -1)}</em>
+                      }
+                      if (part.startsWith('`') && part.endsWith('`')) {
+                        return <code key={i} className="bg-gray-800 px-2 py-1 rounded text-orange-400 text-sm">{part.slice(1, -1)}</code>
+                      }
+                      return part
+                    })}
+                  </p>
+                )
+              })}
+            </div>
+          </motion.div>
 
           {/* Related Posts */}
           <motion.div variants={itemVariants} className="mt-16 pt-8 border-t border-gray-700">
@@ -129,12 +242,34 @@ export default function BlogPost({ params }: PageProps) {
                   <Link
                     key={relatedPost.id}
                     href={`/blog/${relatedPost.slug}`}
-                    className="p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors duration-300 group"
+                    className="p-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all duration-300 group border border-gray-700 hover:border-orange-600/30"
                   >
-                    <h4 className="font-semibold text-white group-hover:text-orange-400 transition-colors duration-300 mb-2">
-                      {relatedPost.title}
-                    </h4>
-                    <p className="text-sm text-gray-400">{relatedPost.excerpt}</p>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        {relatedPost.difficulty && (
+                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                            relatedPost.difficulty === 'Critical' ? 'bg-red-600/20 text-red-400' :
+                            relatedPost.difficulty === 'High' ? 'bg-orange-600/20 text-orange-400' :
+                            'bg-yellow-600/20 text-yellow-400'
+                          }`}>
+                            {relatedPost.difficulty}
+                          </span>
+                        )}
+                        {relatedPost.bountyAmount && (
+                          <span className="inline-block px-2 py-1 rounded text-xs font-medium bg-green-600/20 text-green-400">
+                            ${relatedPost.bountyAmount.toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="font-semibold text-white group-hover:text-orange-400 transition-colors duration-300">
+                        {relatedPost.title}
+                      </h4>
+                      <p className="text-sm text-gray-400">{relatedPost.excerpt}</p>
+                      <div className="text-xs text-gray-500 flex justify-between">
+                        <span>{new Date(relatedPost.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                        <span>{relatedPost.readTime}</span>
+                      </div>
+                    </div>
                   </Link>
                 ))}
             </div>

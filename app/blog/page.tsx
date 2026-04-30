@@ -3,9 +3,41 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
+import { useState, useMemo } from 'react'
 
 export default function Blog() {
   const { blogPosts } = usePortfolioData()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedTag, setSelectedTag] = useState<string | null>(null)
+
+  // Get unique categories and tags
+  const categories = useMemo(() => {
+    return Array.from(new Set(blogPosts.map(p => p.category)))
+  }, [blogPosts])
+
+  const allTags = useMemo(() => {
+    const tags = new Set<string>()
+    blogPosts.forEach(post => {
+      post.tags?.forEach(tag => tags.add(tag))
+    })
+    return Array.from(tags)
+  }, [blogPosts])
+
+  // Filter posts
+  const filteredPosts = useMemo(() => {
+    return blogPosts.filter(post => {
+      const matchesSearch = 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.content.toLowerCase().includes(searchQuery.toLowerCase())
+      
+      const matchesCategory = !selectedCategory || post.category === selectedCategory
+      const matchesTag = !selectedTag || post.tags?.includes(selectedTag)
+      
+      return matchesSearch && matchesCategory && matchesTag
+    })
+  }, [blogPosts, searchQuery, selectedCategory, selectedTag])
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -48,14 +80,98 @@ export default function Blog() {
           </motion.p>
         </motion.div>
 
-        {/* Blog Posts Grid */}
+        {/* Search and Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-4xl mx-auto mb-12"
+        >
+          {/* Search Bar */}
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Search blog posts..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+            />
+          </div>
+
+          {/* Category and Tag Filters */}
+          <div className="space-y-4">
+            {/* Categories */}
+            <div>
+              <p className="text-sm font-semibold text-gray-400 mb-3">Categories</p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedCategory === null
+                      ? 'bg-orange-600 text-white'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  All Categories
+                </button>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      selectedCategory === cat
+                        ? 'bg-orange-600 text-white'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Tags */}
+            <div>
+              <p className="text-sm font-semibold text-gray-400 mb-3">Tags</p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedTag(null)}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedTag === null
+                      ? 'bg-orange-600 text-white'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  All Tags
+                </button>
+                {allTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => setSelectedTag(tag)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      selectedTag === tag
+                        ? 'bg-orange-600 text-white'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Results count */}
+          <p className="text-sm text-gray-500 mt-4">
+            {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''} found
+          </p>
+        </motion.div>
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
           className="max-w-4xl mx-auto grid gap-8"
         >
-          {blogPosts.map((post) => (
+          {filteredPosts.map((post) => (
             <motion.article
               key={post.id}
               variants={itemVariants}
@@ -66,11 +182,37 @@ export default function Blog() {
                   <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[post.category] || 'bg-purple-600/20 text-purple-400 border-purple-600/30'}`}>
                     {post.category}
                   </span>
+                  {post.difficulty && (
+                    <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${
+                      post.difficulty === 'Critical' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
+                      post.difficulty === 'High' ? 'bg-orange-600/20 text-orange-400 border-orange-600/30' :
+                      post.difficulty === 'Medium' ? 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30' :
+                      'bg-green-600/20 text-green-400 border-green-600/30'
+                    }`}>
+                      {post.difficulty}
+                    </span>
+                  )}
+                  {post.bountyAmount && (
+                    <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-green-600/20 text-green-400 border border-green-600/30">
+                      ${post.bountyAmount.toLocaleString()}
+                    </span>
+                  )}
                   <span className="text-sm text-gray-400">
                     {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                   </span>
                   <span className="text-sm text-gray-500 ml-auto">{post.readTime}</span>
                 </div>
+
+                {/* Tags */}
+                {post.tags && post.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <span key={tag} className="inline-block px-2 py-1 rounded text-xs bg-gray-700/50 text-gray-300">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 <Link href={`/blog/${post.slug}`} className="group">
                   <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors duration-300">

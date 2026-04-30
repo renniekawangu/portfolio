@@ -9,6 +9,10 @@ export interface BlogPost {
   readTime: string
   pocVideoUrl?: string
   reportUrl?: string
+  tags?: string[]
+  difficulty?: 'Low' | 'Medium' | 'High' | 'Critical'
+  bountyAmount?: number
+  heroImage?: string
 }
 
 export const blogPosts: BlogPost[] = [
@@ -20,6 +24,9 @@ export const blogPosts: BlogPost[] = [
     date: '2024-12-15',
     category: 'Web Security',
     readTime: '8 min read',
+    difficulty: 'Critical',
+    bountyAmount: 5000,
+    tags: ['SQLi', 'Authentication', 'Database', 'Critical'],
     content: `# SQL Injection Vulnerability in Payment Gateway
 
 ## Overview
@@ -69,6 +76,9 @@ Always use parameterized queries or prepared statements to prevent SQL injection
     date: '2024-11-28',
     category: 'Access Control',
     readTime: '6 min read',
+    difficulty: 'High',
+    bountyAmount: 3500,
+    tags: ['IDOR', 'Authorization', 'Access Control', 'High'],
     content: `# Broken Access Control in Admin Panel
 
 ## Summary
@@ -114,6 +124,9 @@ Always implement:
     date: '2024-10-12',
     category: 'Web Security',
     readTime: '7 min read',
+    difficulty: 'High',
+    bountyAmount: 2500,
+    tags: ['XSS', 'Stored XSS', 'Input Validation', 'High'],
     content: `# Stored XSS Vulnerability in Comment System
 
 ## Introduction
