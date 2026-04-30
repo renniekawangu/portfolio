@@ -10,8 +10,9 @@ import ServicesManager from '../components/ServicesManager'
 import SkillsManager from '../components/SkillsManager'
 import ContactSettingsManager from '../components/ContactSettingsManager'
 import AnalyticsManager from '../components/AnalyticsManager'
+import CommentManager from '../components/CommentManager'
 
-type Tab = 'blog' | 'projects' | 'services' | 'skills' | 'contact' | 'analytics'
+type Tab = 'blog' | 'projects' | 'services' | 'skills' | 'contact' | 'analytics' | 'comments'
 
 export default function AdminDashboard() {
   const { isAuthenticated, logout } = useAuth()
@@ -60,7 +61,8 @@ export default function AdminDashboard() {
             { id: 'services', label: 'Services', short: 'Services' },
             { id: 'skills', label: 'Skills', short: 'Skills' },
             { id: 'contact', label: 'Contact', short: 'Contact' },
-            { id: 'analytics', label: 'Analytics', short: 'Analytics' }
+            { id: 'analytics', label: 'Analytics', short: 'Analytics' },
+            { id: 'comments', label: 'Comments', short: 'Comments' }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -92,6 +94,7 @@ export default function AdminDashboard() {
         {activeTab === 'skills' && <SkillsManager />}
         {activeTab === 'contact' && <ContactSettingsManager />}
         {activeTab === 'analytics' && <AnalyticsManager />}
+        {activeTab === 'comments' && <CommentManager adminPassword={process.env.NEXT_PUBLIC_ADMIN_PASSWORD || ''} />}
       </motion.div>
     </main>
   )

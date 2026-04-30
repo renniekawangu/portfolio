@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { notFound } from 'next/navigation'
 import { use, useState, useEffect } from 'react'
+import CommentForm from '../components/CommentForm'
+import CommentsList from '../components/CommentsList'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -23,6 +25,7 @@ export default function BlogPost({ params }: PageProps) {
   const [copied, setCopied] = useState(false)
   const [toc, setToc] = useState<TableOfContentsItem[]>([])
   const [views, setViews] = useState(0)
+  const [commentRefresh, setCommentRefresh] = useState(0)
 
   if (!post) {
     notFound()
@@ -384,6 +387,15 @@ export default function BlogPost({ params }: PageProps) {
                   </Link>
                 ))}
             </div>
+          </motion.div>
+
+          {/* Comments Section */}
+          <motion.div variants={itemVariants} className="mt-16 pt-8 border-t border-gray-700">
+            <CommentsList postSlug={slug} refreshTrigger={commentRefresh} />
+            <CommentForm 
+              postSlug={slug} 
+              onCommentAdded={() => setCommentRefresh(prev => prev + 1)}
+            />
           </motion.div>
         </motion.article>
       </div>
