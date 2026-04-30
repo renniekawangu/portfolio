@@ -1,0 +1,22 @@
+# https://www.robotstxt.org/ is a great reference for understanding robot.txt
+# This file tells search engines which parts of your site they can and cannot crawl
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Crawl-delay: 1
+
+# Specific bot rules
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://b34stweb.vercel.app/sitemap.xml

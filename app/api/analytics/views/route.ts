@@ -4,6 +4,11 @@ import { View } from '@/lib/models/View'
 
 export async function GET(request: NextRequest) {
   try {
+    if (!process.env.MONGODB_URI) {
+      console.warn('MongoDB URI not configured, returning empty stats')
+      return NextResponse.json({})
+    }
+
     await connectToDatabase()
     const slug = request.nextUrl.searchParams.get('slug')
 
@@ -35,15 +40,22 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(stats)
   } catch (error) {
     console.error('Failed to fetch analytics:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch analytics' },
-      { status: 500 }
-    )
+    // Return empty stats instead of error, so UI doesn't break
+    return NextResponse.json({})
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
+    if (!process.env.MONGODB_URI) {
+      console.warn('MongoDB URI not configured, view not recorded')
+      return NextResponse.json({
+        slug: 'unknown',
+        views: 0,
+        message: 'Analytics not configured'
+      })
+    }
+
     await connectToDatabase()
     const body = await request.json()
     const { slug } = body
@@ -74,9 +86,11 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Failed to record view:', error)
-    return NextResponse.json(
-      { error: 'Failed to record view' },
-      { status: 500 }
-    )
+    // Return success anyway so UI doesn't break
+    return NextResponse.json({
+      slug: 'unknown',
+      views: 0,
+      message: 'View recording failed gracefully'
+    })
   }
 }

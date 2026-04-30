@@ -16,8 +16,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "b34st web",
-  description: "b34st web services - full-stack web development and security",
+  title: "b34st web - Security Research & Web Development",
+  description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
+  keywords: ["security research", "cybersecurity", "bug bounties", "web development", "penetration testing"],
+  authors: [{ name: "b34st web" }],
+  creator: "b34st web",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://b34stweb.vercel.app",
+    title: "b34st web - Security Research & Web Development",
+    description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
+    images: [
+      {
+        url: "https://b34stweb.vercel.app/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "b34st web"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "b34st web - Security Research & Web Development",
+    description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
+    images: ["https://b34stweb.vercel.app/og-image.jpg"]
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+    googleBot: "index, follow"
+  },
+  verification: {
+    google: "your-google-verification-code"
+  }
 };
 
 export default function RootLayout({

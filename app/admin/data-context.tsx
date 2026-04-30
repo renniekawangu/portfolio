@@ -36,6 +36,9 @@ interface DataContextType {
   
   // Contact methods
   updateContactSettings: (settings: ContactSettings) => void
+  
+  // Loading state
+  loading: boolean
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined)
@@ -52,28 +55,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     linkedin: '',
     twitter: ''
   })
+  const [loading, setLoading] = useState(true)
 
-  // Initialize from localStorage on mount
+  // Load data on mount
   useEffect(() => {
-    const savedData = localStorage.getItem('portfolioData')
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData)
-        setBlogPosts(data.blogPosts || [])
-        setProjects(data.projects || [])
-        setServices(data.services || [])
-        setSkills(data.skills || [])
-        setContactSettings(data.contactSettings || contactSettings)
-      } catch (error) {
-        console.error('Failed to load portfolio data from localStorage:', error)
-        loadInitialData()
-      }
-    } else {
-      loadInitialData()
-    }
+    loadAllData()
   }, [])
 
-  // Save to localStorage whenever data changes
+  // Save to localStorage whenever data changes (as backup)
   useEffect(() => {
     const data = {
       blogPosts,
@@ -85,21 +74,97 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('portfolioData', JSON.stringify(data))
   }, [blogPosts, projects, services, skills, contactSettings])
 
-  const loadInitialData = async () => {
+  const loadAllData = async () => {
     try {
-      const { blogPosts: initialBlog } = await import('@/app/blog/data')
-      const { projects: initialProjects } = await import('@/app/admin/data/projects')
-      const { services: initialServices } = await import('@/app/admin/data/services')
-      const { skills: initialSkills } = await import('@/app/admin/data/skills')
-      const { contactSettings: initialContact } = await import('@/app/admin/data/contact')
+      setLoading(true)
+      const [blogRes, projectsRes, servicesRes, skillsRes, contactRes] = await Promise.all([
+        fetch('/api/data/blog').catch(() => null),
+        fetch('/api/data/projects'),
+        fetch('/api/data/services'),
+        fetch('/api/data/skills'),
+        fetch('/api/data/contact')
+      ])
 
-      setBlogPosts(initialBlog)
-      setProjects(initialProjects)
-      setServices(initialServices)
-      setSkills(initialSkills)
-      setContactSettings(initialContact)
+      // Load from static blog data
+      if (!blogRes) {
+        const { blogPosts: initialBlog } = await import('@/app/blog/data')
+        setBlogPosts(initialBlog)
+      }
+
+      // Load projects from MongoDB or localStorage
+      if (projectsRes?.ok) {
+        const projectsData = await projectsRes.json()
+        setProjects(projectsData)
+      } else {
+        const savedData = localStorage.getItem('portfolioData')
+        if (savedData) {
+          const data = JSON.parse(savedData)
+          setProjects(data.projects || [])
+        } else {
+          const { projects: initialProjects } = await import('@/app/admin/data/projects')
+          setProjects(initialProjects)
+        }
+      }
+
+      // Load services
+      if (servicesRes?.ok) {
+        const servicesData = await servicesRes.json()
+        setServices(servicesData)
+      } else {
+        const savedData = localStorage.getItem('portfolioData')
+        if (savedData) {
+          const data = JSON.parse(savedData)
+          setServices(data.services || [])
+        } else {
+          const { services: initialServices } = await import('@/app/admin/data/services')
+          setServices(initialServices)
+        }
+      }
+
+      // Load skills
+      if (skillsRes?.ok) {
+        const skillsData = await skillsRes.json()
+        setSkills(skillsData)
+      } else {
+        const savedData = localStorage.getItem('portfolioData')
+        if (savedData) {
+          const data = JSON.parse(savedData)
+          setSkills(data.skills || [])
+        } else {
+          const { skills: initialSkills } = await import('@/app/admin/data/skills')
+          setSkills(initialSkills)
+        }
+      }
+
+      // Load contact settings
+      if (contactRes?.ok) {
+        const contactData = await contactRes.json()
+        if (contactData && Object.keys(contactData).length > 0) {
+          setContactSettings(contactData)
+        }
+      } else {
+        const savedData = localStorage.getItem('portfolioData')
+        if (savedData) {
+          const data = JSON.parse(savedData)
+          if (data.contactSettings) {
+            setContactSettings(data.contactSettings)
+          }
+        }
+      }
     } catch (error) {
-      console.error('Failed to load initial data:', error)
+      console.error('Failed to load data:', error)
+      // Fall back to localStorage
+      const savedData = localStorage.getItem('portfolioData')
+      if (savedData) {
+        const data = JSON.parse(savedData)
+        setBlogPosts(data.blogPosts || [])
+        setProjects(data.projects || [])
+        setServices(data.services || [])
+        setSkills(data.skills || [])
+        setContactSettings(data.contactSettings || contactSettings)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -120,60 +185,221 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     setBlogPosts(blogPosts.filter(p => p.id !== id))
   }
 
-  // Project methods
-  const addProject = (project: Project) => {
-    const newProject = {
-      ...project,
-      id: Math.max(...projects.map(p => p.id), 0) + 1
+  // Project methods with MongoDB API
+  const addProject = async (project: Project) => {
+    try {
+      const res = await fetch('/api/data/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(project)
+      })
+
+      if (res.ok) {
+        const newProject = await res.json()
+        setProjects([newProject, ...projects])
+      } else {
+        // Fallback to local state
+        const newProject = {
+          ...project,
+          id: Math.max(...projects.map(p => p.id), 0) + 1
+        }
+        setProjects([newProject, ...projects])
+      }
+    } catch (error) {
+      console.error('Failed to add project:', error)
+      const newProject = {
+        ...project,
+        id: Math.max(...projects.map(p => p.id), 0) + 1
+      }
+      setProjects([newProject, ...projects])
     }
-    setProjects([newProject, ...projects])
   }
 
-  const updateProject = (project: Project) => {
-    setProjects(projects.map(p => p.id === project.id ? project : p))
-  }
+  const updateProject = async (project: Project) => {
+    try {
+      const res = await fetch(`/api/data/projects/${project.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(project)
+      })
 
-  const deleteProject = (id: number) => {
-    setProjects(projects.filter(p => p.id !== id))
-  }
-
-  // Service methods
-  const addService = (service: Service) => {
-    const newService = {
-      ...service,
-      id: Math.max(...services.map(s => s.id), 0) + 1
+      if (res.ok) {
+        const updatedProject = await res.json()
+        setProjects(projects.map(p => p.id === project.id ? updatedProject : p))
+      } else {
+        setProjects(projects.map(p => p.id === project.id ? project : p))
+      }
+    } catch (error) {
+      console.error('Failed to update project:', error)
+      setProjects(projects.map(p => p.id === project.id ? project : p))
     }
-    setServices([newService, ...services])
   }
 
-  const updateService = (service: Service) => {
-    setServices(services.map(s => s.id === service.id ? service : s))
-  }
+  const deleteProject = async (id: number) => {
+    try {
+      const project = projects.find(p => p.id === id)
+      if (!project) return
 
-  const deleteService = (id: number) => {
-    setServices(services.filter(s => s.id !== id))
-  }
+      await fetch(`/api/data/projects/${id}`, {
+        method: 'DELETE'
+      })
 
-  // Skill methods
-  const addSkill = (skill: Skill) => {
-    const newSkill = {
-      ...skill,
-      id: Math.max(...skills.map(s => s.id), 0) + 1
+      setProjects(projects.filter(p => p.id !== id))
+    } catch (error) {
+      console.error('Failed to delete project:', error)
+      setProjects(projects.filter(p => p.id !== id))
     }
-    setSkills([newSkill, ...skills])
   }
 
-  const updateSkill = (skill: Skill) => {
-    setSkills(skills.map(s => s.id === skill.id ? skill : s))
+  // Service methods with MongoDB API
+  const addService = async (service: Service) => {
+    try {
+      const res = await fetch('/api/data/services', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(service)
+      })
+
+      if (res.ok) {
+        const newService = await res.json()
+        setServices([newService, ...services])
+      } else {
+        const newService = {
+          ...service,
+          id: Math.max(...services.map(s => s.id), 0) + 1
+        }
+        setServices([newService, ...services])
+      }
+    } catch (error) {
+      console.error('Failed to add service:', error)
+      const newService = {
+        ...service,
+        id: Math.max(...services.map(s => s.id), 0) + 1
+      }
+      setServices([newService, ...services])
+    }
   }
 
-  const deleteSkill = (id: number) => {
-    setSkills(skills.filter(s => s.id !== id))
+  const updateService = async (service: Service) => {
+    try {
+      const res = await fetch(`/api/data/services/${service.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(service)
+      })
+
+      if (res.ok) {
+        const updatedService = await res.json()
+        setServices(services.map(s => s.id === service.id ? updatedService : s))
+      } else {
+        setServices(services.map(s => s.id === service.id ? service : s))
+      }
+    } catch (error) {
+      console.error('Failed to update service:', error)
+      setServices(services.map(s => s.id === service.id ? service : s))
+    }
   }
 
-  // Contact methods
-  const updateContactSettingsHandler = (settings: ContactSettings) => {
-    setContactSettings(settings)
+  const deleteService = async (id: number) => {
+    try {
+      const service = services.find(s => s.id === id)
+      if (!service) return
+
+      await fetch(`/api/data/services/${id}`, {
+        method: 'DELETE'
+      })
+
+      setServices(services.filter(s => s.id !== id))
+    } catch (error) {
+      console.error('Failed to delete service:', error)
+      setServices(services.filter(s => s.id !== id))
+    }
+  }
+
+  // Skill methods with MongoDB API
+  const addSkill = async (skill: Skill) => {
+    try {
+      const res = await fetch('/api/data/skills', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(skill)
+      })
+
+      if (res.ok) {
+        const newSkill = await res.json()
+        setSkills([newSkill, ...skills])
+      } else {
+        const newSkill = {
+          ...skill,
+          id: Math.max(...skills.map(s => s.id), 0) + 1
+        }
+        setSkills([newSkill, ...skills])
+      }
+    } catch (error) {
+      console.error('Failed to add skill:', error)
+      const newSkill = {
+        ...skill,
+        id: Math.max(...skills.map(s => s.id), 0) + 1
+      }
+      setSkills([newSkill, ...skills])
+    }
+  }
+
+  const updateSkill = async (skill: Skill) => {
+    try {
+      const res = await fetch(`/api/data/skills/${skill.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(skill)
+      })
+
+      if (res.ok) {
+        const updatedSkill = await res.json()
+        setSkills(skills.map(s => s.id === skill.id ? updatedSkill : s))
+      } else {
+        setSkills(skills.map(s => s.id === skill.id ? skill : s))
+      }
+    } catch (error) {
+      console.error('Failed to update skill:', error)
+      setSkills(skills.map(s => s.id === skill.id ? skill : s))
+    }
+  }
+
+  const deleteSkill = async (id: number) => {
+    try {
+      const skill = skills.find(s => s.id === id)
+      if (!skill) return
+
+      await fetch(`/api/data/skills/${id}`, {
+        method: 'DELETE'
+      })
+
+      setSkills(skills.filter(s => s.id !== id))
+    } catch (error) {
+      console.error('Failed to delete skill:', error)
+      setSkills(skills.filter(s => s.id !== id))
+    }
+  }
+
+  // Contact methods with MongoDB API
+  const updateContactSettingsHandler = async (settings: ContactSettings) => {
+    try {
+      const res = await fetch('/api/data/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings)
+      })
+
+      if (res.ok) {
+        const updatedSettings = await res.json()
+        setContactSettings(updatedSettings)
+      } else {
+        setContactSettings(settings)
+      }
+    } catch (error) {
+      console.error('Failed to update contact settings:', error)
+      setContactSettings(settings)
+    }
   }
 
   const value: DataContextType = {
@@ -182,6 +408,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     services,
     skills,
     contactSettings,
+    loading,
     addBlogPost,
     updateBlogPost,
     deleteBlogPost,
