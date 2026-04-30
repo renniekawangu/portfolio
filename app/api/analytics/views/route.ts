@@ -1,111 +1,82 @@
-import { NextRequest, NextResponse } from 'next/server';
-import * as fs from 'fs';
-import * as path from 'path';
-
-const VIEWS_FILE = path.join(process.cwd(), 'data', 'views.json');
-
-interface ViewRecord {
-  slug: string;
-  timestamp: string;
-  userAgent?: string;
-}
-
-interface ViewStats {
-  [slug: string]: number;
-}
-
-// Ensure data directory exists
-function ensureDataDir() {
-  const dataDir = path.join(process.cwd(), 'data');
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-}
-
-// Get all view records
-function getViewRecords(): ViewRecord[] {
-  ensureDataDir();
-  if (!fs.existsSync(VIEWS_FILE)) {
-    return [];
-  }
-  try {
-    const data = fs.readFileSync(VIEWS_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-// Save view records
-function saveViewRecords(records: ViewRecord[]) {
-  ensureDataDir();
-  fs.writeFileSync(VIEWS_FILE, JSON.stringify(records, null, 2));
-}
-
-// Get view counts per slug
-function getViewStats(): ViewStats {
-  const records = getViewRecords();
-  const stats: ViewStats = {};
-  
-  records.forEach(record => {
-    stats[record.slug] = (stats[record.slug] || 0) + 1;
-  });
-  
-  return stats;
-}
+import { NextRequest, NextResponse } from 'next/server'
+import { connectToDatabase } from '@/lib/mongodb'
+import { View } from '@/lib/models/View'
 
 export async function GET(request: NextRequest) {
-  const slug = request.nextUrl.searchParams.get('slug');
-  
-  if (slug) {
-    // Get views for specific post
-    const stats = getViewStats();
-    return NextResponse.json({ 
-      slug, 
-      views: stats[slug] || 0,
-      timestamp: new Date().toISOString()
-    });
+  try {
+    await connectToDatabase()
+    const slug = request.nextUrl.searchParams.get('slug')
+
+    if (slug) {
+      // Get views for specific post
+      const count = await View.countDocuments({ slug })
+      return NextResponse.json({
+        slug,
+        views: count,
+        timestamp: new Date().toISOString()
+      })
+    }
+
+    // Get all stats
+    const views = await View.aggregate([
+      {
+        $group: {
+          _id: '$slug',
+          count: { $sum: 1 }
+        }
+      }
+    ])
+
+    const stats: { [slug: string]: number } = {}
+    views.forEach(v => {
+      stats[v._id] = v.count
+    })
+
+    return NextResponse.json(stats)
+  } catch (error) {
+    console.error('Failed to fetch analytics:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch analytics' },
+      { status: 500 }
+    )
   }
-  
-  // Get all stats
-  const stats = getViewStats();
-  return NextResponse.json(stats);
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { slug } = body;
-    
+    await connectToDatabase()
+    const body = await request.json()
+    const { slug } = body
+
     if (!slug) {
       return NextResponse.json(
         { error: 'slug is required' },
         { status: 400 }
-      );
+      )
     }
-    
-    // Add new view record
-    const records = getViewRecords();
-    const newRecord: ViewRecord = {
+
+    // Create new view record
+    const view = new View({
       slug,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date(),
       userAgent: request.headers.get('user-agent') || undefined,
-    };
-    
-    records.push(newRecord);
-    saveViewRecords(records);
-    
+      ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('cf-connecting-ip') || undefined
+    })
+
+    await view.save()
+
     // Return updated count
-    const stats = getViewStats();
-    return NextResponse.json({ 
-      slug, 
-      views: stats[slug],
+    const count = await View.countDocuments({ slug })
+    return NextResponse.json({
+      slug,
+      views: count,
       message: 'View recorded'
-    });
+    })
   } catch (error) {
+    console.error('Failed to record view:', error)
     return NextResponse.json(
       { error: 'Failed to record view' },
       { status: 500 }
-    );
+    )
   }
 }

@@ -185,7 +185,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     addBlogPost,
     updateBlogPost,
     deleteBlogPost,
-    incrementPostViews,
     addProject,
     updateProject,
     deleteProject,
