@@ -66,6 +66,16 @@ body::before {
   background: linear-gradient(to right, #d2440f, #ea580c);
 }
 
+/* Hide scrollbar while keeping functionality */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Safari-compatible gradient buttons */
 .btn-gradient {
   background: #ea580c;

@@ -44,23 +44,23 @@ export default function BlogManager() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex justify-between items-center"
+        className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0"
       >
         <div>
-          <h2 className="text-3xl font-bold text-white">Blog Posts</h2>
-          <p className="text-gray-400 mt-1">Create, edit, and manage your blog posts</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-white">Blog Posts</h2>
+          <p className="text-gray-400 mt-1 text-sm md:text-base">Create, edit, and manage your blog posts</p>
         </div>
         <button
           onClick={() => {
             setEditingPost(null)
             setShowForm(true)
           }}
-          className="btn-gradient text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg"
+          className="w-full md:w-auto btn-gradient text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg text-sm md:text-base"
         >
           + New Post
         </button>
@@ -74,7 +74,7 @@ export default function BlogManager() {
         placeholder="Search posts..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300"
+        className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
       />
 
       {/* Form Modal */}
@@ -84,7 +84,7 @@ export default function BlogManager() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 md:p-4"
             onClick={handleCloseForm}
           >
             <motion.div
@@ -92,10 +92,10 @@ export default function BlogManager() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-gray-800 rounded-xl border border-gray-700 p-8"
+              className="w-full max-w-2xl max-h-[95vh] md:max-h-[90vh] overflow-y-auto bg-gray-800 rounded-xl border border-gray-700 p-4 md:p-8"
             >
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-white">
+              <div className="flex justify-between items-center mb-4 md:mb-6">
+                <h3 className="text-xl md:text-2xl font-bold text-white">
                   {editingPost ? 'Edit Post' : 'New Blog Post'}
                 </h3>
                 <button
@@ -115,8 +115,8 @@ export default function BlogManager() {
       </AnimatePresence>
 
       {/* Posts List */}
-      <motion.div layout className="space-y-4">
-        <div className="text-sm text-gray-400 mb-4">
+      <motion.div layout className="space-y-3 md:space-y-4">
+        <div className="text-xs md:text-sm text-gray-400 mb-4">
           {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''}
         </div>
         <AnimatePresence>
@@ -127,33 +127,33 @@ export default function BlogManager() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, x: -100 }}
-              className="bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-gray-600 transition-all duration-300"
+              className="bg-gray-800 border border-gray-700 rounded-lg p-3 md:p-6 hover:border-gray-600 transition-all duration-300"
             >
-              <div className="flex justify-between items-start gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="px-3 py-1 bg-orange-600/20 text-orange-400 text-xs rounded-full border border-orange-600/30">
+              <div className="flex flex-col md:flex-row justify-between items-start gap-3 md:gap-4">
+                <div className="flex-1 w-full">
+                  <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
+                    <span className="px-2 md:px-3 py-1 bg-orange-600/20 text-orange-400 text-xs rounded-full border border-orange-600/30">
                       {post.category}
                     </span>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-xs md:text-sm text-gray-500">
                       {new Date(post.date).toLocaleDateString()}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{post.title}</h3>
-                  <p className="text-gray-400 mb-3">{post.excerpt}</p>
-                  <span className="text-sm text-gray-500">{post.readTime}</span>
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-2">{post.title}</h3>
+                  <p className="text-gray-400 mb-3 text-sm md:text-base line-clamp-2">{post.excerpt}</p>
+                  <span className="text-xs md:text-sm text-gray-500">{post.readTime}</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full md:w-auto">
                   <button
                     onClick={() => handleEditPost(post)}
-                    className="p-2 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded-lg hover:bg-blue-600/30 transition-colors duration-300"
+                    className="flex-1 md:flex-none px-3 md:px-2 py-2 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded-lg hover:bg-blue-600/30 transition-colors duration-300 text-xs md:text-sm font-semibold"
                     title="Edit"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDeletePost(post.id)}
-                    className="p-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors duration-300"
+                    className="flex-1 md:flex-none px-3 md:px-2 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors duration-300 text-xs md:text-sm font-semibold"
                     title="Delete"
                   >
                     Delete
@@ -169,7 +169,7 @@ export default function BlogManager() {
             animate={{ opacity: 1 }}
             className="text-center py-12"
           >
-            <p className="text-gray-400">No posts found</p>
+            <p className="text-gray-400 text-sm md:text-base">No posts found</p>
           </motion.div>
         )}
       </motion.div>

@@ -42,14 +42,14 @@ export default function AdminDashboard() {
     <main className="min-h-screen bg-gray-900">
       {/* Header */}
       <header className="bg-gray-800 border-b border-gray-700">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
+        <div className="container mx-auto px-4 py-4 md:py-6 flex justify-between items-center">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
-            <p className="text-gray-400 text-sm">Manage your portfolio content</p>
+            <h1 className="text-xl md:text-2xl font-bold text-white">Admin</h1>
+            <p className="text-gray-400 text-xs md:text-sm hidden sm:block">Manage portfolio</p>
           </motion.div>
           <button
             onClick={handleLogout}
-            className="px-4 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors duration-300 font-semibold"
+            className="px-3 md:px-4 py-2 text-sm md:text-base bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors duration-300 font-semibold whitespace-nowrap"
           >
             Logout
           </button>
@@ -57,30 +57,29 @@ export default function AdminDashboard() {
       </header>
 
       {/* Tabs */}
-      <div className="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
-        <div className="container mx-auto px-4">
-          <div className="flex gap-0 overflow-x-auto">
-            {[
-              { id: 'blog', label: 'Blog Posts' },
-              { id: 'projects', label: 'Projects' },
-              { id: 'services', label: 'Services' },
-              { id: 'skills', label: 'Skills' },
-              { id: 'contact', label: 'Contact' },
-              { id: 'analytics', label: 'Analytics' }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as Tab)}
-                className={`px-6 py-4 font-semibold transition-all duration-300 border-b-2 whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? 'text-orange-400 border-orange-400'
-                    : 'text-gray-400 border-transparent hover:text-gray-300'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+      <div className="bg-gray-800 border-b border-gray-700 sticky top-0 z-40 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-0 min-w-max md:min-w-0 md:container md:mx-auto md:px-4">
+          {[
+            { id: 'blog', label: 'Blog Posts', short: 'Blog' },
+            { id: 'projects', label: 'Projects', short: 'Projects' },
+            { id: 'services', label: 'Services', short: 'Services' },
+            { id: 'skills', label: 'Skills', short: 'Skills' },
+            { id: 'contact', label: 'Contact', short: 'Contact' },
+            { id: 'analytics', label: 'Analytics', short: 'Analytics' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as Tab)}
+              className={`px-3 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold transition-all duration-300 border-b-2 whitespace-nowrap min-w-fit ${
+                activeTab === tab.id
+                  ? 'text-orange-400 border-orange-400'
+                  : 'text-gray-400 border-transparent hover:text-gray-300'
+              }`}
+            >
+              <span className="md:hidden">{tab.short}</span>
+              <span className="hidden md:inline">{tab.label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
