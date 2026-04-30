@@ -188,6 +188,35 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
         <p className="text-xs text-gray-500 mt-1">Supports markdown formatting: # heading, ## subheading, - lists, etc.</p>
       </div>
 
+      {/* POC Video and Report Links */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+        <div>
+          <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">POC Video (Google Drive Link)</label>
+          <input
+            type="url"
+            name="pocVideoUrl"
+            value={formData.pocVideoUrl || ''}
+            onChange={handleChange}
+            placeholder="https://drive.google.com/file/d/..."
+            className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+          />
+          <p className="text-xs text-gray-500 mt-1">Link to proof-of-concept video demonstration</p>
+        </div>
+
+        <div>
+          <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Report (Google Drive Link)</label>
+          <input
+            type="url"
+            name="reportUrl"
+            value={formData.reportUrl || ''}
+            onChange={handleChange}
+            placeholder="https://drive.google.com/file/d/..."
+            className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+          />
+          <p className="text-xs text-gray-500 mt-1">Link to detailed security report</p>
+        </div>
+      </div>
+
       {/* Submit */}
       <div className="flex flex-col md:flex-row gap-2 md:gap-3 pt-2 md:pt-4">
         <button

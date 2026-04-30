@@ -7,6 +7,8 @@ export interface BlogPost {
   category: string
   content: string
   readTime: string
+  pocVideoUrl?: string
+  reportUrl?: string
 }
 
 export const blogPosts: BlogPost[] = [
