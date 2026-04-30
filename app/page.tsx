@@ -31,10 +31,10 @@ export default function Home() {
             <span className="inline-block bg-orange-600/10 text-orange-400 px-4 py-2 rounded-full text-sm font-semibold border border-orange-600/20">Full-Stack Developer & Security Specialist</span>
           </motion.div>
           <motion.h1 className="text-5xl md:text-7xl font-extrabold mb-8 text-white leading-tight" variants={itemVariants}>
-            Hi, I'm <span className="gradient-text">Rennie Kawangu</span>
+            Hi, I&apos;m <span className="gradient-text">Rennie Kawangu</span>
           </motion.h1>
           <motion.p className="text-xl md:text-2xl text-gray-300 mb-6 leading-relaxed max-w-3xl mx-auto" variants={itemVariants}>
-            I'm a Full-Stack Web Developer, Cybersecurity Specialist, and Bug Bounty Hunter with a strong passion for building secure, scalable, and high-performance web applications.
+            I&apos;m a Full-Stack Web Developer, Cybersecurity Specialist, and Bug Bounty Hunter with a strong passion for building secure, scalable, and high-performance web applications.
           </motion.p>
           <motion.p className="text-lg text-gray-400 mb-12 leading-relaxed max-w-3xl mx-auto" variants={itemVariants}>
             With hands-on experience in offensive security, I actively discover and responsibly disclose vulnerabilities such as Broken Access Control, Privilege Escalation, and API Security Issues. I approach security with a practical, attacker-mindset, ensuring applications are resilient against modern threats.

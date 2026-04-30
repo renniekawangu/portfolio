@@ -76,7 +76,7 @@ export default function Blog() {
             Bug Bounty <span className="gradient-text">Writeups</span>
           </motion.h1>
           <motion.p variants={itemVariants} className="text-xl text-gray-300">
-            Detailed writeups of vulnerabilities I've discovered and responsibly disclosed during bug bounty hunting engagements.
+            Detailed writeups of vulnerabilities I&apos;ve discovered and responsibly disclosed during bug bounty hunting engagements.
           </motion.p>
         </motion.div>
 

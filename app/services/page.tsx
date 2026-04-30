@@ -71,7 +71,7 @@ export default function Services() {
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Work Together?</h2>
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto text-lg">
-            Let's discuss how I can help bring your project to life with professional development and security expertise.
+            Let&apos;s discuss how I can help bring your project to life with professional development and security expertise.
           </p>
           <a 
             href="/contact" 
