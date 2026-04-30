@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { projects as initialProjects, Project } from '../data/projects'
+import { usePortfolioData } from '@/app/admin/data-context'
+import { Project } from '../data/projects'
 import ProjectForm from './ProjectForm'
 
 export default function ProjectsManager() {
-  const [projectsList, setProjectsList] = useState<Project[]>(initialProjects)
+  const { projects: projectsList, addProject, updateProject, deleteProject } = usePortfolioData()
   const [showForm, setShowForm] = useState(false)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
@@ -18,17 +19,17 @@ export default function ProjectsManager() {
 
   const handleAddProject = (project: Project) => {
     if (editingProject) {
-      setProjectsList(projectsList.map(p => p.id === project.id ? project : p))
+      updateProject({ ...project, id: editingProject.id })
       setEditingProject(null)
     } else {
-      setProjectsList([{ ...project, id: Math.max(...projectsList.map(p => p.id), 0) + 1 }, ...projectsList])
+      addProject(project)
     }
     setShowForm(false)
   }
 
   const handleDeleteProject = (id: number) => {
     if (confirm('Are you sure you want to delete this project?')) {
-      setProjectsList(projectsList.filter(p => p.id !== id))
+      deleteProject(id)
     }
   }
 

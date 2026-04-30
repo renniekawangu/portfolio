@@ -2,27 +2,28 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { services as initialServices, Service } from '../data/services'
+import { usePortfolioData } from '@/app/admin/data-context'
+import { Service } from '../data/services'
 import ServiceForm from './ServiceForm'
 
 export default function ServicesManager() {
-  const [servicesList, setServicesList] = useState<Service[]>(initialServices)
+  const { services: servicesList, addService, updateService, deleteService } = usePortfolioData()
   const [showForm, setShowForm] = useState(false)
   const [editingService, setEditingService] = useState<Service | null>(null)
 
   const handleAddService = (service: Service) => {
     if (editingService) {
-      setServicesList(servicesList.map(s => s.id === service.id ? service : s))
+      updateService({ ...service, id: editingService.id })
       setEditingService(null)
     } else {
-      setServicesList([{ ...service, id: Math.max(...servicesList.map(s => s.id), 0) + 1 }, ...servicesList])
+      addService(service)
     }
     setShowForm(false)
   }
 
   const handleDeleteService = (id: number) => {
     if (confirm('Are you sure you want to delete this service?')) {
-      setServicesList(servicesList.filter(s => s.id !== id))
+      deleteService(id)
     }
   }
 

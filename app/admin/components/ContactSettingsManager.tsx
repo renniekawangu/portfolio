@@ -2,23 +2,27 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { contactSettings as initialSettings, ContactSettings } from '../data/contact'
+import { usePortfolioData } from '@/app/admin/data-context'
+import { ContactSettings } from '../data/contact'
 
 export default function ContactSettingsManager() {
-  const [settings, setSettings] = useState<ContactSettings>(initialSettings)
+  const { contactSettings: settings, updateContactSettings } = usePortfolioData()
+  const [formSettings, setFormSettings] = useState<ContactSettings>(settings)
   const [isEditing, setIsEditing] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setSettings(prev => ({
+    setFormSettings(prev => ({
       ...prev,
       [name]: value
     }))
   }
 
   const handleSave = async () => {
+    updateContactSettings(formSettings)
     setSaveSuccess(true)
+    setIsEditing(false)
     setTimeout(() => setSaveSuccess(false), 3000)
   }
 
@@ -55,7 +59,7 @@ export default function ContactSettingsManager() {
               <input
                 type="email"
                 name="email"
-                value={settings.email}
+                value={formSettings.email}
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
@@ -66,7 +70,7 @@ export default function ContactSettingsManager() {
               <input
                 type="tel"
                 name="phone"
-                value={settings.phone || ''}
+                value={formSettings.phone || ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
@@ -77,7 +81,7 @@ export default function ContactSettingsManager() {
               <input
                 type="url"
                 name="github"
-                value={settings.github || ''}
+                value={formSettings.github || ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
@@ -88,7 +92,7 @@ export default function ContactSettingsManager() {
               <input
                 type="url"
                 name="linkedin"
-                value={settings.linkedin || ''}
+                value={formSettings.linkedin || ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
@@ -99,7 +103,7 @@ export default function ContactSettingsManager() {
               <input
                 type="url"
                 name="twitter"
-                value={settings.twitter || ''}
+                value={formSettings.twitter || ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />

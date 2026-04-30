@@ -1,12 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { blogPosts } from '@/app/blog/data'
-import { projects } from '@/app/admin/data/projects'
-import { services } from '@/app/admin/data/services'
-import { skills } from '@/app/admin/data/skills'
+import { usePortfolioData } from '@/app/admin/data-context'
 
 export default function AnalyticsManager() {
+  const { blogPosts, projects, services, skills } = usePortfolioData()
+
   const stats = [
     { label: 'Blog Posts', value: blogPosts.length.toString() },
     { label: 'Projects', value: projects.length.toString() },

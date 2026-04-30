@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePortfolioData } from '@/app/admin/data-context'
 import BlogForm from './BlogForm'
-import { blogPosts as initialBlogPosts, BlogPost } from '../../blog/data'
+import { BlogPost } from '../../blog/data'
 
 export default function BlogManager() {
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(initialBlogPosts)
+  const { blogPosts, addBlogPost, updateBlogPost, deleteBlogPost } = usePortfolioData()
   const [showForm, setShowForm] = useState(false)
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
@@ -18,17 +19,17 @@ export default function BlogManager() {
 
   const handleAddPost = (post: BlogPost) => {
     if (editingPost) {
-      setBlogPosts(blogPosts.map(p => p.id === post.id ? post : p))
+      updateBlogPost({ ...post, id: editingPost.id })
       setEditingPost(null)
     } else {
-      setBlogPosts([{ ...post, id: Math.max(...blogPosts.map(p => p.id), 0) + 1 }, ...blogPosts])
+      addBlogPost(post)
     }
     setShowForm(false)
   }
 
   const handleDeletePost = (id: number) => {
     if (confirm('Are you sure you want to delete this post?')) {
-      setBlogPosts(blogPosts.filter(p => p.id !== id))
+      deleteBlogPost(id)
     }
   }
 

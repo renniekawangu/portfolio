@@ -2,27 +2,28 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { skills as initialSkills, Skill } from '../data/skills'
+import { usePortfolioData } from '@/app/admin/data-context'
+import { Skill } from '../data/skills'
 import SkillForm from './SkillForm'
 
 export default function SkillsManager() {
-  const [skillsList, setSkillsList] = useState<Skill[]>(initialSkills)
+  const { skills: skillsList, addSkill, updateSkill, deleteSkill } = usePortfolioData()
   const [showForm, setShowForm] = useState(false)
   const [editingSkill, setEditingSkill] = useState<Skill | null>(null)
 
   const handleAddSkill = (skill: Skill) => {
     if (editingSkill) {
-      setSkillsList(skillsList.map(s => s.id === skill.id ? skill : s))
+      updateSkill({ ...skill, id: editingSkill.id })
       setEditingSkill(null)
     } else {
-      setSkillsList([{ ...skill, id: Math.max(...skillsList.map(s => s.id), 0) + 1 }, ...skillsList])
+      addSkill(skill)
     }
     setShowForm(false)
   }
 
   const handleDeleteSkill = (id: number) => {
     if (confirm('Are you sure you want to delete this skill category?')) {
-      setSkillsList(skillsList.filter(s => s.id !== id))
+      deleteSkill(id)
     }
   }
 
