@@ -77,19 +77,18 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const loadAllData = async () => {
     try {
       setLoading(true)
-      const [blogRes, projectsRes, servicesRes, skillsRes, contactRes] = await Promise.all([
-        fetch('/api/data/blog').catch(() => null),
+      
+      // Load blog posts from static data
+      const { blogPosts: initialBlog } = await import('@/app/blog/data')
+      setBlogPosts(initialBlog)
+
+      // Load other data from APIs
+      const [projectsRes, servicesRes, skillsRes, contactRes] = await Promise.all([
         fetch('/api/data/projects'),
         fetch('/api/data/services'),
         fetch('/api/data/skills'),
         fetch('/api/data/contact')
       ])
-
-      // Load from static blog data
-      if (!blogRes) {
-        const { blogPosts: initialBlog } = await import('@/app/blog/data')
-        setBlogPosts(initialBlog)
-      }
 
       // Load projects from MongoDB or localStorage
       if (projectsRes?.ok) {
