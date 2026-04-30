@@ -1,14 +1,11 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect } from 'react'    
-import { env } from 'process'
-
-
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
 interface AuthContextType {
   isAuthenticated: boolean
-  login: (password: string) => boolean
-  logout: () => void
+  login: (password: string) => Promise<boolean>
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -18,27 +15,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    // Check if user is already authenticated
-    const auth = localStorage.getItem('adminAuth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
+    let isMounted = true
+
+    const loadSession = async () => {
+      try {
+        const response = await fetch('/api/admin/auth/session', {
+          method: 'GET',
+          credentials: 'include',
+          cache: 'no-store',
+        })
+
+        if (isMounted) {
+          setIsAuthenticated(response.ok)
+        }
+      } catch {
+        if (isMounted) {
+          setIsAuthenticated(false)
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoaded(true)
+        }
+      }
     }
-    setIsLoaded(true)
+
+    loadSession()
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
-  const login = (password: string): boolean => {
-    // Default admin password - change this to your preferred password
-    if (password === process.env.ADMIN_PASSWORD) {
+  const login = async (password: string): Promise<boolean> => {
+    const response = await fetch('/api/admin/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ password }),
+    })
+
+    if (response.ok) {
       setIsAuthenticated(true)
-      localStorage.setItem('adminAuth', 'true')
       return true
     }
+
     return false
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await fetch('/api/admin/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+    })
+
     setIsAuthenticated(false)
-    localStorage.removeItem('adminAuth')
   }
 
   if (!isLoaded) {

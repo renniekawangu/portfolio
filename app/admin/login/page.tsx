@@ -24,13 +24,13 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      if (login(password)) {
+      if (await login(password)) {
         router.push('/admin/dashboard')
       } else {
         setError('Invalid password. Please try again.')
         setPassword('')
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -84,15 +84,6 @@ export default function LoginPage() {
               {isLoading ? 'Authenticating...' : 'Login'}
             </button>
           </form>
-
-          <div className="mt-6 pt-6 border-t border-gray-700">
-            <p className="text-xs text-gray-500 text-center">
-              Default password: <code className="bg-gray-800 px-2 py-1 rounded text-orange-400">admin123</code>
-            </p>
-            <p className="text-xs text-gray-600 text-center mt-2">
-              Change this password in the context file for production
-            </p>
-          </div>
         </div>
       </motion.div>
     </main>

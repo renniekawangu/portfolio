@@ -17,24 +17,19 @@ export default function AdminDashboard() {
   const { isAuthenticated, logout } = useAuth()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<Tab>('blog')
-  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    setIsLoaded(true)
-  }, [])
-
-  useEffect(() => {
-    if (isLoaded && !isAuthenticated) {
+    if (!isAuthenticated) {
       router.push('/admin/login')
     }
-  }, [isLoaded, isAuthenticated, router])
+  }, [isAuthenticated, router])
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    await logout()
     router.push('/admin/login')
   }
 
-  if (!isLoaded || !isAuthenticated) {
+  if (!isAuthenticated) {
     return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">Loading...</div>
   }
 
