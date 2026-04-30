@@ -1,6 +1,9 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'    
+import { env } from 'process'
+
+
 
 interface AuthContextType {
   isAuthenticated: boolean
@@ -25,8 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = (password: string): boolean => {
     // Default admin password - change this to your preferred password
-    const ADMIN_PASSWORD = 'admin123'
-    if (password === ADMIN_PASSWORD) {
+    if (password === process.env.ADMIN_PASSWORD) {
       setIsAuthenticated(true)
       localStorage.setItem('adminAuth', 'true')
       return true
