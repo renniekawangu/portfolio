@@ -3,11 +3,30 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
+
+interface ViewStats {
+  [slug: string]: number
+}
 
 export default function Archive() {
   const { blogPosts } = usePortfolioData()
   const [selectedYear, setSelectedYear] = useState<number | null>(null)
+  const [viewStats, setViewStats] = useState<ViewStats>({})
+
+  // Fetch real views from API
+  useEffect(() => {
+    const fetchViews = async () => {
+      try {
+        const response = await fetch('/api/analytics/views')
+        const data = await response.json()
+        setViewStats(data)
+      } catch (error) {
+        console.error('Failed to fetch views:', error)
+      }
+    }
+    fetchViews()
+  }, [])
 
   // Group posts by year and month
   const groupedPosts = useMemo(() => {
@@ -164,7 +183,7 @@ export default function Archive() {
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
-                                    {post.views?.toLocaleString() || '0'}
+                                    {(viewStats[post.slug] || 0).toLocaleString()}
                                   </span>
                                 </div>
                               </div>

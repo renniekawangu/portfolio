@@ -14,7 +14,6 @@ export interface BlogPost {
   difficulty?: 'Low' | 'Medium' | 'High' | 'Critical'
   bountyAmount?: number
   heroImage?: string
-  views?: number
 }
 
 export const blogPosts: BlogPost[] = [
@@ -30,7 +29,6 @@ export const blogPosts: BlogPost[] = [
     difficulty: 'Critical',
     bountyAmount: 5000,
     tags: ['SQLi', 'Authentication', 'Database', 'Critical'],
-    views: 1250,
     content: `# SQL Injection Vulnerability in Payment Gateway
 
 ## Overview
@@ -84,7 +82,6 @@ Always use parameterized queries or prepared statements to prevent SQL injection
     difficulty: 'High',
     bountyAmount: 3500,
     tags: ['IDOR', 'Authorization', 'Access Control', 'High'],
-    views: 892,
     content: `# Broken Access Control in Admin Panel
 
 ## Summary
@@ -133,7 +130,6 @@ Always implement:
     type: 'writeup',
     difficulty: 'High',
     bountyAmount: 2500,
-    views: 1567,
     tags: ['XSS', 'Stored XSS', 'Input Validation', 'High'],
     content: `# Stored XSS Vulnerability in Comment System
 
@@ -188,7 +184,6 @@ comment.appendChild(div);
     readTime: '3 min read',
     type: 'news',
     tags: ['Achievement', 'HackTheBox', 'Milestone'],
-    views: 543,
     content: `# Achieved Top 100 in HackTheBox Global Rankings
 
 ## The Achievement
@@ -226,7 +221,6 @@ Thanks to the HackTheBox community for creating such an amazing platform!`
     readTime: '12 min read',
     type: 'story',
     tags: ['Career', 'Security', 'Learning'],
-    views: 734,
     content: `# From Curious Developer to Security Researcher
 
 ## The Beginning

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { BlogPost } from '@/app/blog/data'
+import { useState, useEffect } from 'react'
 
 interface PopularPostsProps {
   posts: BlogPost[]
@@ -10,14 +11,37 @@ interface PopularPostsProps {
   showTitle?: boolean
 }
 
+interface ViewStats {
+  [slug: string]: number
+}
+
 export default function PopularPosts({ posts, limit = 5, showTitle = true }: PopularPostsProps) {
-  // Sort by views and get top posts
+  const [viewStats, setViewStats] = useState<ViewStats>({})
+  const [loading, setLoading] = useState(true)
+
+  // Fetch real views from API
+  useEffect(() => {
+    const fetchViews = async () => {
+      try {
+        const response = await fetch('/api/analytics/views')
+        const data = await response.json()
+        setViewStats(data)
+      } catch (error) {
+        console.error('Failed to fetch views:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchViews()
+  }, [])
+
+  // Sort by real views and get top posts
   const topPosts = [...posts]
-    .sort((a, b) => (b.views || 0) - (a.views || 0))
-    .filter(post => post.views && post.views > 0)
+    .sort((a, b) => (viewStats[b.slug] || 0) - (viewStats[a.slug] || 0))
+    .filter(post => (viewStats[post.slug] || 0) > 0)
     .slice(0, limit)
 
-  if (topPosts.length === 0) {
+  if (topPosts.length === 0 || loading) {
     return null
   }
 
@@ -79,7 +103,7 @@ export default function PopularPosts({ posts, limit = 5, showTitle = true }: Pop
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                {post.views?.toLocaleString() || '0'}
+                {(viewStats[post.slug] || 0).toLocaleString()}
               </span>
               <span>•</span>
               <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>

@@ -18,19 +18,47 @@ interface TableOfContentsItem {
 
 export default function BlogPost({ params }: PageProps) {
   const { slug } = use(params)
-  const { blogPosts, incrementPostViews } = usePortfolioData()
+  const { blogPosts } = usePortfolioData()
   const post = blogPosts.find(p => p.slug === slug)
   const [copied, setCopied] = useState(false)
   const [toc, setToc] = useState<TableOfContentsItem[]>([])
+  const [views, setViews] = useState(0)
 
   if (!post) {
     notFound()
   }
 
-  // Track views on mount
+  // Track views on mount via API
   useEffect(() => {
-    incrementPostViews(slug)
-  }, [slug, incrementPostViews])
+    const trackView = async () => {
+      try {
+        const response = await fetch('/api/analytics/views', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug })
+        })
+        const data = await response.json()
+        setViews(data.views || 0)
+      } catch (error) {
+        console.error('Failed to track view:', error)
+      }
+    }
+    trackView()
+  }, [slug])
+
+  // Fetch current views on component mount
+  useEffect(() => {
+    const fetchViews = async () => {
+      try {
+        const response = await fetch(`/api/analytics/views?slug=${slug}`)
+        const data = await response.json()
+        setViews(data.views || 0)
+      } catch (error) {
+        console.error('Failed to fetch views:', error)
+      }
+    }
+    fetchViews()
+  }, [slug])
 
   // Generate table of contents from headings
   useEffect(() => {
@@ -151,15 +179,13 @@ export default function BlogPost({ params }: PageProps) {
               <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
               {post.readTime}
             </span>
-            {post.views !== undefined && (
-              <span className="flex items-center gap-2 ml-auto text-orange-400 font-semibold">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                {post.views.toLocaleString()}
-              </span>
-            )}
+            <span className="flex items-center gap-2 ml-auto text-orange-400 font-semibold">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              {views.toLocaleString()}
+            </span>
           </motion.div>
 
           {/* Tags */}

@@ -2,22 +2,50 @@
 
 import { motion } from 'framer-motion'
 import { usePortfolioData } from '@/app/admin/data-context'
+import { useState, useEffect } from 'react'
+
+interface ViewStats {
+  [slug: string]: number
+}
 
 export default function AnalyticsManager() {
   const { blogPosts, projects, services, skills } = usePortfolioData()
+  const [viewStats, setViewStats] = useState<ViewStats>({})
+  const [loading, setLoading] = useState(true)
+
+  // Fetch view analytics
+  useEffect(() => {
+    const fetchViews = async () => {
+      try {
+        const response = await fetch('/api/analytics/views')
+        const data = await response.json()
+        setViewStats(data)
+      } catch (error) {
+        console.error('Failed to fetch views:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchViews()
+  }, [])
+
+  const totalViews = Object.values(viewStats).reduce((sum, views) => sum + views, 0)
+  const averageViews = blogPosts.length > 0 ? Math.round(totalViews / blogPosts.length) : 0
 
   const stats = [
     { label: 'Blog Posts', value: blogPosts.length.toString() },
-    { label: 'Projects', value: projects.length.toString() },
-    { label: 'Services', value: services.length.toString() },
-    { label: 'Skills', value: skills.length.toString() }
+    { label: 'Total Views', value: totalViews.toLocaleString() },
+    { label: 'Average Views/Post', value: averageViews.toLocaleString() },
+    { label: 'Projects', value: projects.length.toString() }
   ]
 
-  const activities = [
-    { action: 'Blog post published', item: blogPosts[0]?.title || 'SQL Injection Vulnerability', date: '2 days ago' },
-    { action: 'Project updated', item: projects[0]?.title || 'E-commerce Platform', date: '5 days ago' },
-    { action: 'Settings modified', item: 'Contact Information', date: '1 week ago' }
-  ]
+  const topPosts = blogPosts
+    .map(post => ({
+      ...post,
+      views: viewStats[post.slug] || 0
+    }))
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 5)
 
   return (
     <div className="space-y-8">
@@ -26,7 +54,7 @@ export default function AnalyticsManager() {
         animate={{ opacity: 1, y: 0 }}
       >
         <h2 className="text-3xl font-bold text-white">Analytics Dashboard</h2>
-        <p className="text-gray-400 mt-1">Overview of your portfolio statistics and activities</p>
+        <p className="text-gray-400 mt-1">View engagement metrics and portfolio statistics</p>
       </motion.div>
 
       {/* Stats Grid */}
@@ -47,52 +75,70 @@ export default function AnalyticsManager() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm font-medium">{stat.label}</p>
-                <p className="text-4xl font-bold text-white mt-2">{stat.value}</p>
+                <p className="text-3xl md:text-4xl font-bold text-orange-400 mt-2">{stat.value}</p>
               </div>
             </div>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Activity Feed */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-gray-800 border border-gray-700 rounded-lg p-6"
-      >
-        <h3 className="text-xl font-bold text-white mb-6">Recent Activities</h3>
-        <div className="space-y-4">
-          {activities.map((activity, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="flex items-start gap-4 pb-4 border-b border-gray-700 last:border-b-0 last:pb-0"
-            >
-              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold">{activity.action}</p>
-                <p className="text-gray-400 text-sm">{activity.item}</p>
-              </div>
-              <span className="text-gray-500 text-sm whitespace-nowrap">{activity.date}</span>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      {/* Top Posts */}
+      {!loading && topPosts.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden"
+        >
+          <div className="px-6 py-4 border-b border-gray-700 bg-gray-900">
+            <h3 className="text-xl font-bold text-white">🔥 Top Performing Posts</h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-700 bg-gray-900/50">
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">Rank</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">Title</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-300">Type</th>
+                  <th className="px-6 py-3 text-right text-sm font-semibold text-gray-300">Views</th>
+                </tr>
+              </thead>
+              <tbody>
+                {topPosts.map((post, idx) => (
+                  <tr key={post.id} className="border-b border-gray-700 hover:bg-gray-700/30 transition-colors">
+                    <td className="px-6 py-3 text-sm font-semibold text-orange-400">#{idx + 1}</td>
+                    <td className="px-6 py-3 text-sm text-white max-w-xs truncate">{post.title}</td>
+                    <td className="px-6 py-3 text-sm">
+                      <span className={`inline-block px-2 py-1 rounded text-xs font-medium border ${
+                        post.type === 'writeup' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
+                        post.type === 'news' ? 'bg-blue-600/20 text-blue-400 border-blue-600/30' :
+                        'bg-purple-600/20 text-purple-400 border-purple-600/30'
+                      }`}>
+                        {post.type}
+                      </span>
+                    </td>
+                    <td className="px-6 py-3 text-sm font-semibold text-orange-400 text-right">
+                      {post.views.toLocaleString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      )}
 
       {/* Quick Tips */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-6"
+        className="bg-green-600/10 border border-green-600/30 rounded-lg p-6"
       >
-        <h3 className="text-lg font-bold text-blue-400 mb-3">Tips</h3>
-        <ul className="space-y-2 text-blue-300 text-sm">
-          <li>Keep your blog posts updated with the latest security findings</li>
-          <li>Showcase completed projects to attract clients</li>
-          <li>Update your skills as you learn new technologies</li>
-          <li>Maintain accurate contact information for professional inquiries</li>
+        <h3 className="text-lg font-bold text-green-400 mb-3">View Tracking</h3>
+        <ul className="space-y-2 text-green-300 text-sm">
+          <li>✓ Real-time view tracking for all blog posts</li>
+          <li>✓ Views update automatically when posts are visited</li>
+          <li>✓ Analytics stored in data/views.json</li>
+          <li>✓ View data includes timestamps and user agent info</li>
         </ul>
       </motion.div>
     </div>
