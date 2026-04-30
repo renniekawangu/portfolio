@@ -7,6 +7,7 @@ export interface BlogPost {
   category: string
   content: string
   readTime: string
+  type: 'writeup' | 'news' | 'story'
   pocVideoUrl?: string
   reportUrl?: string
   tags?: string[]
@@ -24,6 +25,7 @@ export const blogPosts: BlogPost[] = [
     date: '2024-12-15',
     category: 'Web Security',
     readTime: '8 min read',
+    type: 'writeup',
     difficulty: 'Critical',
     bountyAmount: 5000,
     tags: ['SQLi', 'Authentication', 'Database', 'Critical'],
@@ -76,6 +78,7 @@ Always use parameterized queries or prepared statements to prevent SQL injection
     date: '2024-11-28',
     category: 'Access Control',
     readTime: '6 min read',
+    type: 'writeup',
     difficulty: 'High',
     bountyAmount: 3500,
     tags: ['IDOR', 'Authorization', 'Access Control', 'High'],
@@ -124,6 +127,7 @@ Always implement:
     date: '2024-10-12',
     category: 'Web Security',
     readTime: '7 min read',
+    type: 'writeup',
     difficulty: 'High',
     bountyAmount: 2500,
     tags: ['XSS', 'Stored XSS', 'Input Validation', 'High'],
@@ -169,5 +173,87 @@ const div = document.createElement('div');
 div.textContent = userInput;
 comment.appendChild(div);
 \`\`\``
+  },
+  {
+    id: 4,
+    slug: 'htb-pwned-global-rankings',
+    title: 'Achieved Top 100 in HackTheBox Global Rankings',
+    excerpt: 'Excited to announce reaching the top 100 hackers globally on HackTheBox! A journey of continuous learning and persistence.',
+    date: '2024-12-10',
+    category: 'News',
+    readTime: '3 min read',
+    type: 'news',
+    tags: ['Achievement', 'HackTheBox', 'Milestone'],
+    content: `# Achieved Top 100 in HackTheBox Global Rankings
+
+## The Achievement
+Today marks a significant milestone in my security research journey. After months of grinding through HackTheBox machines and challenges, I've officially reached the top 100 hackers globally on the platform!
+
+## What This Means
+- Mastery across multiple attack vectors
+- Deep understanding of real-world vulnerabilities
+- Thousands of hours invested in skill development
+- Recognition within the security community
+
+## The Journey
+Starting from scratch, I've progressively tackled harder machines, learning from each one. The platform has been invaluable for:
+- Building practical exploitation skills
+- Understanding defense mechanisms
+- Improving time management in CTF scenarios
+- Networking with other security professionals
+
+## What's Next
+This achievement motivates me to:
+- Continue hunting for real vulnerabilities
+- Share knowledge through detailed writeups
+- Mentor newer hackers in the community
+- Push towards even higher rankings
+
+Thanks to the HackTheBox community for creating such an amazing platform!`
+  },
+  {
+    id: 5,
+    slug: 'my-journey-into-cybersecurity',
+    title: 'From Curious Developer to Security Researcher',
+    excerpt: 'The untold story of how I transitioned from web development to finding critical vulnerabilities in production systems.',
+    date: '2024-12-05',
+    category: 'Story',
+    readTime: '12 min read',
+    type: 'story',
+    tags: ['Career', 'Security', 'Learning'],
+    content: `# From Curious Developer to Security Researcher
+
+## The Beginning
+Five years ago, I was just another web developer building features. I didn't think about security beyond following OWASP guidelines. Then one day, a simple oversight in a project I was working on exposed customer data. That moment changed everything.
+
+## The Awakening
+After that incident, I became obsessed with understanding vulnerabilities. I started:
+- Reading security blogs obsessively
+- Taking courses on penetration testing
+- Setting up my own lab environment
+- Playing Capture The Flag competitions
+
+## First Bug Bounty
+My first bug bounty report was a simple XSS vulnerability in a startup's dashboard. They fixed it immediately and sent me \$200. That \$200 felt like a million dollars because I had discovered something no one else had found.
+
+## Building the Skills
+Over the next few years, I:
+- Learned multiple programming languages
+- Studied cryptography and networking
+- Participated in CTF competitions
+- Read countless vulnerability advisories
+- Built tools to automate exploitation
+
+## The Real Wins
+The real victories weren't always about the bounty amount. They were about:
+- Helping companies secure their systems
+- Responsible disclosure and good relationships
+- Being recognized as a trusted researcher
+- Contributing to a safer internet
+
+## Today
+Now, I dedicate my time to finding vulnerabilities through responsible disclosure, contributing to the security community, and helping organizations build more secure products.
+
+The journey from curiosity to expertise is never over, and that's what makes this field so exciting.`
   }
 ]

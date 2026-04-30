@@ -19,7 +19,8 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
       date: new Date().toISOString().split('T')[0],
       category: 'Web Security',
       content: '',
-      readTime: '5 min read'
+      readTime: '5 min read',
+      type: 'writeup'
     }
   )
 
@@ -128,7 +129,7 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
         {errors.excerpt && <p className="text-red-400 text-xs md:text-sm mt-1">{errors.excerpt}</p>}
       </div>
 
-      {/* Category & Date */}
+      {/* Category & Type */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         <div>
           <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Category</label>
@@ -143,9 +144,28 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
             <option>API Security</option>
             <option>Authentication</option>
             <option>Encryption</option>
+            <option>News</option>
+            <option>Story</option>
           </select>
         </div>
 
+        <div>
+          <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Post Type</label>
+          <select
+            name="type"
+            value={formData.type || 'writeup'}
+            onChange={handleChange}
+            className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+          >
+            <option value="writeup">Writeup (Vulnerability Report)</option>
+            <option value="news">News (Announcements & Updates)</option>
+            <option value="story">Story (Personal Experience)</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Date & Read Time */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         <div>
           <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Date</label>
           <input
@@ -156,20 +176,52 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
             className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
           />
         </div>
+
+        <div>
+          <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Read Time</label>
+          <input
+            type="text"
+            name="readTime"
+            value={formData.readTime}
+            onChange={handleChange}
+            placeholder="5 min read"
+            className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+          />
+        </div>
       </div>
 
-      {/* Read Time */}
-      <div>
-        <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Read Time</label>
-        <input
-          type="text"
-          name="readTime"
-          value={formData.readTime}
-          onChange={handleChange}
-          placeholder="5 min read"
-          className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
-        />
-      </div>
+      {/* Difficulty & Bounty (only for writeups) */}
+      {formData.type === 'writeup' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          <div>
+            <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Difficulty Level</label>
+            <select
+              name="difficulty"
+              value={formData.difficulty || ''}
+              onChange={handleChange}
+              className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+            >
+              <option value="">Select difficulty...</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Bounty Amount ($)</label>
+            <input
+              type="number"
+              name="bountyAmount"
+              value={formData.bountyAmount || ''}
+              onChange={handleChange}
+              placeholder="2500"
+              className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Content */}
       <div>

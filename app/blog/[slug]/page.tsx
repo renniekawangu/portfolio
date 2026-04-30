@@ -86,7 +86,14 @@ export default function BlogPost({ params }: PageProps) {
             }
           }}
         >
-          <motion.div variants={itemVariants} className="mb-6">
+          <motion.div variants={itemVariants} className="mb-6 flex flex-wrap items-center gap-3">
+            <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border uppercase tracking-wide ${
+              post.type === 'writeup' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
+              post.type === 'news' ? 'bg-blue-600/20 text-blue-400 border-blue-600/30' :
+              'bg-purple-600/20 text-purple-400 border-purple-600/30'
+            }`}>
+              {post.type}
+            </span>
             <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[post.category] || 'bg-purple-600/20 text-purple-400 border-purple-600/30'}`}>
               {post.category}
             </span>

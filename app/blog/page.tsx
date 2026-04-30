@@ -10,6 +10,7 @@ export default function Blog() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
+  const [selectedType, setSelectedType] = useState<'all' | 'writeup' | 'news' | 'story'>('all')
 
   // Get unique categories and tags
   const categories = useMemo(() => {
@@ -34,10 +35,11 @@ export default function Blog() {
       
       const matchesCategory = !selectedCategory || post.category === selectedCategory
       const matchesTag = !selectedTag || post.tags?.includes(selectedTag)
+      const matchesType = selectedType === 'all' || post.type === selectedType
       
-      return matchesSearch && matchesCategory && matchesTag
+      return matchesSearch && matchesCategory && matchesTag && matchesType
     })
-  }, [blogPosts, searchQuery, selectedCategory, selectedTag])
+  }, [blogPosts, searchQuery, selectedCategory, selectedTag, selectedType])
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -99,6 +101,53 @@ export default function Blog() {
 
           {/* Category and Tag Filters */}
           <div className="space-y-4">
+            {/* Post Type */}
+            <div>
+              <p className="text-sm font-semibold text-gray-400 mb-3">Content Type</p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedType('all')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedType === 'all'
+                      ? 'bg-orange-600 text-white'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  All Posts
+                </button>
+                <button
+                  onClick={() => setSelectedType('writeup')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedType === 'writeup'
+                      ? 'bg-red-600 text-white'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  Writeups
+                </button>
+                <button
+                  onClick={() => setSelectedType('news')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedType === 'news'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  News
+                </button>
+                <button
+                  onClick={() => setSelectedType('story')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedType === 'story'
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  Stories
+                </button>
+              </div>
+            </div>
+
             {/* Categories */}
             <div>
               <p className="text-sm font-semibold text-gray-400 mb-3">Categories</p>
@@ -179,6 +228,14 @@ export default function Blog() {
             >
               <div className="flex flex-col gap-4">
                 <div className="flex flex-wrap items-center gap-3">
+                  {/* Post Type Badge */}
+                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border uppercase tracking-wide ${
+                    post.type === 'writeup' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
+                    post.type === 'news' ? 'bg-blue-600/20 text-blue-400 border-blue-600/30' :
+                    'bg-purple-600/20 text-purple-400 border-purple-600/30'
+                  }`}>
+                    {post.type}
+                  </span>
                   <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[post.category] || 'bg-purple-600/20 text-purple-400 border-purple-600/30'}`}>
                     {post.category}
                   </span>
@@ -197,10 +254,10 @@ export default function Blog() {
                       ${post.bountyAmount.toLocaleString()}
                     </span>
                   )}
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-gray-400 ml-auto">
                     {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                   </span>
-                  <span className="text-sm text-gray-500 ml-auto">{post.readTime}</span>
+                  <span className="text-sm text-gray-500">{post.readTime}</span>
                 </div>
 
                 {/* Tags */}
