@@ -5,9 +5,13 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '../context'
 import { motion } from 'framer-motion'
 import BlogManager from '../components/BlogManager'
-import PortfolioManager from '../components/PortfolioManager'
+import ProjectsManager from '../components/ProjectsManager'
+import ServicesManager from '../components/ServicesManager'
+import SkillsManager from '../components/SkillsManager'
+import ContactSettingsManager from '../components/ContactSettingsManager'
+import AnalyticsManager from '../components/AnalyticsManager'
 
-type Tab = 'blog' | 'portfolio'
+type Tab = 'blog' | 'projects' | 'services' | 'skills' | 'contact' | 'analytics'
 
 export default function AdminDashboard() {
   const { isAuthenticated, logout } = useAuth()
@@ -55,15 +59,19 @@ export default function AdminDashboard() {
       {/* Tabs */}
       <div className="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
         <div className="container mx-auto px-4">
-          <div className="flex gap-0">
+          <div className="flex gap-0 overflow-x-auto">
             {[
               { id: 'blog', label: 'Blog Posts', icon: '📝' },
-              { id: 'portfolio', label: 'Portfolio', icon: '🎨' }
+              { id: 'projects', label: 'Projects', icon: '🎨' },
+              { id: 'services', label: 'Services', icon: '⚙️' },
+              { id: 'skills', label: 'Skills', icon: '💡' },
+              { id: 'contact', label: 'Contact', icon: '📧' },
+              { id: 'analytics', label: 'Analytics', icon: '📊' }
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`px-6 py-4 font-semibold transition-all duration-300 border-b-2 ${
+                className={`px-6 py-4 font-semibold transition-all duration-300 border-b-2 whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'text-orange-400 border-orange-400'
                     : 'text-gray-400 border-transparent hover:text-gray-300'
@@ -85,7 +93,11 @@ export default function AdminDashboard() {
         className="container mx-auto px-4 py-8"
       >
         {activeTab === 'blog' && <BlogManager />}
-        {activeTab === 'portfolio' && <PortfolioManager />}
+        {activeTab === 'projects' && <ProjectsManager />}
+        {activeTab === 'services' && <ServicesManager />}
+        {activeTab === 'skills' && <SkillsManager />}
+        {activeTab === 'contact' && <ContactSettingsManager />}
+        {activeTab === 'analytics' && <AnalyticsManager />}
       </motion.div>
     </main>
   )
