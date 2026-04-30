@@ -65,3 +65,17 @@ body::before {
   background: #d2440f;
   background: linear-gradient(to right, #d2440f, #ea580c);
 }
+
+/* Safari-compatible gradient buttons */
+.btn-gradient {
+  background: #ea580c;
+  background: linear-gradient(to right, #ea580c, #f97316);
+  background-attachment: fixed;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-gradient:hover {
+  background: #d2440f;
+  background: linear-gradient(to right, #d2440f, #ea580c);
+}

@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "b34st web services",
-  description: "b34st web services",
+  title: "b34st web",
+  description: "b34st web services - full-stack web development and security",
 };
 
 export default function RootLayout({
