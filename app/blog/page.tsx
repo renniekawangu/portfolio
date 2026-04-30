@@ -2,9 +2,10 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { blogPosts } from './data'
+import { usePortfolioData } from '@/app/admin/data-context'
 
 export default function Blog() {
+  const { blogPosts } = usePortfolioData()
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

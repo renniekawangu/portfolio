@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { blogPosts } from '../data'
+import { usePortfolioData } from '@/app/admin/data-context'
 import { notFound } from 'next/navigation'
 import { use } from 'react'
 
@@ -12,6 +12,7 @@ interface PageProps {
 
 export default function BlogPost({ params }: PageProps) {
   const { slug } = use(params)
+  const { blogPosts } = usePortfolioData()
   const post = blogPosts.find(p => p.slug === slug)
 
   if (!post) {
