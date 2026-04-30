@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { notFound } from 'next/navigation'
-import { use, useState, useEffect } from 'react'
+import { use, useState, useEffect, useMemo } from 'react'
 import CommentForm from '../components/CommentForm'
 import CommentsList from '../components/CommentsList'
 
@@ -23,7 +23,6 @@ export default function BlogPost({ params }: PageProps) {
   const { blogPosts } = usePortfolioData()
   const post = blogPosts.find(p => p.slug === slug)
   const [copied, setCopied] = useState(false)
-  const [toc, setToc] = useState<TableOfContentsItem[]>([])
   const [views, setViews] = useState(0)
   const [commentRefresh, setCommentRefresh] = useState(0)
 
@@ -63,16 +62,14 @@ export default function BlogPost({ params }: PageProps) {
     fetchViews()
   }, [slug])
 
-  // Generate table of contents from headings
-  useEffect(() => {
+  const toc = useMemo<TableOfContentsItem[]>(() => {
     const headings = post.content.split('\n').filter(line => line.startsWith('#'))
-    const tableOfContents = headings.map((heading, idx) => {
+    return headings.map((heading, idx) => {
       const level = heading.match(/^#+/)?.[0].length || 1
       const text = heading.replace(/^#+\s/, '')
       const id = `heading-${idx}`
       return { id, text, level }
     })
-    setToc(tableOfContents)
   }, [post.content])
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
@@ -269,23 +266,6 @@ export default function BlogPost({ params }: PageProps) {
                     const language = match[1] || 'code'
                     const codeContent = match[2].trim()
                     
-                    // Simple syntax highlighting for common patterns
-                    const highlightCode = (code: string, lang: string) => {
-                      if (lang === 'sql') {
-                        return code
-                          .replace(/\b(SELECT|FROM|WHERE|AND|OR|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)\b/gi, '<span style="color: #ff7b72">$1</span>')
-                          .replace(/\b(\$[a-z_]+|\?)\b/gi, '<span style="color: #79c0ff">$1</span>')
-                          .replace(/'([^']*)'/g, '<span style="color: #a5d6ff">\'$1\'</span>')
-                      } else if (lang === 'javascript' || lang === 'js') {
-                        return code
-                          .replace(/\b(const|let|var|function|return|if|else|async|await)\b/g, '<span style="color: #ff7b72">$1</span>')
-                          .replace(/\b(true|false|null)\b/g, '<span style="color: #79c0ff">$1</span>')
-                          .replace(/'([^']*)'/g, '<span style="color: #a5d6ff">\'$1\'</span>')
-                          .replace(/"([^"]*)"/g, '<span style="color: #a5d6ff">"$1"</span>')
-                      }
-                      return code
-                    }
-                    
                     return (
                       <div key={idx} className="my-6">
                         <div className="flex items-center gap-2 px-4 py-2 bg-gray-900 border-b border-gray-700 rounded-t-lg">
@@ -303,13 +283,16 @@ export default function BlogPost({ params }: PageProps) {
                 
                 // Handle headings
                 if (paragraph.startsWith('# ')) {
-                  return <h1 key={idx} className="text-3xl font-bold text-white mt-8 mb-4">{paragraph.slice(2)}</h1>
+                  const headingIndex = toc.findIndex(item => item.text === paragraph.slice(2))
+                  return <h1 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-3xl font-bold text-white mt-8 mb-4">{paragraph.slice(2)}</h1>
                 }
                 if (paragraph.startsWith('## ')) {
-                  return <h2 key={idx} className="text-2xl font-bold text-white mt-6 mb-3">{paragraph.slice(3)}</h2>
+                  const headingIndex = toc.findIndex(item => item.text === paragraph.slice(3))
+                  return <h2 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-2xl font-bold text-white mt-6 mb-3">{paragraph.slice(3)}</h2>
                 }
                 if (paragraph.startsWith('### ')) {
-                  return <h3 key={idx} className="text-xl font-bold text-white mt-4 mb-2">{paragraph.slice(4)}</h3>
+                  const headingIndex = toc.findIndex(item => item.text === paragraph.slice(4))
+                  return <h3 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-xl font-bold text-white mt-4 mb-2">{paragraph.slice(4)}</h3>
                 }
                 
                 // Handle bullet lists

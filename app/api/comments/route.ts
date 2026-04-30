@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
 import { Comment } from '@/lib/models/Comment'
 
+const COMMENT_STATUSES = ['approved', 'pending', 'rejected'] as const
+
 export async function GET(request: NextRequest) {
   try {
     if (!process.env.MONGODB_URI) {
@@ -11,12 +13,30 @@ export async function GET(request: NextRequest) {
     await connectToDatabase()
     const slug = request.nextUrl.searchParams.get('slug')
     const status = request.nextUrl.searchParams.get('status') || 'approved'
+    const adminPassword = request.headers.get('x-admin-password')
+    const isAdmin = Boolean(process.env.ADMIN_PASSWORD && adminPassword === process.env.ADMIN_PASSWORD)
 
-    if (!slug) {
+    if (status !== 'all' && !COMMENT_STATUSES.includes(status as (typeof COMMENT_STATUSES)[number])) {
       return NextResponse.json(
-        { error: 'slug parameter is required' },
+        { error: 'Invalid status' },
         { status: 400 }
       )
+    }
+
+    if (!slug) {
+      if (!isAdmin) {
+        return NextResponse.json(
+          { error: 'slug parameter is required' },
+          { status: 400 }
+        )
+      }
+
+      const adminQuery = status === 'all' ? {} : { status }
+      const comments = await Comment.find(adminQuery)
+        .sort({ createdAt: -1 })
+        .limit(500)
+
+      return NextResponse.json(comments)
     }
 
     const comments = await Comment.find({ postSlug: slug, status })

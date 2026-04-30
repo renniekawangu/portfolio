@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Service } from '../data/services'
-import { motion } from 'framer-motion'
 
 interface ServiceFormProps {
   onSubmit: (service: Service) => void

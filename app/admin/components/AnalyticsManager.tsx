@@ -9,7 +9,7 @@ interface ViewStats {
 }
 
 export default function AnalyticsManager() {
-  const { blogPosts, projects, services, skills } = usePortfolioData()
+  const { blogPosts, projects } = usePortfolioData()
   const [viewStats, setViewStats] = useState<ViewStats>({})
   const [loading, setLoading] = useState(true)
 

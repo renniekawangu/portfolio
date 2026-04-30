@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { BlogPost } from '../../blog/data'
-import { motion } from 'framer-motion'
 
 interface BlogFormProps {
   onSubmit: (post: BlogPost) => void

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 interface Comment {
@@ -21,9 +21,9 @@ export default function CommentsList({ postSlug, refreshTrigger }: CommentsListP
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
-      const response = await fetch(`/api/comments?slug=${postSlug}`)
+      const response = await fetch(`/api/comments?slug=${encodeURIComponent(postSlug)}`)
       if (response.ok) {
         const data = await response.json()
         setComments(Array.isArray(data) ? data : [])
@@ -34,11 +34,11 @@ export default function CommentsList({ postSlug, refreshTrigger }: CommentsListP
     } finally {
       setLoading(false)
     }
-  }
+  }, [postSlug])
 
   useEffect(() => {
     fetchComments()
-  }, [postSlug, refreshTrigger])
+  }, [fetchComments, refreshTrigger])
 
   if (loading) {
     return (

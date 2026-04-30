@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
 import { Service } from '@/lib/models/Service'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     if (!process.env.MONGODB_URI) {
       return NextResponse.json([])

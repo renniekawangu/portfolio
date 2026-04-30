@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Project } from '../data/projects'
-import { motion } from 'framer-motion'
 
 interface ProjectFormProps {
   onSubmit: (project: Project) => void

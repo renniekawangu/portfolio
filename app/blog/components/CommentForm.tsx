@@ -48,7 +48,7 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
           text: error.error || 'Failed to submit comment'
         })
       }
-    } catch (error) {
+    } catch {
       setMessage({
         type: 'error',
         text: 'Failed to submit comment. Please try again.'

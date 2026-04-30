@@ -1,8 +1,7 @@
 'use client'
 
-import { FaLinkedin, FaGithub, FaEnvelope, FaFacebook, FaInstagram } from 'react-icons/fa'
+import { FaFacebook, FaInstagram } from 'react-icons/fa'
 import { useState } from 'react'
-import { sub } from 'framer-motion/client'
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
@@ -33,7 +32,7 @@ export default function Contact() {
         setFormStatus('error')
       }
       setTimeout(() => setFormStatus('idle'), 3000)
-    } catch (error) {
+    } catch {
       setFormStatus('error')
       setTimeout(() => setFormStatus('idle'), 3000)
     }
@@ -68,7 +67,7 @@ export default function Contact() {
               disabled={formStatus === 'sending'}
               className="w-full btn-gradient text-white py-4 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              {formStatus === 'sending' ? 'np Sending...' : formStatus === 'success' ? ' Message Sent!' : formStatus === 'error' ? ' Error Sending' : ' Send Message'}
+              {formStatus === 'sending' ? 'Sending...' : formStatus === 'success' ? 'Message Sent!' : formStatus === 'error' ? 'Error Sending' : 'Send Message'}
             </button>
           </form>
 

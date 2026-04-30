@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 interface Comment {
@@ -23,11 +23,15 @@ export default function CommentManager({ adminPassword }: CommentManagerProps) {
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending')
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     setLoading(true)
     try {
       // Fetch all comments (in a real app, you'd want pagination)
-      const response = await fetch('/api/comments')
+      const response = await fetch('/api/comments?status=all', {
+        headers: {
+          'x-admin-password': adminPassword
+        }
+      })
       if (response.ok) {
         const data = await response.json()
         setComments(Array.isArray(data) ? data : [])
@@ -37,11 +41,11 @@ export default function CommentManager({ adminPassword }: CommentManagerProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [adminPassword])
 
   useEffect(() => {
     fetchComments()
-  }, [])
+  }, [fetchComments])
 
   const handleStatusChange = async (commentId: string, newStatus: 'approved' | 'pending' | 'rejected') => {
     try {
@@ -69,7 +73,7 @@ export default function CommentManager({ adminPassword }: CommentManagerProps) {
           text: 'Failed to update comment'
         })
       }
-    } catch (error) {
+    } catch {
       setMessage({
         type: 'error',
         text: 'Failed to update comment'
@@ -101,7 +105,7 @@ export default function CommentManager({ adminPassword }: CommentManagerProps) {
           text: 'Failed to delete comment'
         })
       }
-    } catch (error) {
+    } catch {
       setMessage({
         type: 'error',
         text: 'Failed to delete comment'

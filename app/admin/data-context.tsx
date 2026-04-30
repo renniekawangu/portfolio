@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useCallback, useContext, useState, useEffect } from 'react'
 import { BlogPost } from '@/app/blog/data'
 import { Project } from '@/app/admin/data/projects'
 import { Service } from '@/app/admin/data/services'
@@ -43,38 +43,23 @@ interface DataContextType {
 
 const DataContext = createContext<DataContextType | undefined>(undefined)
 
+const DEFAULT_CONTACT_SETTINGS: ContactSettings = {
+  email: '',
+  phone: '',
+  github: '',
+  linkedin: '',
+  twitter: ''
+}
+
 export function DataProvider({ children }: { children: React.ReactNode }) {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [projects, setProjects] = useState<Project[]>([])
   const [services, setServices] = useState<Service[]>([])
   const [skills, setSkills] = useState<Skill[]>([])
-  const [contactSettings, setContactSettings] = useState<ContactSettings>({
-    email: '',
-    phone: '',
-    github: '',
-    linkedin: '',
-    twitter: ''
-  })
+  const [contactSettings, setContactSettings] = useState<ContactSettings>(DEFAULT_CONTACT_SETTINGS)
   const [loading, setLoading] = useState(true)
 
-  // Load data on mount
-  useEffect(() => {
-    loadAllData()
-  }, [])
-
-  // Save to localStorage whenever data changes (as backup)
-  useEffect(() => {
-    const data = {
-      blogPosts,
-      projects,
-      services,
-      skills,
-      contactSettings
-    }
-    localStorage.setItem('portfolioData', JSON.stringify(data))
-  }, [blogPosts, projects, services, skills, contactSettings])
-
-  const loadAllData = async () => {
+  const loadAllData = useCallback(async () => {
     try {
       setLoading(true)
       
@@ -160,12 +145,29 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         setProjects(data.projects || [])
         setServices(data.services || [])
         setSkills(data.skills || [])
-        setContactSettings(data.contactSettings || contactSettings)
+        setContactSettings(data.contactSettings || DEFAULT_CONTACT_SETTINGS)
       }
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  // Load data on mount
+  useEffect(() => {
+    loadAllData()
+  }, [loadAllData])
+
+  // Save to localStorage whenever data changes (as backup)
+  useEffect(() => {
+    const data = {
+      blogPosts,
+      projects,
+      services,
+      skills,
+      contactSettings
+    }
+    localStorage.setItem('portfolioData', JSON.stringify(data))
+  }, [blogPosts, projects, services, skills, contactSettings])
 
   // Blog methods
   const addBlogPost = (post: BlogPost) => {

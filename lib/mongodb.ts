@@ -1,12 +1,17 @@
-import mongoose from 'mongoose'
+import mongoose, { type Mongoose } from 'mongoose'
 
 const MONGODB_URI = process.env.MONGODB_URI
 
-let cached = (global as any).mongoose
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null }
+interface MongooseCache {
+  conn: Mongoose | null
+  promise: Promise<Mongoose> | null
 }
+
+declare global {
+  var mongooseCache: MongooseCache | undefined
+}
+
+const cached = globalThis.mongooseCache ?? (globalThis.mongooseCache = { conn: null, promise: null })
 
 export async function connectToDatabase() {
   if (!MONGODB_URI) {

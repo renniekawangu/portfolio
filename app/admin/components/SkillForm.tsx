@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Skill } from '../data/skills'
-import { motion } from 'framer-motion'
 
 interface SkillFormProps {
   onSubmit: (skill: Skill) => void
