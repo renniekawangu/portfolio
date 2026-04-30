@@ -1,18 +1,22 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { blogPosts } from '@/app/blog/data'
+import { projects } from '@/app/admin/data/projects'
+import { services } from '@/app/admin/data/services'
+import { skills } from '@/app/admin/data/skills'
 
 export default function AnalyticsManager() {
   const stats = [
-    { label: 'Blog Posts', value: '3', trend: '+1' },
-    { label: 'Projects', value: '2', trend: '+0' },
-    { label: 'Services', value: '3', trend: '+0' },
-    { label: 'Skills', value: '4', trend: '+1' }
+    { label: 'Blog Posts', value: blogPosts.length.toString() },
+    { label: 'Projects', value: projects.length.toString() },
+    { label: 'Services', value: services.length.toString() },
+    { label: 'Skills', value: skills.length.toString() }
   ]
 
   const activities = [
-    { action: 'Blog post published', item: 'SQL Injection Vulnerability', date: '2 days ago' },
-    { action: 'Project updated', item: 'E-commerce Platform', date: '5 days ago' },
+    { action: 'Blog post published', item: blogPosts[0]?.title || 'SQL Injection Vulnerability', date: '2 days ago' },
+    { action: 'Project updated', item: projects[0]?.title || 'E-commerce Platform', date: '5 days ago' },
     { action: 'Settings modified', item: 'Contact Information', date: '1 week ago' }
   ]
 
@@ -41,13 +45,12 @@ export default function AnalyticsManager() {
             transition={{ delay: index * 0.1 }}
             className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-lg p-6 hover:border-orange-500/30 transition-all duration-300"
           >
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm font-medium">{stat.label}</p>
-                <p className="text-3xl font-bold text-white mt-1">{stat.value}</p>
+                <p className="text-4xl font-bold text-white mt-2">{stat.value}</p>
               </div>
             </div>
-            <p className="text-green-400 text-sm font-semibold">{stat.trend}</p>
           </motion.div>
         ))}
       </motion.div>
