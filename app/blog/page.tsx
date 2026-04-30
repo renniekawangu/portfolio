@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { useState, useMemo } from 'react'
+import PopularPosts from './components/PopularPosts'
 
 export default function Blog() {
   const { blogPosts } = usePortfolioData()
@@ -80,6 +81,19 @@ export default function Blog() {
           <motion.p variants={itemVariants} className="text-xl text-gray-300">
             Cyber security news updates, stories and detailed writeups of vulnerabilities all over the world.
           </motion.p>
+
+          {/* Navigation Links */}
+          <motion.div variants={itemVariants} className="flex gap-4 mt-6">
+            <Link
+              href="/blog/archive"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors duration-300 text-sm font-medium"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Archive
+            </Link>
+          </motion.div>
         </motion.div>
 
         {/* Search and Filters */}
@@ -214,18 +228,22 @@ export default function Blog() {
             {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''} found
           </p>
         </motion.div>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-          className="max-w-4xl mx-auto grid gap-8"
-        >
-          {filteredPosts.map((post) => (
-            <motion.article
-              key={post.id}
-              variants={itemVariants}
-              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700/50 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10 group"
-            >
+
+        {/* Main Content Grid with Sidebar */}
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          {/* Posts Section */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="lg:col-span-2 grid gap-8"
+          >
+            {filteredPosts.map((post) => (
+              <motion.article
+                key={post.id}
+                variants={itemVariants}
+                className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700/50 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10 group"
+              >
               <div className="flex flex-col gap-4">
                 <div className="flex flex-wrap items-center gap-3">
                   {/* Post Type Badge */}
@@ -301,8 +319,38 @@ export default function Blog() {
                 </div>
               </div>
             </motion.article>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Sidebar with Popular Posts */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="lg:col-span-1"
+          >
+            <PopularPosts posts={blogPosts} limit={5} showTitle={true} />
+
+            {/* Categories Widget */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700/50 mt-8"
+            >
+              <h3 className="text-lg font-bold text-white mb-4">Categories</h3>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <Link
+                    key={cat}
+                    href={`/blog/category/${encodeURIComponent(cat.toLowerCase().replace(/\s+/g, '-'))}`}
+                    className="px-3 py-1 rounded-lg text-sm font-medium bg-gray-700 hover:bg-orange-600 text-gray-300 hover:text-white transition-all duration-300"
+                  >
+                    {cat}
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
 
         {/* Empty State */}
         {blogPosts.length === 0 && (
