@@ -114,14 +114,14 @@ export default function ServicesManager() {
                     className="p-2 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded-lg hover:bg-blue-600/30"
                     title="Edit"
                   >
-                    ✎
+                    Edit
                   </button>
                   <button
                     onClick={() => handleDeleteService(service.id)}
                     className="p-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30"
                     title="Delete"
                   >
-                    🗑
+                    Delete
                   </button>
                 </div>
               </div>

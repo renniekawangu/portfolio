@@ -90,7 +90,7 @@ export default function LoginPage() {
               Default password: <code className="bg-gray-800 px-2 py-1 rounded text-orange-400">admin123</code>
             </p>
             <p className="text-xs text-gray-600 text-center mt-2">
-              ⚠️ Change this password in the context file for production
+              Change this password in the context file for production
             </p>
           </div>
         </div>

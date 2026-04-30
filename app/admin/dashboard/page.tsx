@@ -61,12 +61,12 @@ export default function AdminDashboard() {
         <div className="container mx-auto px-4">
           <div className="flex gap-0 overflow-x-auto">
             {[
-              { id: 'blog', label: 'Blog Posts', icon: '📝' },
-              { id: 'projects', label: 'Projects', icon: '🎨' },
-              { id: 'services', label: 'Services', icon: '⚙️' },
-              { id: 'skills', label: 'Skills', icon: '💡' },
-              { id: 'contact', label: 'Contact', icon: '📧' },
-              { id: 'analytics', label: 'Analytics', icon: '📊' }
+              { id: 'blog', label: 'Blog Posts' },
+              { id: 'projects', label: 'Projects' },
+              { id: 'services', label: 'Services' },
+              { id: 'skills', label: 'Skills' },
+              { id: 'contact', label: 'Contact' },
+              { id: 'analytics', label: 'Analytics' }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
                     : 'text-gray-400 border-transparent hover:text-gray-300'
                 }`}
               >
-                {tab.icon} {tab.label}
+                {tab.label}
               </button>
             ))}
           </div>

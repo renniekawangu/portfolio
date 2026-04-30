@@ -128,7 +128,7 @@ export default function ContactSettingsManager() {
                   exit={{ opacity: 0, y: -10 }}
                   className="p-4 bg-green-600/20 border border-green-600/30 rounded-lg text-green-400 text-center font-semibold"
                 >
-                  ✓ Settings saved successfully!
+                  Settings saved successfully!
                 </motion.div>
               )}
             </AnimatePresence>

@@ -148,14 +148,14 @@ export default function BlogManager() {
                     className="p-2 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded-lg hover:bg-blue-600/30 transition-colors duration-300"
                     title="Edit"
                   >
-                    ✎
+                    Edit
                   </button>
                   <button
                     onClick={() => handleDeletePost(post.id)}
                     className="p-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors duration-300"
                     title="Delete"
                   >
-                    🗑
+                    Delete
                   </button>
                 </div>
               </div>

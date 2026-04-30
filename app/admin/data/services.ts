@@ -11,14 +11,14 @@ export const services: Service[] = [
     id: 1,
     name: 'Web Development',
     description: 'Full-stack web application development with modern technologies',
-    icon: '💻',
+    icon: '�',
     pricing: 'Custom Quote'
   },
   {
     id: 2,
     name: 'Security Audit',
     description: 'Comprehensive security assessment and penetration testing',
-    icon: '🔒',
+    icon: '🔐',
     pricing: 'Custom Quote'
   },
   {

@@ -4,10 +4,10 @@ import { motion } from 'framer-motion'
 
 export default function AnalyticsManager() {
   const stats = [
-    { label: 'Blog Posts', value: '3', icon: '📝', trend: '+1' },
-    { label: 'Projects', value: '2', icon: '🎨', trend: '+0' },
-    { label: 'Services', value: '3', icon: '⚙️', trend: '+0' },
-    { label: 'Skills', value: '4', icon: '💡', trend: '+1' }
+    { label: 'Blog Posts', value: '3', trend: '+1' },
+    { label: 'Projects', value: '2', trend: '+0' },
+    { label: 'Services', value: '3', trend: '+0' },
+    { label: 'Skills', value: '4', trend: '+1' }
   ]
 
   const activities = [
@@ -46,7 +46,6 @@ export default function AnalyticsManager() {
                 <p className="text-gray-400 text-sm font-medium">{stat.label}</p>
                 <p className="text-3xl font-bold text-white mt-1">{stat.value}</p>
               </div>
-              <span className="text-3xl">{stat.icon}</span>
             </div>
             <p className="text-green-400 text-sm font-semibold">{stat.trend}</p>
           </motion.div>
@@ -88,12 +87,12 @@ export default function AnalyticsManager() {
         transition={{ delay: 0.6 }}
         className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-6"
       >
-        <h3 className="text-lg font-bold text-blue-400 mb-3">💡 Tips</h3>
+        <h3 className="text-lg font-bold text-blue-400 mb-3">Tips</h3>
         <ul className="space-y-2 text-blue-300 text-sm">
-          <li>✓ Keep your blog posts updated with the latest security findings</li>
-          <li>✓ Showcase completed projects to attract clients</li>
-          <li>✓ Update your skills as you learn new technologies</li>
-          <li>✓ Maintain accurate contact information for professional inquiries</li>
+          <li>Keep your blog posts updated with the latest security findings</li>
+          <li>Showcase completed projects to attract clients</li>
+          <li>Update your skills as you learn new technologies</li>
+          <li>Maintain accurate contact information for professional inquiries</li>
         </ul>
       </motion.div>
     </div>
