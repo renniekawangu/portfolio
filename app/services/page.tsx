@@ -1,8 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { usePortfolioData } from '@/app/admin/data-context'
 
 export default function Services() {
+  const { services } = usePortfolioData()
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -43,101 +46,23 @@ export default function Services() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" 
           variants={containerVariants}
         >
-          <motion.div 
-            className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
-            variants={itemVariants}
-          >
-            <h2 className="text-2xl font-semibold mb-4 text-white">Full-Stack Development</h2>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Building modern, responsive web applications using cutting-edge technologies like React, Next.js, Node.js, and Express. From frontend to backend, I deliver complete solutions.
-            </p>
-            <ul className="text-gray-400 text-sm space-y-2.5">
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Frontend Development (React, Next.js)</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Backend APIs (Node.js, Express, Flask)</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Database Design & Integration</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>RESTful API Development</span></li>
-            </ul>
-          </motion.div>
-
-          <motion.div 
-            className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
-            variants={itemVariants}
-          >
-            <h2 className="text-2xl font-semibold mb-4 text-white">Cybersecurity & Penetration Testing</h2>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Comprehensive security assessments to identify vulnerabilities in your web applications and APIs. Helping businesses secure their digital assets with thorough testing and detailed reports.
-            </p>
-            <ul className="text-gray-400 text-sm space-y-2.5">
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Web Application Penetration Testing</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>API Security Testing</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Vulnerability Assessment</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Security Code Review</span></li>
-            </ul>
-          </motion.div>
-
-          <motion.div 
-            className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
-            variants={itemVariants}
-          >
-            <h2 className="text-2xl font-semibold mb-4 text-white">DevOps & Deployment</h2>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Streamline your development workflow with automated CI/CD pipelines, cloud deployments, and infrastructure management. Get your applications to production faster and more reliably.
-            </p>
-            <ul className="text-gray-400 text-sm space-y-2.5">
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Cloud Deployment (AWS, Render, Vercel)</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>CI/CD Pipeline Setup</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Docker & Containerization</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Performance Optimization</span></li>
-            </ul>
-          </motion.div>
-
-          <motion.div 
-            className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
-            variants={itemVariants}
-          >
-            <h2 className="text-2xl font-semibold mb-4 text-white">UI/UX Design & Implementation</h2>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Creating beautiful, intuitive user interfaces with modern design principles. Transforming ideas into pixel-perfect, responsive designs that provide excellent user experiences.
-            </p>
-            <ul className="text-gray-400 text-sm space-y-2.5">
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Responsive Web Design</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Tailwind CSS Implementation</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Animation & Interactions</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Design System Development</span></li>
-            </ul>
-          </motion.div>
-
-          <motion.div 
-            className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
-            variants={itemVariants}
-          >
-            <h2 className="text-2xl font-semibold mb-4 text-white">Technical Consulting</h2>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Expert guidance on technology stack selection, architecture design, and best practices. Help your team make informed decisions and avoid common pitfalls in software development.
-            </p>
-            <ul className="text-gray-400 text-sm space-y-2.5">
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Architecture Planning</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Technology Stack Selection</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Code Review & Optimization</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Development Best Practices</span></li>
-            </ul>
-          </motion.div>
-
-          <motion.div 
-            className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
-            variants={itemVariants}
-          >
-            <h2 className="text-2xl font-semibold mb-4 text-white">Graphic Design</h2>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Crafting visually appealing graphics for your brand, including logos, social media assets, and marketing materials. Elevate your brand identity with professional design services.
-            </p>
-            <ul className="text-gray-400 text-sm space-y-2.5">
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Logo Design</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Social Media Graphics</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Marketing Materials</span></li>
-              <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▹</span><span>Brand Identity Development</span></li>
-            </ul>
-          </motion.div>
+          {services.map((service) => (
+            <motion.div 
+              key={service.id}
+              className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
+              variants={itemVariants}
+            >
+              <h2 className="text-2xl font-semibold mb-4 text-white">{service.name}</h2>
+              <p className="text-gray-300 mb-6 leading-relaxed">
+                {service.description}
+              </p>
+              {service.pricing && (
+                <div className="pt-4 border-t border-gray-700">
+                  <p className="text-orange-400 font-semibold">{service.pricing}</p>
+                </div>
+              )}
+            </motion.div>
+          ))}
         </motion.div>
 
         <motion.div 
@@ -152,7 +77,7 @@ export default function Services() {
             href="/contact" 
             className="inline-flex items-center gap-2 btn-gradient text-white px-8 py-4 rounded-lg hover:shadow-xl transition-all duration-300 font-semibold shadow-lg transform hover:-translate-y-0.5"
           >
-             Get in Touch
+            Get in Touch
           </a>
         </motion.div>
       </div>
