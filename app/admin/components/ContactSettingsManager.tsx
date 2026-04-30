@@ -54,7 +54,7 @@ export default function ContactSettingsManager() {
       >
         {isEditing ? (
           <>
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <div>
               <label className="block text-sm font-semibold text-white mb-2">Email *</label>
               <input
                 type="email"
@@ -63,9 +63,9 @@ export default function ContactSettingsManager() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+            <div>
               <label className="block text-sm font-semibold text-white mb-2">Phone</label>
               <input
                 type="tel"
@@ -74,9 +74,9 @@ export default function ContactSettingsManager() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+            <div>
               <label className="block text-sm font-semibold text-white mb-2">GitHub</label>
               <input
                 type="url"
@@ -85,9 +85,9 @@ export default function ContactSettingsManager() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+            <div>
               <label className="block text-sm font-semibold text-white mb-2">LinkedIn</label>
               <input
                 type="url"
@@ -96,9 +96,9 @@ export default function ContactSettingsManager() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+            <div>
               <label className="block text-sm font-semibold text-white mb-2">Twitter</label>
               <input
                 type="url"
@@ -107,7 +107,7 @@ export default function ContactSettingsManager() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
-            </motion.div>
+            </div>
 
             <div className="flex gap-3 pt-4">
               <button

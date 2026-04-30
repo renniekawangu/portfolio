@@ -72,7 +72,7 @@ export default function SkillForm({ onSubmit, initialSkill }: SkillFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+      <div>
         <label className="block text-sm font-semibold text-white mb-2">Category *</label>
         <input
           type="text"
@@ -85,9 +85,9 @@ export default function SkillForm({ onSubmit, initialSkill }: SkillFormProps) {
           }`}
         />
         {errors.category && <p className="text-red-400 text-sm mt-1">{errors.category}</p>}
-      </motion.div>
+      </div>
 
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+      <div>
         <label className="block text-sm font-semibold text-white mb-2">Skills *</label>
         <div className="flex gap-2 mb-3">
           <input
@@ -121,9 +121,9 @@ export default function SkillForm({ onSubmit, initialSkill }: SkillFormProps) {
           ))}
         </div>
         {errors.skills && <p className="text-red-400 text-sm mt-1">{errors.skills}</p>}
-      </motion.div>
+      </div>
 
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+      <div>
         <label className="block text-sm font-semibold text-white mb-2">Proficiency Level</label>
         <select
           name="proficiency"
@@ -136,16 +136,16 @@ export default function SkillForm({ onSubmit, initialSkill }: SkillFormProps) {
           <option value="advanced">Advanced</option>
           <option value="expert">Expert</option>
         </select>
-      </motion.div>
+      </div>
 
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="flex gap-3 pt-4">
+      <div className="flex gap-3 pt-4">
         <button
           type="submit"
           className="flex-1 btn-gradient text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg"
         >
           {initialSkill ? 'Update Category' : 'Create Category'}
         </button>
-      </motion.div>
+      </div>
     </form>
   )
 }

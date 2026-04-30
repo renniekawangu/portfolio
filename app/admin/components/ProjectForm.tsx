@@ -75,7 +75,7 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+      <div>
         <label className="block text-sm font-semibold text-white mb-2">Title *</label>
         <input
           type="text"
@@ -88,9 +88,9 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
           }`}
         />
         {errors.title && <p className="text-red-400 text-sm mt-1">{errors.title}</p>}
-      </motion.div>
+      </div>
 
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+      <div>
         <label className="block text-sm font-semibold text-white mb-2">Description *</label>
         <textarea
           name="description"
@@ -103,9 +103,9 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
           }`}
         />
         {errors.description && <p className="text-red-400 text-sm mt-1">{errors.description}</p>}
-      </motion.div>
+      </div>
 
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+      <div>
         <label className="block text-sm font-semibold text-white mb-2">Technologies *</label>
         <div className="flex gap-2 mb-3">
           <input
@@ -139,10 +139,10 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
           ))}
         </div>
         {errors.technologies && <p className="text-red-400 text-sm mt-1">{errors.technologies}</p>}
-      </motion.div>
+      </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+        <div>
           <label className="block text-sm font-semibold text-white mb-2">Status</label>
           <select
             name="status"
@@ -154,9 +154,9 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
             <option value="in-progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
-        </motion.div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+        <div>
           <label className="block text-sm font-semibold text-white mb-2">Project Link</label>
           <input
             type="url"
@@ -166,17 +166,17 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
             placeholder="https://github.com/..."
             className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
-        </motion.div>
+        </div>
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="flex gap-3 pt-4">
+      <div className="flex gap-3 pt-4">
         <button
           type="submit"
           className="flex-1 btn-gradient text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg"
         >
           {initialProject ? 'Update Project' : 'Create Project'}
         </button>
-      </motion.div>
+      </div>
     </form>
   )
 }

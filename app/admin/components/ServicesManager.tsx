@@ -34,9 +34,7 @@ export default function ServicesManager() {
 
   return (
     <div className="space-y-4 md:space-y-8">
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0"
       >
         <div>
@@ -52,7 +50,7 @@ export default function ServicesManager() {
         >
           + New Service
         </button>
-      </motion.div>
+      </div>
 
       <AnimatePresence>
         {showForm && (
@@ -95,10 +93,9 @@ export default function ServicesManager() {
           {servicesList.map((service) => (
             <motion.div
               key={service.id}
-              layout
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, x: -100 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               className="bg-gray-800 border border-gray-700 rounded-lg p-4 md:p-6 hover:border-gray-600 transition-all duration-300"
             >
               <div className="flex justify-between items-start gap-3 md:gap-4 mb-4">

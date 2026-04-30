@@ -58,7 +58,6 @@ export default function AnalyticsManager() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
         className="bg-gray-800 border border-gray-700 rounded-lg p-6"
       >
         <h3 className="text-xl font-bold text-white mb-6">Recent Activities</h3>
@@ -68,7 +67,7 @@ export default function AnalyticsManager() {
               key={index}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 + index * 0.1 }}
+              transition={{ delay: index * 0.05 }}
               className="flex items-start gap-4 pb-4 border-b border-gray-700 last:border-b-0 last:pb-0"
             >
               <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
@@ -86,7 +85,6 @@ export default function AnalyticsManager() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
         className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-6"
       >
         <h3 className="text-lg font-bold text-blue-400 mb-3">Tips</h3>

@@ -46,11 +46,7 @@ export default function BlogManager() {
   return (
     <div className="space-y-4 md:space-y-8">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0"
-      >
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0">
         <div>
           <h2 className="text-2xl md:text-3xl font-bold text-white">Blog Posts</h2>
           <p className="text-gray-400 mt-1 text-sm md:text-base">Create, edit, and manage your blog posts</p>
@@ -64,12 +60,10 @@ export default function BlogManager() {
         >
           + New Post
         </button>
-      </motion.div>
+      </div>
 
       {/* Search */}
-      <motion.input
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+      <input
         type="text"
         placeholder="Search posts..."
         value={searchTerm}
@@ -115,7 +109,7 @@ export default function BlogManager() {
       </AnimatePresence>
 
       {/* Posts List */}
-      <motion.div layout className="space-y-3 md:space-y-4">
+      <div className="space-y-3 md:space-y-4">
         <div className="text-xs md:text-sm text-gray-400 mb-4">
           {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''}
         </div>
@@ -123,10 +117,9 @@ export default function BlogManager() {
           {filteredPosts.map((post) => (
             <motion.div
               key={post.id}
-              layout
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, x: -100 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               className="bg-gray-800 border border-gray-700 rounded-lg p-3 md:p-6 hover:border-gray-600 transition-all duration-300"
             >
               <div className="flex flex-col md:flex-row justify-between items-start gap-3 md:gap-4">
@@ -172,7 +165,7 @@ export default function BlogManager() {
             <p className="text-gray-400 text-sm md:text-base">No posts found</p>
           </motion.div>
         )}
-      </motion.div>
+      </div>
     </div>
   )
 }
