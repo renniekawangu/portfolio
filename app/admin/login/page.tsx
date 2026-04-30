@@ -24,7 +24,7 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      if (await login(password)) {
+      if (await login(password.trim())) {
         router.push('/admin/dashboard')
       } else {
         setError('Invalid password. Please try again.')

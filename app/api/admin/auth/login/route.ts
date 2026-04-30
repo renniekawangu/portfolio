@@ -2,13 +2,13 @@ import { ADMIN_SESSION_COOKIE, ADMIN_SESSION_MAX_AGE, createAdminSessionToken } 
 
 export async function POST(request: Request) {
   const { password } = await request.json().catch(() => ({ password: '' }))
-  const adminPassword = process.env.ADMIN_PASSWORD
+  const adminPassword = process.env.ADMIN_PASSWORD?.trim()
 
   if (!adminPassword) {
     return Response.json({ success: false }, { status: 500 })
   }
 
-  if (password !== adminPassword) {
+  if (typeof password !== 'string' || password.trim() !== adminPassword) {
     return Response.json({ success: false }, { status: 401 })
   }
 
