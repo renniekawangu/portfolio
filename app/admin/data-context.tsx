@@ -18,6 +18,7 @@ interface DataContextType {
   addBlogPost: (post: BlogPost) => void
   updateBlogPost: (post: BlogPost) => void
   deleteBlogPost: (id: number) => void
+  incrementPostViews: (slug: string) => void
   
   // Project methods
   addProject: (project: Project) => void
@@ -120,6 +121,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     setBlogPosts(blogPosts.filter(p => p.id !== id))
   }
 
+  const incrementPostViews = (slug: string) => {
+    setBlogPosts(blogPosts.map(p => 
+      p.slug === slug 
+        ? { ...p, views: (p.views || 0) + 1 }
+        : p
+    ))
+  }
+
   // Project methods
   const addProject = (project: Project) => {
     const newProject = {
@@ -185,6 +194,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     addBlogPost,
     updateBlogPost,
     deleteBlogPost,
+    incrementPostViews,
     addProject,
     updateProject,
     deleteProject,

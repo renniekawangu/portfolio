@@ -4,21 +4,45 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { notFound } from 'next/navigation'
-import { use, useState } from 'react'
+import { use, useState, useEffect } from 'react'
 
 interface PageProps {
   params: Promise<{ slug: string }>
 }
 
+interface TableOfContentsItem {
+  id: string
+  text: string
+  level: number
+}
+
 export default function BlogPost({ params }: PageProps) {
   const { slug } = use(params)
-  const { blogPosts } = usePortfolioData()
+  const { blogPosts, incrementPostViews } = usePortfolioData()
   const post = blogPosts.find(p => p.slug === slug)
   const [copied, setCopied] = useState(false)
+  const [toc, setToc] = useState<TableOfContentsItem[]>([])
 
   if (!post) {
     notFound()
   }
+
+  // Track views on mount
+  useEffect(() => {
+    incrementPostViews(slug)
+  }, [slug, incrementPostViews])
+
+  // Generate table of contents from headings
+  useEffect(() => {
+    const headings = post.content.split('\n').filter(line => line.startsWith('#'))
+    const tableOfContents = headings.map((heading, idx) => {
+      const level = heading.match(/^#+/)?.[0].length || 1
+      const text = heading.replace(/^#+\s/, '')
+      const id = `heading-${idx}`
+      return { id, text, level }
+    })
+    setToc(tableOfContents)
+  }, [post.content])
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
   const shareTitle = `Check out: ${post.title}`
@@ -127,6 +151,15 @@ export default function BlogPost({ params }: PageProps) {
               <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
               {post.readTime}
             </span>
+            {post.views !== undefined && (
+              <span className="flex items-center gap-2 ml-auto text-orange-400 font-semibold">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                {post.views.toLocaleString()}
+              </span>
+            )}
           </motion.div>
 
           {/* Tags */}
@@ -174,6 +207,25 @@ export default function BlogPost({ params }: PageProps) {
             </button>
           </motion.div>
 
+          {/* Table of Contents */}
+          {toc.length > 0 && (
+            <motion.div variants={itemVariants} className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-12">
+              <h3 className="text-lg font-bold text-white mb-4">Table of Contents</h3>
+              <ul className="space-y-2">
+                {toc.filter(item => item.level <= 2).map((item) => (
+                  <li key={item.id} className={`${item.level > 1 ? 'ml-4' : ''}`}>
+                    <a
+                      href={`#${item.id}`}
+                      className="text-orange-400 hover:text-orange-300 transition-colors duration-300 text-sm"
+                    >
+                      {item.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
           {/* Post Content */}
           <motion.div
             variants={itemVariants}
@@ -181,17 +233,43 @@ export default function BlogPost({ params }: PageProps) {
           >
             <div className="text-gray-300 space-y-4">
               {post.content.split('\n\n').map((paragraph, idx) => {
-                // Handle code blocks
+                // Handle code blocks with syntax highlighting
                 if (paragraph.startsWith('```')) {
-                  const codeContent = paragraph.replace(/```[a-z]*\n?/g, '').trim()
-                  const language = paragraph.match(/```([a-z]*)/)?.[1] || 'code'
-                  return (
-                    <pre key={idx} className="bg-gray-900 border border-gray-800 rounded-lg p-4 overflow-x-auto my-6">
-                      <code className={`text-sm font-mono text-orange-400`}>
-                        {codeContent}
-                      </code>
-                    </pre>
-                  )
+                  const match = paragraph.match(/```([a-z]*)\n([\s\S]*?)```/)
+                  if (match) {
+                    const language = match[1] || 'code'
+                    const codeContent = match[2].trim()
+                    
+                    // Simple syntax highlighting for common patterns
+                    const highlightCode = (code: string, lang: string) => {
+                      if (lang === 'sql') {
+                        return code
+                          .replace(/\b(SELECT|FROM|WHERE|AND|OR|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)\b/gi, '<span style="color: #ff7b72">$1</span>')
+                          .replace(/\b(\$[a-z_]+|\?)\b/gi, '<span style="color: #79c0ff">$1</span>')
+                          .replace(/'([^']*)'/g, '<span style="color: #a5d6ff">\'$1\'</span>')
+                      } else if (lang === 'javascript' || lang === 'js') {
+                        return code
+                          .replace(/\b(const|let|var|function|return|if|else|async|await)\b/g, '<span style="color: #ff7b72">$1</span>')
+                          .replace(/\b(true|false|null)\b/g, '<span style="color: #79c0ff">$1</span>')
+                          .replace(/'([^']*)'/g, '<span style="color: #a5d6ff">\'$1\'</span>')
+                          .replace(/"([^"]*)"/g, '<span style="color: #a5d6ff">"$1"</span>')
+                      }
+                      return code
+                    }
+                    
+                    return (
+                      <div key={idx} className="my-6">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-gray-900 border-b border-gray-700 rounded-t-lg">
+                          <span className="text-xs font-semibold text-gray-500 uppercase">{language || 'code'}</span>
+                        </div>
+                        <pre className="bg-gray-900 border border-gray-800 border-t-0 rounded-b-lg p-4 overflow-x-auto">
+                          <code className="text-sm font-mono text-gray-300 leading-relaxed whitespace-pre">
+                            {codeContent}
+                          </code>
+                        </pre>
+                      </div>
+                    )
+                  }
                 }
                 
                 // Handle headings
