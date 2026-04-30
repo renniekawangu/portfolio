@@ -7,7 +7,7 @@ export default function Footer() {
             <h3 className="text-xl font-bold text-white mb-2">b34st Web Services</h3>
             <p className="text-gray-400 text-sm">Full-Stack Web Development & Security</p>
           </div>
-          <div className="flex flex-wrap justify-center gap-6"> Developer contacts:
+          <div className="flex flex-wrap justify-center gap-6">
             <a href="https://github.com/renniekawangu" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors duration-300 font-medium">
               GitHub
             </a>
