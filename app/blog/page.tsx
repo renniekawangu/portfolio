@@ -75,10 +75,10 @@ export default function Blog() {
             <span className="inline-block bg-orange-600/10 text-orange-400 px-4 py-2 rounded-full text-sm font-semibold border border-orange-600/20">Blog</span>
           </motion.div>
           <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl font-extrabold mb-6 text-white">
-            Bug Bounty <span className="gradient-text">Writeups</span>
+            b34st Web <span className="gradient-text">BLOG</span>
           </motion.h1>
           <motion.p variants={itemVariants} className="text-xl text-gray-300">
-            Detailed writeups of vulnerabilities I&apos;ve discovered and responsibly disclosed during bug bounty hunting engagements.
+            Cyber security news updates, stories and detailed writeups of vulnerabilities all over the world.
           </motion.p>
         </motion.div>
 
