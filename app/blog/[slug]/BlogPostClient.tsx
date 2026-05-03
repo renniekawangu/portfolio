@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
-import { notFound } from 'next/navigation'
 import { useState, useEffect, useMemo } from 'react'
 import CommentForm from '../components/CommentForm'
 import CommentsList from '../components/CommentsList'
@@ -16,9 +15,10 @@ interface TableOfContentsItem {
 
 interface BlogPostClientProps {
   slug: string
+  onNotFound?: () => void
 }
 
-export default function BlogPostClient({ slug }: BlogPostClientProps) {
+export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps) {
   const { blogPosts, loading: dataLoading } = usePortfolioData()
   const [copied, setCopied] = useState(false)
   const [views, setViews] = useState(0)
@@ -63,24 +63,15 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
     fetchViews()
   }, [slug])
 
-  // Show loading state while fetching data
-  if (dataLoading) {
-    return (
-      <main className="min-h-screen py-20 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
-          <p className="text-gray-400">Loading post...</p>
-        </div>
-      </main>
-    )
-  }
-
-  // Handle not found
-  if (!post) {
-    notFound()
-  }
+  // Call onNotFound when post not found after data loads
+  useEffect(() => {
+    if (!dataLoading && !post && onNotFound) {
+      onNotFound()
+    }
+  }, [dataLoading, post, onNotFound])
 
   const toc = useMemo<TableOfContentsItem[]>(() => {
+    if (!post) return []
     const headings = post.content.split('\n').filter(line => line.startsWith('#'))
     return headings.map((heading, idx) => {
       const level = heading.match(/^#+/)?.[0].length || 1
@@ -88,7 +79,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
       const id = `heading-${idx}`
       return { id, text, level }
     })
-  }, [post.content])
+  }, [post])
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
   const shareTitle = `Check out: ${post.title}`
@@ -137,6 +128,23 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
+  }
+
+  // Show loading state while fetching data
+  if (dataLoading) {
+    return (
+      <main className="min-h-screen py-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+          <p className="text-gray-400">Loading post...</p>
+        </div>
+      </main>
+    )
+  }
+
+  // Show nothing if post not found (notFound() will handle it)
+  if (!post) {
+    return null
   }
 
   return (

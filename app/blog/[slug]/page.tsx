@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import BlogPostClient from './BlogPostClient'
+import { notFound } from 'next/navigation'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -7,7 +8,7 @@ interface PageProps {
 
 async function BlogPostContentWrapper({ params }: PageProps) {
   const { slug } = await params
-  return <BlogPostClient slug={slug} />
+  return <BlogPostClient slug={slug} onNotFound={() => notFound()} />
 }
 
 export default function Page({ params }: PageProps) {
