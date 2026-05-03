@@ -4,12 +4,12 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { notFound } from 'next/navigation'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, Suspense } from 'react'
 import CommentForm from '../components/CommentForm'
 import CommentsList from '../components/CommentsList'
 
 interface PageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 interface TableOfContentsItem {
@@ -18,20 +18,20 @@ interface TableOfContentsItem {
   level: number
 }
 
-export default function BlogPost({ params }: PageProps) {
-  const slug = params.slug
+function BlogPostContent({ slug }: { slug: string }) {
   const { blogPosts, loading: dataLoading } = usePortfolioData()
   const [copied, setCopied] = useState(false)
   const [views, setViews] = useState(0)
   const [commentRefresh, setCommentRefresh] = useState(0)
 
   const post = useMemo(() => {
+    if (!blogPosts.length) return undefined
     return blogPosts.find(p => p.slug === slug)
   }, [blogPosts, slug])
 
   // Track views on mount via API
   useEffect(() => {
-    if (!post || !slug) return
+    if (!post) return
     
     const trackView = async () => {
       try {
@@ -49,10 +49,8 @@ export default function BlogPost({ params }: PageProps) {
     trackView()
   }, [post, slug])
 
-  // Fetch current views on component mount
+  // Fetch current views
   useEffect(() => {
-    if (!slug) return
-    
     const fetchViews = async () => {
       try {
         const response = await fetch(`/api/analytics/views?slug=${slug}`)
@@ -64,11 +62,6 @@ export default function BlogPost({ params }: PageProps) {
     }
     fetchViews()
   }, [slug])
-
-  // Handle not found after data is loaded
-  if (!dataLoading && !post) {
-    notFound()
-  }
 
   // Show loading state while fetching data
   if (dataLoading) {
@@ -82,9 +75,9 @@ export default function BlogPost({ params }: PageProps) {
     )
   }
 
-  // At this point, post should exist (checked above)
+  // Handle not found
   if (!post) {
-    return null
+    notFound()
   }
 
   const toc = useMemo<TableOfContentsItem[]>(() => {
@@ -422,4 +415,24 @@ export default function BlogPost({ params }: PageProps) {
       </div>
     </main>
   )
+}
+
+export default function BlogPost({ params }: PageProps) {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen py-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+          <p className="text-gray-400">Loading post...</p>
+        </div>
+      </main>
+    }>
+      <BlogPostContentWrapper params={params} />
+    </Suspense>
+  )
+}
+
+async function BlogPostContentWrapper({ params }: PageProps) {
+  const { slug } = await params
+  return <BlogPostContent slug={slug} />
 }
