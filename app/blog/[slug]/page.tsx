@@ -1,4 +1,6 @@
-import { Suspense } from 'react'
+'use client'
+
+import { Suspense, use } from 'react'
 import BlogPostClient from './BlogPostClient'
 import { notFound } from 'next/navigation'
 
@@ -6,12 +8,9 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
-async function BlogPostContentWrapper({ params }: PageProps) {
-  const { slug } = await params
-  return <BlogPostClient slug={slug} onNotFound={() => notFound()} />
-}
-
 export default function Page({ params }: PageProps) {
+  const { slug } = use(params)
+
   return (
     <Suspense fallback={
       <main className="min-h-screen py-20 flex items-center justify-center">
@@ -21,7 +20,7 @@ export default function Page({ params }: PageProps) {
         </div>
       </main>
     }>
-      <BlogPostContentWrapper params={params} />
+      <BlogPostClient slug={slug} onNotFound={() => notFound()} />
     </Suspense>
   )
 }
