@@ -115,42 +115,56 @@ export default function ProjectsManager() {
               exit={{ opacity: 0 }}
               className="bg-gray-800 border border-gray-700 rounded-lg p-3 md:p-6 hover:border-gray-600 transition-all duration-300"
             >
-              <div className="flex flex-col md:flex-row justify-between items-start gap-3 md:gap-4">
-                <div className="flex-1 w-full">
-                  <div className="flex items-center gap-2 md:gap-3 mb-2">
-                    <span className={`px-2 md:px-3 py-1 text-xs rounded-full border font-medium ${
-                      project.status === 'completed' ? 'bg-green-600/20 text-green-400 border-green-600/30' :
-                      project.status === 'in-progress' ? 'bg-blue-600/20 text-blue-400 border-blue-600/30' :
-                      'bg-gray-600/20 text-gray-400 border-gray-600/30'
-                    }`}>
-                      {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
-                    </span>
+              <div className="flex flex-col gap-4">
+                {project.image && (
+                  <div className="relative w-full h-40 rounded-lg overflow-hidden border border-gray-700">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none'
+                      }}
+                    />
                   </div>
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-2">{project.title}</h3>
-                  <p className="text-gray-400 mb-3 text-sm md:text-base line-clamp-2">{project.description}</p>
-                  <div className="flex flex-wrap gap-1 md:gap-2 mb-3">
-                    {project.technologies.map((tech) => (
-                      <span key={tech} className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded">
-                        {tech}
+                )}
+                <div className="flex flex-col md:flex-row justify-between items-start gap-3 md:gap-4">
+                  <div className="flex-1 w-full">
+                    <div className="flex items-center gap-2 md:gap-3 mb-2">
+                      <span className={`px-2 md:px-3 py-1 text-xs rounded-full border font-medium ${
+                        project.status === 'completed' ? 'bg-green-600/20 text-green-400 border-green-600/30' :
+                        project.status === 'in-progress' ? 'bg-blue-600/20 text-blue-400 border-blue-600/30' :
+                        'bg-gray-600/20 text-gray-400 border-gray-600/30'
+                      }`}>
+                        {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
                       </span>
-                    ))}
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-2">{project.title}</h3>
+                    <p className="text-gray-400 mb-3 text-sm md:text-base line-clamp-2">{project.description}</p>
+                    <div className="flex flex-wrap gap-1 md:gap-2 mb-3">
+                      {project.technologies.map((tech) => (
+                        <span key={tech} className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2 w-full md:w-auto">
-                  <button
-                    onClick={() => handleEditProject(project)}
-                    className="flex-1 md:flex-none px-3 md:px-2 py-2 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded-lg hover:bg-blue-600/30 transition-colors duration-300 text-xs md:text-sm font-semibold"
-                    title="Edit"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteProject(project.id)}
-                    className="flex-1 md:flex-none px-3 md:px-2 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors duration-300 text-xs md:text-sm font-semibold"
-                    title="Delete"
-                  >
-                    Delete
-                  </button>
+                  <div className="flex gap-2 w-full md:w-auto">
+                    <button
+                      onClick={() => handleEditProject(project)}
+                      className="flex-1 md:flex-none px-3 md:px-2 py-2 bg-blue-600/20 text-blue-400 border border-blue-600/30 rounded-lg hover:bg-blue-600/30 transition-colors duration-300 text-xs md:text-sm font-semibold"
+                      title="Edit"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteProject(project.id)}
+                      className="flex-1 md:flex-none px-3 md:px-2 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors duration-300 text-xs md:text-sm font-semibold"
+                      title="Delete"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.div>

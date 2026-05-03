@@ -155,17 +155,54 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
           </select>
         </div>
 
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-semibold text-white mb-2">Project Link</label>
           <input
             type="url"
             name="link"
-            value={formData.link}
+            value={formData.link || ''}
+            onChange={handleChange}
+            placeholder="https://example.com"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-white mb-2">GitHub URL</label>
+          <input
+            type="url"
+            name="github"
+            value={formData.github || ''}
             onChange={handleChange}
             placeholder="https://github.com/..."
             className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
         </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-white mb-2">Image URL</label>
+        <input
+          type="url"
+          name="image"
+          value={formData.image || ''}
+          onChange={handleChange}
+          placeholder="https://example.com/project-image.jpg"
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+        />
+        {formData.image && (
+          <div className="mt-3 relative w-full h-48 rounded-lg overflow-hidden border border-gray-600">
+            <img
+              src={formData.image}
+              alt="Project preview"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22200%22 viewBox=%220 0 400 200%22%3E%3Crect width=%22400%22 height=%22200%22 fill=%22%23374151%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22 font-size=%2216%22 fill=%22%239CA3AF%22%3EImage not found%3C/text%3E%3C/svg%3E'
+              }}
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex gap-3 pt-4">
