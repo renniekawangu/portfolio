@@ -19,23 +19,26 @@ interface TableOfContentsItem {
 }
 
 export default function BlogPost({ params }: PageProps) {
-  const { slug } = use(params)
+  const resolvedParams = use(params)
   const { blogPosts, loading: dataLoading } = usePortfolioData()
-  const post = useMemo(() => blogPosts.find(p => p.slug === slug), [blogPosts, slug])
   const [copied, setCopied] = useState(false)
   const [views, setViews] = useState(0)
   const [commentRefresh, setCommentRefresh] = useState(0)
 
+  const post = useMemo(() => {
+    return blogPosts.find(p => p.slug === resolvedParams.slug)
+  }, [blogPosts, resolvedParams.slug])
+
   // Track views on mount via API
   useEffect(() => {
-    if (!post) return
+    if (!post || !resolvedParams.slug) return
     
     const trackView = async () => {
       try {
         const response = await fetch('/api/analytics/views', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug })
+          body: JSON.stringify({ slug: resolvedParams.slug })
         })
         const data = await response.json()
         setViews(data.views || 0)
@@ -44,15 +47,15 @@ export default function BlogPost({ params }: PageProps) {
       }
     }
     trackView()
-  }, [slug, post])
+  }, [post, resolvedParams.slug])
 
   // Fetch current views on component mount
   useEffect(() => {
-    if (!post) return
+    if (!resolvedParams.slug) return
     
     const fetchViews = async () => {
       try {
-        const response = await fetch(`/api/analytics/views?slug=${slug}`)
+        const response = await fetch(`/api/analytics/views?slug=${resolvedParams.slug}`)
         const data = await response.json()
         setViews(data.views || 0)
       } catch (error) {
@@ -60,15 +63,15 @@ export default function BlogPost({ params }: PageProps) {
       }
     }
     fetchViews()
-  }, [slug, post])
+  }, [resolvedParams.slug])
 
-  // Wait for data to load before showing 404
+  // Handle not found after data is loaded
   if (!dataLoading && !post) {
     notFound()
   }
 
   // Show loading state while fetching data
-  if (dataLoading || !post) {
+  if (dataLoading) {
     return (
       <main className="min-h-screen py-20 flex items-center justify-center">
         <div className="text-center">
@@ -77,6 +80,11 @@ export default function BlogPost({ params }: PageProps) {
         </div>
       </main>
     )
+  }
+
+  // At this point, post should exist (checked above)
+  if (!post) {
+    return null
   }
 
   const toc = useMemo<TableOfContentsItem[]>(() => {
