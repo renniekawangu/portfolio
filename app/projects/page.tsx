@@ -82,22 +82,37 @@ export default function Projects() {
           {filteredProjects.map((project) => (
             <motion.div
               key={project.id}
-              className="group bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1 overflow-hidden flex flex-col h-full p-6"
+              className="group bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1 overflow-hidden flex flex-col h-full"
               variants={itemVariants}
             >
-              <div className="mb-4">
-                <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${statusColors[project.status]}`}>
-                  {project.status.replace('-', ' ').charAt(0).toUpperCase() + project.status.slice(1).replace('-', ' ')}
-                </span>
-              </div>
+              {/* Project Image */}
+              {project.image && (
+                <div className="relative w-full h-48 overflow-hidden bg-gray-700">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none'
+                    }}
+                  />
+                </div>
+              )}
 
-              <h3 className="text-2xl font-bold mb-2 text-white">{project.title}</h3>
-              <p className="text-gray-300 mb-4 flex-grow">{project.description}</p>
+              <div className="p-6 flex flex-col h-full">
+                <div className="mb-4">
+                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${statusColors[project.status]}`}>
+                    {project.status.replace('-', ' ').charAt(0).toUpperCase() + project.status.slice(1).replace('-', ' ')}
+                  </span>
+                </div>
 
-              <div className="mb-4">
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <span
+                <h3 className="text-2xl font-bold mb-2 text-white">{project.title}</h3>
+                <p className="text-gray-300 mb-4 flex-grow">{project.description}</p>
+
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech) => (
+                      <span
                       key={tech}
                       className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-xs font-medium"
                     >
@@ -118,6 +133,7 @@ export default function Projects() {
                     View Project
                   </a>
                 )}
+              </div>
               </div>
             </motion.div>
           ))}
