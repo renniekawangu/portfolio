@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
       author: author.substring(0, 100),
       email: email.toLowerCase(),
       content: content.substring(0, 1000),
-      status: 'pending' // Comments need approval
+      status: 'approved' // Auto-approve comments
     })
 
     await comment.save()
