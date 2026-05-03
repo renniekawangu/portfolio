@@ -20,14 +20,27 @@ interface TableOfContentsItem {
 
 export default function BlogPost({ params }: PageProps) {
   const { slug } = use(params)
-  const { blogPosts } = usePortfolioData()
+  const { blogPosts, loading } = usePortfolioData()
   const post = blogPosts.find(p => p.slug === slug)
   const [copied, setCopied] = useState(false)
   const [views, setViews] = useState(0)
   const [commentRefresh, setCommentRefresh] = useState(0)
 
-  if (!post) {
+  // Wait for data to load before showing 404
+  if (!loading && !post) {
     notFound()
+  }
+
+  // Show loading state while fetching data
+  if (loading || !post) {
+    return (
+      <main className="min-h-screen py-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+          <p className="text-gray-400">Loading post...</p>
+        </div>
+      </main>
+    )
   }
 
   // Track views on mount via API
