@@ -95,6 +95,21 @@ export default function BlogPost({ params }: PageProps) {
     )
   }
 
+  const shareOnFacebook = () => {
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+      '_blank'
+    )
+  }
+
+  const shareOnInstagram = () => {
+    // Instagram doesn't support direct URL sharing via share dialog, so we'll copy to clipboard and show message
+    navigator.clipboard.writeText(shareUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+    alert('Link copied! You can paste it in your Instagram bio or message.')
+  }
+
   const categoryColors: { [key: string]: string } = {
     'Web Security': 'bg-red-600/20 text-red-400 border-red-600/30',
     'Access Control': 'bg-orange-600/20 text-orange-400 border-orange-600/30',
@@ -200,7 +215,7 @@ export default function BlogPost({ params }: PageProps) {
           )}
 
           {/* Share Buttons */}
-          <motion.div variants={itemVariants} className="flex gap-3 mb-8 pb-8 border-b border-gray-700">
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-3 mb-8 pb-8 border-b border-gray-700">
             <button
               onClick={shareOnTwitter}
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300 font-semibold"
@@ -208,17 +223,25 @@ export default function BlogPost({ params }: PageProps) {
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7" />
               </svg>
-              Share
+              Twitter
             </button>
             <button
-              onClick={shareOnLinkedIn}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition-colors duration-300 font-semibold"
+              onClick={shareOnFacebook}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white rounded-lg transition-colors duration-300 font-semibold"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-                <circle cx="4" cy="4" r="2" />
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
               </svg>
-              Share
+              Facebook
+            </button>
+            <button
+              onClick={shareOnInstagram}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-colors duration-300 font-semibold"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 100-8 4 4 0 000 8zm4.965-10.322a1.44 1.44 0 110 2.881 1.44 1.44 0 010-2.881z" />
+              </svg>
+              Instagram
             </button>
             <button
               onClick={handleCopyLink}
@@ -229,28 +252,9 @@ export default function BlogPost({ params }: PageProps) {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
-              {copied ? 'Copied!' : 'Copy'}
+              {copied ? 'Copied!' : 'Copy Link'}
             </button>
           </motion.div>
-
-          {/* Table of Contents */}
-          {toc.length > 0 && (
-            <motion.div variants={itemVariants} className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-12">
-              <h3 className="text-lg font-bold text-white mb-4">Table of Contents</h3>
-              <ul className="space-y-2">
-                {toc.filter(item => item.level <= 2).map((item) => (
-                  <li key={item.id} className={`${item.level > 1 ? 'ml-4' : ''}`}>
-                    <a
-                      href={`#${item.id}`}
-                      className="text-orange-400 hover:text-orange-300 transition-colors duration-300 text-sm"
-                    >
-                      {item.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
 
           {/* Post Content */}
           <motion.div
