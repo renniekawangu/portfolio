@@ -155,7 +155,6 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
           </select>
         </div>
 
-      <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-semibold text-white mb-2">Project Link</label>
           <input
@@ -167,7 +166,9 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
             className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
         </div>
+      </div>
 
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-semibold text-white mb-2">GitHub URL</label>
           <input
