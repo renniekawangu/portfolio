@@ -14,10 +14,10 @@ interface Comment {
 }
 
 interface CommentManagerProps {
-  adminPassword: string
+  // Remove adminPassword prop since we'll use session
 }
 
-export default function CommentManager({ adminPassword }: CommentManagerProps) {
+export default function CommentManager() {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending')
@@ -26,22 +26,25 @@ export default function CommentManager({ adminPassword }: CommentManagerProps) {
   const fetchComments = useCallback(async () => {
     setLoading(true)
     try {
-      // Fetch all comments (in a real app, you'd want pagination)
-      const response = await fetch('/api/comments?status=all', {
-        headers: {
-          'x-admin-password': adminPassword
-        }
+      // Fetch all comments using session authentication
+      const response = await fetch(`/api/comments?status=all`, {
+        credentials: 'include'
       })
       if (response.ok) {
         const data = await response.json()
+        console.log('Fetched comments:', data)
         setComments(Array.isArray(data) ? data : [])
+      } else {
+        console.error('Failed to fetch comments:', response.status, response.statusText)
+        const errorData = await response.json()
+        console.error('Error response:', errorData)
       }
     } catch (error) {
       console.error('Failed to fetch comments:', error)
     } finally {
       setLoading(false)
     }
-  }, [adminPassword])
+  }, [])
 
   useEffect(() => {
     fetchComments()
@@ -51,9 +54,9 @@ export default function CommentManager({ adminPassword }: CommentManagerProps) {
     try {
       const response = await fetch(`/api/comments/${commentId}`, {
         method: 'PUT',
+        credentials: 'include',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-password': adminPassword
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status: newStatus })
       })
@@ -87,9 +90,7 @@ export default function CommentManager({ adminPassword }: CommentManagerProps) {
     try {
       const response = await fetch(`/api/comments/${commentId}`, {
         method: 'DELETE',
-        headers: {
-          'x-admin-password': adminPassword
-        }
+        credentials: 'include'
       })
 
       if (response.ok) {

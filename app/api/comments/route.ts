@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
 import { Comment } from '@/lib/models/Comment'
+import { cookies } from 'next/headers'
+import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from '@/lib/admin-auth'
 
 const COMMENT_STATUSES = ['approved', 'pending', 'rejected'] as const
+
+async function isAdmin() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value
+  return await verifyAdminSessionToken(token)
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,8 +21,7 @@ export async function GET(request: NextRequest) {
     await connectToDatabase()
     const slug = request.nextUrl.searchParams.get('slug')
     const status = request.nextUrl.searchParams.get('status') || 'approved'
-    const adminPassword = request.headers.get('x-admin-password')
-    const isAdmin = Boolean(process.env.ADMIN_PASSWORD && adminPassword === process.env.ADMIN_PASSWORD)
+    const adminAuthenticated = await isAdmin()
 
     if (status !== 'all' && !COMMENT_STATUSES.includes(status as (typeof COMMENT_STATUSES)[number])) {
       return NextResponse.json(
@@ -24,7 +31,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (!slug) {
-      if (!isAdmin) {
+      if (!adminAuthenticated) {
         return NextResponse.json(
           { error: 'slug parameter is required' },
           { status: 400 }

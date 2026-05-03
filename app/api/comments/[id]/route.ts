@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
 import { Comment } from '@/lib/models/Comment'
+import { cookies } from 'next/headers'
+import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from '@/lib/admin-auth'
+
+async function isAdmin() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value
+  return await verifyAdminSessionToken(token)
+}
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -26,10 +34,10 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     const { id } = await params
-    const adminPassword = request.headers.get('x-admin-password')
+    const adminAuthenticated = await isAdmin()
 
     // Basic auth check
-    if (adminPassword !== process.env.ADMIN_PASSWORD) {
+    if (!adminAuthenticated) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -56,10 +64,10 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const { id } = await params
-    const adminPassword = request.headers.get('x-admin-password')
+    const adminAuthenticated = await isAdmin()
 
     // Basic auth check
-    if (adminPassword !== process.env.ADMIN_PASSWORD) {
+    if (!adminAuthenticated) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

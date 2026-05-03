@@ -94,7 +94,7 @@ export default function AdminDashboard() {
         {activeTab === 'skills' && <SkillsManager />}
         {activeTab === 'contact' && <ContactSettingsManager />}
         {activeTab === 'analytics' && <AnalyticsManager />}
-        {activeTab === 'comments' && <CommentManager adminPassword={process.env.NEXT_PUBLIC_ADMIN_PASSWORD || ''} />}
+        {activeTab === 'comments' && <CommentManager />}
       </motion.div>
     </main>
   )
