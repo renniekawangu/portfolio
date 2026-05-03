@@ -62,7 +62,7 @@ export default function Blog() {
             b34st Web <span className="gradient-text">BLOG</span>
           </motion.h1>
           <motion.p variants={itemVariants} className="text-xl text-gray-300">
-            Cyber security news updates, stories and detailed writeups of vulnerabilities all over the world.
+            Real-world cybersecurity stories, vulnerability breakdowns, and deep dives into how modern systems get exploited—and secured.
           </motion.p>
 
           {/* Navigation Links */}
