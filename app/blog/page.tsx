@@ -9,22 +9,7 @@ import PopularPosts from './components/PopularPosts'
 export default function Blog() {
   const { blogPosts } = usePortfolioData()
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [selectedTag, setSelectedTag] = useState<string | null>(null)
   const [selectedType, setSelectedType] = useState<'all' | 'writeup' | 'news' | 'story'>('all')
-
-  // Get unique categories and tags
-  const categories = useMemo(() => {
-    return Array.from(new Set(blogPosts.map(p => p.category)))
-  }, [blogPosts])
-
-  const allTags = useMemo(() => {
-    const tags = new Set<string>()
-    blogPosts.forEach(post => {
-      post.tags?.forEach(tag => tags.add(tag))
-    })
-    return Array.from(tags)
-  }, [blogPosts])
 
   // Filter posts
   const filteredPosts = useMemo(() => {
@@ -34,13 +19,11 @@ export default function Blog() {
         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.content.toLowerCase().includes(searchQuery.toLowerCase())
       
-      const matchesCategory = !selectedCategory || post.category === selectedCategory
-      const matchesTag = !selectedTag || post.tags?.includes(selectedTag)
       const matchesType = selectedType === 'all' || post.type === selectedType
       
-      return matchesSearch && matchesCategory && matchesTag && matchesType
+      return matchesSearch && matchesType
     })
-  }, [blogPosts, searchQuery, selectedCategory, selectedTag, selectedType])
+  }, [blogPosts, searchQuery, selectedType])
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -161,66 +144,6 @@ export default function Blog() {
                 </button>
               </div>
             </div>
-
-            {/* Categories */}
-            <div>
-              <p className="text-sm font-semibold text-gray-400 mb-3">Categories</p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setSelectedCategory(null)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    selectedCategory === null
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                  }`}
-                >
-                  All Categories
-                </button>
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedCategory === cat
-                        ? 'bg-orange-600 text-white'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Tags */}
-            <div>
-              <p className="text-sm font-semibold text-gray-400 mb-3">Tags</p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setSelectedTag(null)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    selectedTag === null
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                  }`}
-                >
-                  All Tags
-                </button>
-                {allTags.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => setSelectedTag(tag)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedTag === tag
-                        ? 'bg-orange-600 text-white'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Results count */}
@@ -320,26 +243,6 @@ export default function Blog() {
             className="lg:col-span-1"
           >
             <PopularPosts posts={blogPosts} limit={5} showTitle={true} />
-
-            {/* Categories Widget */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700/50 mt-8"
-            >
-              <h3 className="text-lg font-bold text-white mb-4">Categories</h3>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
-                  <Link
-                    key={cat}
-                    href={`/blog/category/${encodeURIComponent(cat.toLowerCase().replace(/\s+/g, '-'))}`}
-                    className="px-3 py-1 rounded-lg text-sm font-medium bg-gray-700 hover:bg-orange-600 text-gray-300 hover:text-white transition-all duration-300"
-                  >
-                    {cat}
-                  </Link>
-                ))}
-              </div>
-            </motion.div>
           </motion.div>
         </div>
 
