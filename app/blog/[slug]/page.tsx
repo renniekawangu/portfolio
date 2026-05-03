@@ -284,22 +284,22 @@ export default function BlogPost({ params }: PageProps) {
                 // Handle headings
                 if (paragraph.startsWith('# ')) {
                   const headingIndex = toc.findIndex(item => item.text === paragraph.slice(2))
-                  return <h1 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-3xl font-bold text-white mt-8 mb-4">{paragraph.slice(2)}</h1>
+                  return <h1 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-2xl font-semibold text-white mt-8 mb-4">{paragraph.slice(2)}</h1>
                 }
                 if (paragraph.startsWith('## ')) {
                   const headingIndex = toc.findIndex(item => item.text === paragraph.slice(3))
-                  return <h2 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-2xl font-bold text-white mt-6 mb-3">{paragraph.slice(3)}</h2>
+                  return <h2 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-xl font-semibold text-white mt-6 mb-3">{paragraph.slice(3)}</h2>
                 }
                 if (paragraph.startsWith('### ')) {
                   const headingIndex = toc.findIndex(item => item.text === paragraph.slice(4))
-                  return <h3 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-xl font-bold text-white mt-4 mb-2">{paragraph.slice(4)}</h3>
+                  return <h3 id={headingIndex >= 0 ? toc[headingIndex].id : undefined} key={idx} className="text-lg font-semibold text-white mt-4 mb-2">{paragraph.slice(4)}</h3>
                 }
                 
                 // Handle bullet lists
                 if (paragraph.startsWith('- ')) {
                   const items = paragraph.split('\n').filter(line => line.startsWith('- '))
                   return (
-                    <ul key={idx} className="list-disc list-inside space-y-2 my-4 text-gray-300">
+                    <ul key={idx} className="list-disc list-inside space-y-2 my-4 text-gray-400 text-sm">
                       {items.map((item, i) => (
                         <li key={i} className="ml-4">{item.slice(2)}</li>
                       ))}
@@ -309,7 +309,7 @@ export default function BlogPost({ params }: PageProps) {
                 
                 // Handle paragraphs with basic text formatting
                 return (
-                  <p key={idx} className="mb-4 leading-relaxed text-gray-300">
+                  <p key={idx} className="mb-4 leading-relaxed text-gray-400 text-sm">
                     {paragraph.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/g).map((part, i) => {
                       if (part.startsWith('**') && part.endsWith('**')) {
                         return <strong key={i} className="font-bold text-white">{part.slice(2, -2)}</strong>

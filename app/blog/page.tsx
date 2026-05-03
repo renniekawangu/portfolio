@@ -213,12 +213,12 @@ export default function Blog() {
                 )}
 
                 <Link href={`/blog/${post.slug}`} className="group">
-                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors duration-300">
+                  <h2 className="text-xl md:text-2xl font-semibold text-white mb-3 group-hover:text-orange-400 transition-colors duration-300 line-clamp-2">
                     {post.title}
                   </h2>
                 </Link>
 
-                <p className="text-gray-300 text-lg leading-relaxed mb-4">
+                <p className="text-gray-400 text-base leading-relaxed mb-4 line-clamp-3">
                   {post.excerpt}
                 </p>
 
