@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
 import { ContactSettings } from '@/lib/models/ContactSettings'
+import { seedInitialData } from '@/lib/seedData'
 
 export async function GET() {
   try {
@@ -9,6 +10,10 @@ export async function GET() {
     }
 
     await connectToDatabase()
+    
+    // Seed initial data if not already seeded
+    await seedInitialData()
+    
     const settings = await ContactSettings.findOne()
     return NextResponse.json(settings || {})
   } catch (error) {

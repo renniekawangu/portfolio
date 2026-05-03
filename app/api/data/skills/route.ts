@@ -1,19 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
 import { Skill } from '@/lib/models/Skill'
+import { seedInitialData } from '@/lib/seedData'
+
+async function getInitialSkills() {
+  const { skills } = await import('@/app/admin/data/skills')
+  return skills
+}
 
 export async function GET() {
   try {
     if (!process.env.MONGODB_URI) {
-      return NextResponse.json([])
+      return NextResponse.json(await getInitialSkills())
     }
 
     await connectToDatabase()
-    const skills = await Skill.find().sort({ category: 1, name: 1 })
-    return NextResponse.json(skills)
+    
+    // Seed initial data if not already seeded
+    await seedInitialData()
+    
+    const skills = await Skill.find().sort({ category: 1 })
+    return NextResponse.json(skills.length > 0 ? skills : await getInitialSkills())
   } catch (error) {
     console.error('Failed to fetch skills:', error)
-    return NextResponse.json([])
+    return NextResponse.json(await getInitialSkills())
   }
 }
 

@@ -1,6 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
+import mongoose from 'mongoose'
 import { connectToDatabase } from '@/lib/mongodb'
 import { Project } from '@/lib/models/Project'
+
+function buildIdQuery(id: string) {
+  const queries: Record<string, unknown>[] = []
+  const numericId = Number(id)
+
+  if (mongoose.isValidObjectId(id)) {
+    queries.push({ _id: id })
+  }
+
+  if (!Number.isNaN(numericId)) {
+    queries.push({ id: numericId })
+  }
+
+  return queries.length > 1 ? { $or: queries } : queries[0] || { _id: id }
+}
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -11,7 +27,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
     await connectToDatabase()
 
-    const project = await Project.findById(id)
+    const project = await Project.findOne(buildIdQuery(id))
     return NextResponse.json(project)
   } catch (error) {
     console.error('Failed to fetch project:', error)
@@ -29,7 +45,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     await connectToDatabase()
     const body = await request.json()
 
-    const project = await Project.findByIdAndUpdate(id, body, { new: true })
+    const project = await Project.findOneAndUpdate(buildIdQuery(id), body, { new: true })
     return NextResponse.json(project)
   } catch (error) {
     console.error('Failed to update project:', error)
@@ -46,7 +62,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     const { id } = await params
     await connectToDatabase()
 
-    await Project.findByIdAndDelete(id)
+    await Project.findOneAndDelete(buildIdQuery(id))
     return NextResponse.json({ message: 'Project deleted' })
   } catch (error) {
     console.error('Failed to delete project:', error)

@@ -8,6 +8,7 @@ export interface IProject extends Document {
   link?: string
   github?: string
   image?: string
+  status: 'completed' | 'in-progress' | 'planning'
   createdAt?: Date
   updatedAt?: Date
 }
@@ -26,7 +27,12 @@ const ProjectSchema = new Schema(
     technologies: [String],
     link: String,
     github: String,
-    image: String
+    image: String,
+    status: {
+      type: String,
+      enum: ['completed', 'in-progress', 'planning'],
+      default: 'planning'
+    }
   },
   {
     timestamps: true

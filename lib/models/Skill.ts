@@ -2,9 +2,9 @@ import mongoose, { Schema, Document } from 'mongoose'
 
 export interface ISkill extends Document {
   id?: number
-  name: string
   category: string
-  proficiency: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert'
+  skills: string[]
+  proficiency: 'beginner' | 'intermediate' | 'advanced' | 'expert'
   createdAt?: Date
   updatedAt?: Date
 }
@@ -12,18 +12,15 @@ export interface ISkill extends Document {
 const SkillSchema = new Schema(
   {
     id: Number,
-    name: {
-      type: String,
-      required: true
-    },
     category: {
       type: String,
       required: true
     },
+    skills: [String],
     proficiency: {
       type: String,
-      enum: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
-      default: 'Intermediate'
+      enum: ['beginner', 'intermediate', 'advanced', 'expert'],
+      default: 'intermediate'
     }
   },
   {

@@ -2,9 +2,10 @@ import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IService extends Document {
   id?: number
-  title: string
+  name: string
   description: string
   icon?: string
+  pricing?: string
   createdAt?: Date
   updatedAt?: Date
 }
@@ -12,7 +13,7 @@ export interface IService extends Document {
 const ServiceSchema = new Schema(
   {
     id: Number,
-    title: {
+    name: {
       type: String,
       required: true
     },
@@ -20,7 +21,8 @@ const ServiceSchema = new Schema(
       type: String,
       required: true
     },
-    icon: String
+    icon: String,
+    pricing: String
   },
   {
     timestamps: true
