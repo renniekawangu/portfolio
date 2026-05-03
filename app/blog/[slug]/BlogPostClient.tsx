@@ -81,8 +81,13 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
     })
   }, [post])
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
-  const shareTitle = `Check out: ${post.title}`
+  const { shareUrl, shareTitle } = useMemo(() => {
+    if (!post) return { shareUrl: '', shareTitle: '' }
+    return {
+      shareUrl: typeof window !== 'undefined' ? window.location.href : '',
+      shareTitle: `Check out: ${post.title}`
+    }
+  }, [post])
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl)
