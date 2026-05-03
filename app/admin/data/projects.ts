@@ -4,6 +4,7 @@ export interface Project {
   description: string
   technologies: string[]
   link?: string
+  github?: string
   image?: string
   status: 'completed' | 'in-progress' | 'planning'
 }
