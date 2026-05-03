@@ -4,12 +4,12 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { notFound } from 'next/navigation'
-import { use, useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import CommentForm from '../components/CommentForm'
 import CommentsList from '../components/CommentsList'
 
 interface PageProps {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }
 
 interface TableOfContentsItem {
@@ -19,26 +19,26 @@ interface TableOfContentsItem {
 }
 
 export default function BlogPost({ params }: PageProps) {
-  const resolvedParams = use(params)
+  const slug = params.slug
   const { blogPosts, loading: dataLoading } = usePortfolioData()
   const [copied, setCopied] = useState(false)
   const [views, setViews] = useState(0)
   const [commentRefresh, setCommentRefresh] = useState(0)
 
   const post = useMemo(() => {
-    return blogPosts.find(p => p.slug === resolvedParams.slug)
-  }, [blogPosts, resolvedParams.slug])
+    return blogPosts.find(p => p.slug === slug)
+  }, [blogPosts, slug])
 
   // Track views on mount via API
   useEffect(() => {
-    if (!post || !resolvedParams.slug) return
+    if (!post || !slug) return
     
     const trackView = async () => {
       try {
         const response = await fetch('/api/analytics/views', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug: resolvedParams.slug })
+          body: JSON.stringify({ slug })
         })
         const data = await response.json()
         setViews(data.views || 0)
@@ -47,15 +47,15 @@ export default function BlogPost({ params }: PageProps) {
       }
     }
     trackView()
-  }, [post, resolvedParams.slug])
+  }, [post, slug])
 
   // Fetch current views on component mount
   useEffect(() => {
-    if (!resolvedParams.slug) return
+    if (!slug) return
     
     const fetchViews = async () => {
       try {
-        const response = await fetch(`/api/analytics/views?slug=${resolvedParams.slug}`)
+        const response = await fetch(`/api/analytics/views?slug=${slug}`)
         const data = await response.json()
         setViews(data.views || 0)
       } catch (error) {
@@ -63,7 +63,7 @@ export default function BlogPost({ params }: PageProps) {
       }
     }
     fetchViews()
-  }, [resolvedParams.slug])
+  }, [slug])
 
   // Handle not found after data is loaded
   if (!dataLoading && !post) {
