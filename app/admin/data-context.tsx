@@ -15,27 +15,27 @@ interface DataContextType {
   contactSettings: ContactSettings
   
   // Blog methods
-  addBlogPost: (post: BlogPost) => void
-  updateBlogPost: (post: BlogPost) => void
-  deleteBlogPost: (id: number) => void
+  addBlogPost: (post: BlogPost) => Promise<void>
+  updateBlogPost: (post: BlogPost) => Promise<void>
+  deleteBlogPost: (id: number) => Promise<void>
   
   // Project methods
-  addProject: (project: Project) => void
-  updateProject: (project: Project) => void
-  deleteProject: (id: number) => void
+  addProject: (project: Project) => Promise<void>
+  updateProject: (project: Project) => Promise<void>
+  deleteProject: (id: number) => Promise<void>
   
   // Service methods
-  addService: (service: Service) => void
-  updateService: (service: Service) => void
-  deleteService: (id: number) => void
+  addService: (service: Service) => Promise<void>
+  updateService: (service: Service) => Promise<void>
+  deleteService: (id: number) => Promise<void>
   
   // Skill methods
-  addSkill: (skill: Skill) => void
-  updateSkill: (skill: Skill) => void
-  deleteSkill: (id: number) => void
+  addSkill: (skill: Skill) => Promise<void>
+  updateSkill: (skill: Skill) => Promise<void>
+  deleteSkill: (id: number) => Promise<void>
   
   // Contact methods
-  updateContactSettings: (settings: ContactSettings) => void
+  updateContactSettings: (settings: ContactSettings) => Promise<void>
   
   // Loading state
   loading: boolean
@@ -49,24 +49,6 @@ const DEFAULT_CONTACT_SETTINGS: ContactSettings = {
   github: '',
   linkedin: '',
   twitter: ''
-}
-
-interface SavedPortfolioData {
-  blogPosts?: BlogPost[]
-  projects?: Project[]
-  services?: Service[]
-  skills?: Skill[]
-  contactSettings?: ContactSettings
-}
-
-const readSavedData = (): SavedPortfolioData | null => {
-  try {
-    const savedData = localStorage.getItem('portfolioData')
-    return savedData ? JSON.parse(savedData) : null
-  } catch (error) {
-    console.error('Failed to read saved portfolio data:', error)
-    return null
-  }
 }
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
@@ -115,17 +97,15 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         setBlogPosts(initialBlog)
       }
 
-      // Load projects from MongoDB or localStorage
+      // Load projects from MongoDB or fallback to static
       if (projectsRes?.ok) {
         const projectsData = await projectsRes.json()
         setProjects(Array.isArray(projectsData) && projectsData.length > 0
           ? projectsData
-          : savedData?.projects?.length
-            ? savedData.projects
-            : initialProjects
+          : initialProjects
         )
       } else {
-        setProjects(savedData?.projects?.length ? savedData.projects : initialProjects)
+        setProjects(initialProjects)
       }
 
       // Load services
@@ -133,12 +113,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         const servicesData = await servicesRes.json()
         setServices(Array.isArray(servicesData) && servicesData.length > 0
           ? servicesData
-          : savedData?.services?.length
-            ? savedData.services
-            : initialServices
+          : initialServices
         )
       } else {
-        setServices(savedData?.services?.length ? savedData.services : initialServices)
+        setServices(initialServices)
       }
 
       // Load skills
@@ -146,12 +124,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         const skillsData = await skillsRes.json()
         setSkills(Array.isArray(skillsData) && skillsData.length > 0
           ? skillsData
-          : savedData?.skills?.length
-            ? savedData.skills
-            : initialSkills
+          : initialSkills
         )
       } else {
-        setSkills(savedData?.skills?.length ? savedData.skills : initialSkills)
+        setSkills(initialSkills)
       }
 
       // Load contact settings
@@ -160,34 +136,32 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         if (contactData && Object.keys(contactData).length > 0) {
           setContactSettings(contactData)
         } else {
-          setContactSettings(savedData?.contactSettings || initialContactSettings || DEFAULT_CONTACT_SETTINGS)
+          setContactSettings(initialContactSettings || DEFAULT_CONTACT_SETTINGS)
         }
       } else {
-        setContactSettings(savedData?.contactSettings || initialContactSettings || DEFAULT_CONTACT_SETTINGS)
+        setContactSettings(initialContactSettings || DEFAULT_CONTACT_SETTINGS)
       }
     } catch (error) {
       console.error('Failed to load data:', error)
-      // Fall back to localStorage
-      const savedData = readSavedData()
+      // Fall back to static data only
+      const { blogPosts: initialBlog } = await import('@/app/blog/data')
       const [
-        { blogPosts: initialBlog },
         { projects: initialProjects },
         { services: initialServices },
         { skills: initialSkills },
         { contactSettings: initialContactSettings }
       ] = await Promise.all([
-        import('@/app/blog/data'),
         import('@/app/admin/data/projects'),
         import('@/app/admin/data/services'),
         import('@/app/admin/data/skills'),
         import('@/app/admin/data/contact')
       ])
 
-      setBlogPosts(savedData?.blogPosts?.length ? savedData.blogPosts : initialBlog)
-      setProjects(savedData?.projects?.length ? savedData.projects : initialProjects)
-      setServices(savedData?.services?.length ? savedData.services : initialServices)
-      setSkills(savedData?.skills?.length ? savedData.skills : initialSkills)
-      setContactSettings(savedData?.contactSettings || initialContactSettings || DEFAULT_CONTACT_SETTINGS)
+      setBlogPosts(initialBlog)
+      setProjects(initialProjects)
+      setServices(initialServices)
+      setSkills(initialSkills)
+      setContactSettings(initialContactSettings || DEFAULT_CONTACT_SETTINGS)
     } finally {
       setLoading(false)
     }

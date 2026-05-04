@@ -10,6 +10,9 @@ interface StoredBlogPost extends BlogPost {
 const getBlogCollection = async () => {
   await connectToDatabase()
   const db = mongoose.connection.db
+  if (!db) {
+    throw new Error('MongoDB connection is not initialized')
+  }
   return db.collection('blogPosts')
 }
 
