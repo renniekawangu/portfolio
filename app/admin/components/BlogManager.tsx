@@ -17,19 +17,19 @@ export default function BlogManager() {
     post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  const handleAddPost = (post: BlogPost) => {
+  const handleAddPost = async (post: BlogPost) => {
     if (editingPost) {
-      updateBlogPost({ ...post, id: editingPost.id })
+      await updateBlogPost({ ...post, id: editingPost.id })
       setEditingPost(null)
     } else {
-      addBlogPost(post)
+      await addBlogPost(post)
     }
     setShowForm(false)
   }
 
-  const handleDeletePost = (id: number) => {
+  const handleDeletePost = async (id: number) => {
     if (confirm('Are you sure you want to delete this post?')) {
-      deleteBlogPost(id)
+      await deleteBlogPost(id)
     }
   }
 

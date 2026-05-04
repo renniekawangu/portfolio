@@ -81,12 +81,8 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true)
       
-      // Load blog posts from static data
+      // Load static data as fallback
       const { blogPosts: initialBlog } = await import('@/app/blog/data')
-      const savedData = readSavedData()
-      
-      // Use saved blog posts if available, otherwise use static data
-      setBlogPosts(savedData?.blogPosts?.length ? savedData.blogPosts : initialBlog)
       const [
         { projects: initialProjects },
         { services: initialServices },
@@ -99,13 +95,25 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         import('@/app/admin/data/contact')
       ])
 
-      // Load other data from APIs
-      const [projectsRes, servicesRes, skillsRes, contactRes] = await Promise.all([
+      // Load all data from APIs (including blogs from MongoDB)
+      const [blogsRes, projectsRes, servicesRes, skillsRes, contactRes] = await Promise.all([
+        fetch('/api/data/blogs'),
         fetch('/api/data/projects'),
         fetch('/api/data/services'),
         fetch('/api/data/skills'),
         fetch('/api/data/contact')
       ])
+
+      // Load blog posts from MongoDB or fallback to static
+      if (blogsRes?.ok) {
+        const blogsData = await blogsRes.json()
+        setBlogPosts(Array.isArray(blogsData) && blogsData.length > 0
+          ? blogsData
+          : initialBlog
+        )
+      } else {
+        setBlogPosts(initialBlog)
+      }
 
       // Load projects from MongoDB or localStorage
       if (projectsRes?.ok) {
@@ -190,37 +198,70 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     loadAllData()
   }, [loadAllData])
 
-  // Save to localStorage whenever data changes (as backup)
-  useEffect(() => {
-    if (loading) {
-      return
-    }
+  // Blog methods with MongoDB API
+  const addBlogPost = async (post: BlogPost) => {
+    try {
+      const res = await fetch('/api/data/blogs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(post)
+      })
 
-    const data = {
-      blogPosts,
-      projects,
-      services,
-      skills,
-      contactSettings
+      if (res.ok) {
+        const newPost = await res.json()
+        setBlogPosts([newPost, ...blogPosts])
+      } else {
+        // Fallback to local state
+        const newPost = {
+          ...post,
+          id: Math.max(...blogPosts.map(p => p.id), 0) + 1
+        }
+        setBlogPosts([newPost, ...blogPosts])
+      }
+    } catch (error) {
+      console.error('Failed to add blog post:', error)
+      const newPost = {
+        ...post,
+        id: Math.max(...blogPosts.map(p => p.id), 0) + 1
+      }
+      setBlogPosts([newPost, ...blogPosts])
     }
-    localStorage.setItem('portfolioData', JSON.stringify(data))
-  }, [blogPosts, projects, services, skills, contactSettings, loading])
-
-  // Blog methods
-  const addBlogPost = (post: BlogPost) => {
-    const newPost = {
-      ...post,
-      id: Math.max(...blogPosts.map(p => p.id), 0) + 1
-    }
-    setBlogPosts([newPost, ...blogPosts])
   }
 
-  const updateBlogPost = (post: BlogPost) => {
-    setBlogPosts(blogPosts.map(p => p.id === post.id ? post : p))
+  const updateBlogPost = async (post: BlogPost) => {
+    try {
+      const res = await fetch(`/api/data/blogs/${post.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(post)
+      })
+
+      if (res.ok) {
+        const updatedPost = await res.json()
+        setBlogPosts(blogPosts.map(p => p.id === post.id ? updatedPost : p))
+      } else {
+        setBlogPosts(blogPosts.map(p => p.id === post.id ? post : p))
+      }
+    } catch (error) {
+      console.error('Failed to update blog post:', error)
+      setBlogPosts(blogPosts.map(p => p.id === post.id ? post : p))
+    }
   }
 
-  const deleteBlogPost = (id: number) => {
-    setBlogPosts(blogPosts.filter(p => p.id !== id))
+  const deleteBlogPost = async (id: number) => {
+    try {
+      const post = blogPosts.find(p => p.id === id)
+      if (!post) return
+
+      await fetch(`/api/data/blogs/${id}`, {
+        method: 'DELETE'
+      })
+
+      setBlogPosts(blogPosts.filter(p => p.id !== id))
+    } catch (error) {
+      console.error('Failed to delete blog post:', error)
+      setBlogPosts(blogPosts.filter(p => p.id !== id))
+    }
   }
 
   // Project methods with MongoDB API
