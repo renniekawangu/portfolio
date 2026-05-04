@@ -83,8 +83,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       
       // Load blog posts from static data
       const { blogPosts: initialBlog } = await import('@/app/blog/data')
-      setBlogPosts(initialBlog)
       const savedData = readSavedData()
+      
+      // Use saved blog posts if available, otherwise use static data
+      setBlogPosts(savedData?.blogPosts?.length ? savedData.blogPosts : initialBlog)
       const [
         { projects: initialProjects },
         { services: initialServices },
