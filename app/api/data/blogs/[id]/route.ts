@@ -1,9 +1,16 @@
-import { connectDB } from '@/lib/mongodb'
+import { connectToDatabase } from '@/lib/mongodb'
 import { BlogPost } from '@/app/blog/data'
 import { ObjectId } from 'mongodb'
+import mongoose from 'mongoose'
 
 interface StoredBlogPost extends BlogPost {
   _id?: string | ObjectId
+}
+
+const getBlogCollection = async () => {
+  await connectToDatabase()
+  const db = mongoose.connection.db
+  return db.collection('blogPosts')
 }
 
 export async function GET(
@@ -12,8 +19,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const db = await connectDB()
-    const collection = db.collection('blogPosts')
+    const collection = await getBlogCollection()
     
     // Try to find by ObjectId first, then by id field
     let post = await collection.findOne({ _id: new ObjectId(id) })
@@ -42,8 +48,7 @@ export async function PUT(
 ) {
   try {
     const { id } = await params
-    const db = await connectDB()
-    const collection = db.collection('blogPosts')
+    const collection = await getBlogCollection()
     
     const postData: StoredBlogPost = await request.json()
     const { id: _id, _id: __id, ...updateData } = postData
@@ -82,8 +87,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    const db = await connectDB()
-    const collection = db.collection('blogPosts')
+    const collection = await getBlogCollection()
     
     // Try to delete by ObjectId first, then by id field
     let result = await collection.deleteOne({ _id: new ObjectId(id) })
