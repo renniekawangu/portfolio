@@ -4,11 +4,13 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePortfolioData } from '@/app/admin/data-context'
 import BlogForm from './BlogForm'
+import BlogImporter from './BlogImporter'
 import { BlogPost } from '../../blog/data'
 
 export default function BlogManager() {
   const { blogPosts, addBlogPost, updateBlogPost, deleteBlogPost } = usePortfolioData()
   const [showForm, setShowForm] = useState(false)
+  const [showImporter, setShowImporter] = useState(false)
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -25,6 +27,17 @@ export default function BlogManager() {
       await addBlogPost(post)
     }
     setShowForm(false)
+  }
+
+  const handleImportPosts = async (posts: BlogPost[]) => {
+    try {
+      for (const post of posts) {
+        await addBlogPost(post)
+      }
+      setShowImporter(false)
+    } catch (err) {
+      console.error('Error importing posts:', err)
+    }
   }
 
   const handleDeletePost = async (id: number | string) => {
@@ -51,15 +64,23 @@ export default function BlogManager() {
           <h2 className="text-2xl md:text-3xl font-bold text-white">Blog Posts</h2>
           <p className="text-gray-400 mt-1 text-sm md:text-base">Create, edit, and manage your blog posts</p>
         </div>
-        <button
-          onClick={() => {
-            setEditingPost(null)
-            setShowForm(true)
-          }}
-          className="w-full md:w-auto btn-gradient text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg text-sm md:text-base"
-        >
-          + New Post
-        </button>
+        <div className="flex gap-2 w-full md:w-auto">
+          <button
+            onClick={() => {
+              setEditingPost(null)
+              setShowForm(true)
+            }}
+            className="flex-1 md:flex-none btn-gradient text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg text-sm md:text-base"
+          >
+            + New Post
+          </button>
+          <button
+            onClick={() => setShowImporter(true)}
+            className="flex-1 md:flex-none bg-blue-600 hover:bg-blue-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all duration-300 text-sm md:text-base"
+          >
+            ⬆ Import
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -70,6 +91,16 @@ export default function BlogManager() {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
       />
+
+      {/* Importer Modal */}
+      <AnimatePresence>
+        {showImporter && (
+          <BlogImporter
+            onImport={handleImportPosts}
+            onCancel={() => setShowImporter(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Form Modal */}
       <AnimatePresence>

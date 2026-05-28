@@ -1,0 +1,15 @@
+{
+  "title": "SQL Injection Vulnerability in Payment Gateway",
+  "slug": "sql-injection-payment-gateway",
+  "excerpt": "Discovered and disclosed a critical SQL injection vulnerability that could have compromised thousands of user records.",
+  "date": "2024-12-15",
+  "category": "Web Security",
+  "content": "# SQL Injection Vulnerability in Payment Gateway\n\n## Overview\nDuring a security assessment of a popular payment gateway, I discovered a critical SQL injection vulnerability in the login endpoint that could allow attackers to bypass authentication and access sensitive user data.\n\n## Vulnerability Details\nThe vulnerability existed in the user authentication mechanism where user input was directly concatenated into SQL queries without proper sanitization.\n\n```sql\nSELECT * FROM users WHERE email = '$email' AND password = '$password'\n```\n\n### Attack Vector\nAn attacker could craft a malicious email parameter like:\n```\nadmin'--\n```\n\nThis would bypass the password check entirely and grant unauthorized access.\n\n## Impact\n- Unauthorized access to user accounts\n- Potential data breach affecting millions of users\n- Financial fraud and transaction manipulation\n\n## Remediation\n- Used parameterized queries and prepared statements\n- Implemented input validation and sanitization\n- Added rate limiting on login attempts\n- Deployed Web Application Firewall (WAF) rules",
+  "readTime": "8 min read",
+  "type": "writeup",
+  "difficulty": "Critical",
+  "bountyAmount": 5000,
+  "tags": ["SQLi", "Authentication", "Database", "Critical"],
+  "pocVideoUrl": "https://drive.google.com/file/d/example",
+  "reportUrl": "https://drive.google.com/file/d/example"
+}
