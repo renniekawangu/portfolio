@@ -1,5 +1,5 @@
 export interface BlogPost {
-  id: number
+  id: number | string
   slug: string
   title: string
   excerpt: string

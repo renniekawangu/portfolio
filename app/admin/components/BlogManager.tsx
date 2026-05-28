@@ -27,7 +27,7 @@ export default function BlogManager() {
     setShowForm(false)
   }
 
-  const handleDeletePost = async (id: number) => {
+  const handleDeletePost = async (id: number | string) => {
     if (confirm('Are you sure you want to delete this post?')) {
       await deleteBlogPost(id)
     }

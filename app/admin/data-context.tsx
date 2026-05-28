@@ -17,7 +17,7 @@ interface DataContextType {
   // Blog methods
   addBlogPost: (post: BlogPost) => Promise<void>
   updateBlogPost: (post: BlogPost) => Promise<void>
-  deleteBlogPost: (id: number) => Promise<void>
+  deleteBlogPost: (id: number | string) => Promise<void>
   
   // Project methods
   addProject: (project: Project) => Promise<void>
@@ -186,17 +186,19 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         setBlogPosts([newPost, ...blogPosts])
       } else {
         // Fallback to local state
+        const nextId = Math.max(...blogPosts.map(p => typeof p.id === 'number' ? p.id : 0), 0) + 1
         const newPost = {
           ...post,
-          id: Math.max(...blogPosts.map(p => p.id), 0) + 1
+          id: nextId
         }
         setBlogPosts([newPost, ...blogPosts])
       }
     } catch (error) {
       console.error('Failed to add blog post:', error)
+      const nextId = Math.max(...blogPosts.map(p => typeof p.id === 'number' ? p.id : 0), 0) + 1
       const newPost = {
         ...post,
-        id: Math.max(...blogPosts.map(p => p.id), 0) + 1
+        id: nextId
       }
       setBlogPosts([newPost, ...blogPosts])
     }
@@ -222,7 +224,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const deleteBlogPost = async (id: number) => {
+  const deleteBlogPost = async (id: number | string) => {
     try {
       const post = blogPosts.find(p => p.id === id)
       if (!post) return
