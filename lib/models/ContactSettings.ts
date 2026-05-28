@@ -6,6 +6,8 @@ export interface IContactSettings extends Document {
   github?: string
   linkedin?: string
   twitter?: string
+  facebook?: string
+  instagram?: string
   createdAt?: Date
   updatedAt?: Date
 }
@@ -19,7 +21,9 @@ const ContactSettingsSchema = new Schema(
     phone: String,
     github: String,
     linkedin: String,
-    twitter: String
+    twitter: String,
+    facebook: String,
+    instagram: String
   },
   {
     timestamps: true
