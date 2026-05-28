@@ -8,14 +8,14 @@ export default function Footer() {
             <p className="text-gray-400 text-sm">Full-Stack Web Development & Security</p>
           </div>
           <div className="flex flex-wrap justify-center gap-6">
-            <a href="https://github.com/renniekawangu" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors duration-300 font-medium">
-              GitHub
+            <a href="https://instagram.com/rennie_kawangu" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors duration-300 font-medium">
+              Instagram
             </a>
-            <a href="https://www.linkedin.com/in/rennie-kawangu-7a3195280/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors duration-300 font-medium">
+            <a href="https://facebook.com/rennie.kawangu" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors duration-300 font-medium">
+              Facebook
+            </a>
+            <a href="hhttps://linkedin.com/in/rennie-kawangu" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors duration-300 font-medium">
               LinkedIn
-            </a>
-            <a href="mailto:renniekawangu@gmail.com" className="text-gray-400 hover:text-orange-400 transition-colors duration-300 font-medium">
-              Email
             </a>
           </div>
         </div>

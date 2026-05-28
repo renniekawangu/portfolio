@@ -77,11 +77,11 @@ export default function ContactSettingsManager() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-white mb-2">GitHub</label>
+              <label className="block text-sm font-semibold text-white mb-2">Facebook</label>
               <input
                 type="url"
-                name="github"
-                value={formSettings.github || ''}
+                name="facebook"
+                value={formSettings.facebook || ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
@@ -99,11 +99,11 @@ export default function ContactSettingsManager() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-white mb-2">Twitter</label>
+              <label className="block text-sm font-semibold text-white mb-2">Instagram</label>
               <input
                 type="url"
-                name="twitter"
-                value={formSettings.twitter || ''}
+                name="instagram"
+                value={formSettings.instagram || ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
@@ -149,11 +149,11 @@ export default function ContactSettingsManager() {
                 <p className="text-lg text-white font-semibold">{settings.phone}</p>
               </div>
             )}
-            {settings.github && (
+            {settings.facebook && (
               <div>
-                <p className="text-sm text-gray-400">GitHub</p>
-                <a href={settings.github} target="_blank" rel="noopener noreferrer" className="text-lg text-orange-400 hover:text-orange-300 font-semibold">
-                  {settings.github}
+                <p className="text-sm text-gray-400">Facebook</p>
+                <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="text-lg text-orange-400 hover:text-orange-300 font-semibold">
+                  {settings.facebook}
                 </a>
               </div>
             )}
@@ -165,11 +165,11 @@ export default function ContactSettingsManager() {
                 </a>
               </div>
             )}
-            {settings.twitter && (
+            {settings.instagram && (
               <div>
-                <p className="text-sm text-gray-400">Twitter</p>
-                <a href={settings.twitter} target="_blank" rel="noopener noreferrer" className="text-lg text-orange-400 hover:text-orange-300 font-semibold">
-                  {settings.twitter}
+                <p className="text-sm text-gray-400">Instagram</p>
+                <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="text-lg text-orange-400 hover:text-orange-300 font-semibold">
+                  {settings.instagram}
                 </a>
               </div>
             )}

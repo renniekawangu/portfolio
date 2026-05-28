@@ -13,10 +13,6 @@ interface Comment {
   createdAt: string
 }
 
-interface CommentManagerProps {
-  // Remove adminPassword prop since we'll use session
-}
-
 export default function CommentManager() {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)

@@ -10,20 +10,45 @@ export default function Blog() {
   const { blogPosts } = usePortfolioData()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedType, setSelectedType] = useState<'all' | 'writeup' | 'news' | 'story'>('all')
+  const [selectedTag, setSelectedTag] = useState<string>('all')
+
+  const sortedPosts = useMemo(() => {
+    return [...blogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  }, [blogPosts])
+
+  const availableTags = useMemo(() => {
+    return Array.from(new Set(blogPosts.flatMap(post => post.tags || []))).sort((a, b) => a.localeCompare(b))
+  }, [blogPosts])
+
+  const stats = useMemo(() => ({
+    total: blogPosts.length,
+    writeups: blogPosts.filter(post => post.type === 'writeup').length,
+    news: blogPosts.filter(post => post.type === 'news').length,
+    stories: blogPosts.filter(post => post.type === 'story').length,
+  }), [blogPosts])
 
   // Filter posts
   const filteredPosts = useMemo(() => {
-    return blogPosts.filter(post => {
+    return sortedPosts.filter(post => {
       const matchesSearch = 
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.content.toLowerCase().includes(searchQuery.toLowerCase())
       
       const matchesType = selectedType === 'all' || post.type === selectedType
+      const matchesTag = selectedTag === 'all' || (post.tags || []).includes(selectedTag)
       
-      return matchesSearch && matchesType
+      return matchesSearch && matchesType && matchesTag
     })
-  }, [blogPosts, searchQuery, selectedType])
+  }, [sortedPosts, searchQuery, selectedType, selectedTag])
+
+  const hasActiveFilters = searchQuery.length > 0 || selectedType !== 'all' || selectedTag !== 'all'
+
+  const resetFilters = () => {
+    setSearchQuery('')
+    setSelectedType('all')
+    setSelectedTag('all')
+  }
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -64,6 +89,20 @@ export default function Blog() {
           <motion.p variants={itemVariants} className="text-xl text-gray-300">
             Real-world cybersecurity stories, vulnerability breakdowns, and deep dives into how modern systems get exploited—and secured.
           </motion.p>
+
+          <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+            {[
+              { label: 'Posts', value: stats.total },
+              { label: 'Writeups', value: stats.writeups },
+              { label: 'News', value: stats.news },
+              { label: 'Stories', value: stats.stories },
+            ].map((item) => (
+              <div key={item.label} className="rounded-xl border border-gray-700 bg-gray-900/60 px-4 py-4">
+                <p className="text-2xl font-bold text-white">{item.value}</p>
+                <p className="text-sm text-gray-400">{item.label}</p>
+              </div>
+            ))}
+          </motion.div>
 
           {/* Navigation Links */}
           <motion.div variants={itemVariants} className="flex gap-4 mt-6">
@@ -144,12 +183,54 @@ export default function Blog() {
                 </button>
               </div>
             </div>
+
+            {/* Tags */}
+            {availableTags.length > 0 && (
+              <div>
+                <p className="text-sm font-semibold text-gray-400 mb-3">Tags</p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setSelectedTag('all')}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      selectedTag === 'all'
+                        ? 'bg-orange-600 text-white'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    }`}
+                  >
+                    All Tags
+                  </button>
+                  {availableTags.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => setSelectedTag(tag)}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        selectedTag === tag
+                          ? 'bg-orange-600 text-white'
+                          : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                      }`}
+                    >
+                      #{tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Results count */}
-          <p className="text-sm text-gray-500 mt-4">
-            {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''} found
-          </p>
+          <div className="flex flex-wrap items-center gap-3 mt-4">
+            <p className="text-sm text-gray-500">
+              {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''} found
+            </p>
+            {hasActiveFilters && (
+              <button
+                onClick={resetFilters}
+                className="text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
         </motion.div>
 
         {/* Main Content Grid with Sidebar */}
@@ -161,79 +242,99 @@ export default function Blog() {
             variants={containerVariants}
             className="lg:col-span-2 grid gap-8"
           >
-            {filteredPosts.map((post) => (
-              <motion.article
-                key={post.id}
-                variants={itemVariants}
-                className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700/50 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10 group"
-              >
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-wrap items-center gap-3">
-                  {/* Post Type Badge */}
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border uppercase tracking-wide ${
-                    post.type === 'writeup' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
-                    post.type === 'news' ? 'bg-blue-600/20 text-blue-400 border-blue-600/30' :
-                    'bg-purple-600/20 text-purple-400 border-purple-600/30'
-                  }`}>
-                    {post.type}
-                  </span>
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[post.category] || 'bg-purple-600/20 text-purple-400 border-purple-600/30'}`}>
-                    {post.category}
-                  </span>
-                  {post.difficulty && (
-                    <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${
-                      post.difficulty === 'Critical' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
-                      post.difficulty === 'High' ? 'bg-orange-600/20 text-orange-400 border-orange-600/30' :
-                      post.difficulty === 'Medium' ? 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30' :
-                      'bg-green-600/20 text-green-400 border-green-600/30'
-                    }`}>
-                      {post.difficulty}
-                    </span>
-                  )}
-                  {post.bountyAmount && (
-                    <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-green-600/20 text-green-400 border border-green-600/30">
-                      ${post.bountyAmount.toLocaleString()}
-                    </span>
-                  )}
-                  <span className="text-sm text-gray-400 ml-auto">
-                    {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                  </span>
-                  <span className="text-sm text-gray-500">{post.readTime}</span>
-                </div>
-
-                {/* Tags */}
-                {post.tags && post.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
-                      <span key={tag} className="inline-block px-2 py-1 rounded text-xs bg-gray-700/50 text-gray-300">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <Link href={`/blog/${post.slug}`} className="group">
-                  <h2 className="text-xl md:text-2xl font-semibold text-white mb-3 group-hover:text-orange-400 transition-colors duration-300 line-clamp-2">
-                    {post.title}
-                  </h2>
-                </Link>
-
-                <p className="text-gray-400 text-base leading-relaxed mb-4 line-clamp-3">
-                  {post.excerpt}
-                </p>
-
-                <div className="flex items-center justify-between">
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="inline-flex items-center text-orange-400 hover:text-orange-300 transition-colors duration-300 font-semibold group"
+            {blogPosts.length > 0 ? (
+              filteredPosts.length > 0 ? (
+                filteredPosts.map((post) => (
+                  <motion.article
+                    key={post.id}
+                    variants={itemVariants}
+                    className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700/50 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10 group"
                   >
-                    Read More
-                    <span className="ml-2 group-hover:translate-x-2 transition-transform duration-300">→</span>
-                  </Link>
-                </div>
-              </div>
-            </motion.article>
-            ))}
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-wrap items-center gap-3">
+                        {/* Post Type Badge */}
+                        <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border uppercase tracking-wide ${
+                          post.type === 'writeup' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
+                          post.type === 'news' ? 'bg-blue-600/20 text-blue-400 border-blue-600/30' :
+                          'bg-purple-600/20 text-purple-400 border-purple-600/30'
+                        }`}>
+                          {post.type}
+                        </span>
+                        <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[post.category] || 'bg-purple-600/20 text-purple-400 border-purple-600/30'}`}>
+                          {post.category}
+                        </span>
+                        {post.difficulty && (
+                          <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${
+                            post.difficulty === 'Critical' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
+                            post.difficulty === 'High' ? 'bg-orange-600/20 text-orange-400 border-orange-600/30' :
+                            post.difficulty === 'Medium' ? 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30' :
+                            'bg-green-600/20 text-green-400 border-green-600/30'
+                          }`}>
+                            {post.difficulty}
+                          </span>
+                        )}
+                        {post.bountyAmount && (
+                          <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-green-600/20 text-green-400 border border-green-600/30">
+                            ${post.bountyAmount.toLocaleString()}
+                          </span>
+                        )}
+                        <span className="text-sm text-gray-400 ml-auto">
+                          {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </span>
+                        <span className="text-sm text-gray-500">{post.readTime}</span>
+                      </div>
+
+                      {/* Tags */}
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {post.tags.map((tag) => (
+                            <span key={tag} className="inline-block px-2 py-1 rounded text-xs bg-gray-700/50 text-gray-300">
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      <Link href={`/blog/${post.slug}`} className="group">
+                        <h2 className="text-xl md:text-2xl font-semibold text-white mb-3 group-hover:text-orange-400 transition-colors duration-300 line-clamp-2">
+                          {post.title}
+                        </h2>
+                      </Link>
+
+                      <p className="text-gray-400 text-base leading-relaxed mb-4 line-clamp-3">
+                        {post.excerpt}
+                      </p>
+
+                      <div className="flex items-center justify-between">
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="inline-flex items-center text-orange-400 hover:text-orange-300 transition-colors duration-300 font-semibold group"
+                        >
+                          Read More
+                          <span className="ml-2 group-hover:translate-x-2 transition-transform duration-300">→</span>
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.article>
+                ))
+              ) : (
+                <motion.div
+                  variants={itemVariants}
+                  className="rounded-2xl border border-dashed border-gray-700 bg-gray-900/60 p-10 text-center"
+                >
+                  <h2 className="text-2xl font-bold text-white mb-3">No posts match your filters</h2>
+                  <p className="text-gray-400 mb-6">
+                    Try a different tag or content type, or clear the filters to see the full archive.
+                  </p>
+                  <button
+                    onClick={resetFilters}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-500 transition-colors"
+                  >
+                    Reset filters
+                  </button>
+                </motion.div>
+              )
+            ) : null}
           </motion.div>
 
           {/* Sidebar with Popular Posts */}

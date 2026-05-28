@@ -48,7 +48,9 @@ const DEFAULT_CONTACT_SETTINGS: ContactSettings = {
   phone: '',
   github: '',
   linkedin: '',
-  twitter: ''
+  twitter: '',
+  facebook: '',
+  instagram: ''
 }
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
