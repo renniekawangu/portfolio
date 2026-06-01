@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { Project } from '../data/projects'
 
 interface ProjectFormProps {
@@ -194,10 +195,11 @@ export default function ProjectForm({ onSubmit, initialProject }: ProjectFormPro
         />
         {formData.image && (
           <div className="mt-3 relative w-full h-48 rounded-lg overflow-hidden border border-gray-600">
-            <img
+            <Image
               src={formData.image}
               alt="Project preview"
-              className="w-full h-full object-cover"
+              layout="fill"
+              objectFit="cover"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22200%22 viewBox=%220 0 400 200%22%3E%3Crect width=%22400%22 height=%22200%22 fill=%22%23374151%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22 font-size=%2216%22 fill=%22%239CA3AF%22%3EImage not found%3C/text%3E%3C/svg%3E'
               }}

@@ -19,7 +19,9 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
       category: 'Web Security',
       content: '',
       readTime: '5 min read',
-      type: 'writeup'
+      type: 'writeup',
+      status: 'draft',
+      publishedAt: ''
     }
   )
 
@@ -160,6 +162,35 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
             <option value="news">News (Announcements & Updates)</option>
             <option value="story">Story (Personal Experience)</option>
           </select>
+        </div>
+      </div>
+
+      {/* Status & Publish Date */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+        <div>
+          <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Status</label>
+          <select
+            name="status"
+            value={formData.status || 'draft'}
+            onChange={handleChange}
+            className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+          >
+            <option value="draft">Draft</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="published">Published</option>
+            <option value="archived">Archived</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Published At</label>
+          <input
+            type="datetime-local"
+            name="publishedAt"
+            value={formData.publishedAt || ''}
+            onChange={handleChange}
+            className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+          />
+          <p className="text-xs text-gray-500 mt-1">Used for scheduled or published posts</p>
         </div>
       </div>
 

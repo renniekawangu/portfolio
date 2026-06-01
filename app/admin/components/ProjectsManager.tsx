@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { Project } from '../data/projects'
@@ -118,10 +119,11 @@ export default function ProjectsManager() {
               <div className="flex flex-col gap-4">
                 {project.image && (
                   <div className="relative w-full h-40 rounded-lg overflow-hidden border border-gray-700">
-                    <img
+                    <Image
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover"
+                      layout="fill"
+                      objectFit="cover"
                       onError={(e) => {
                         (e.target as HTMLImageElement).style.display = 'none'
                       }}

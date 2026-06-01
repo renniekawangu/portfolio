@@ -1,19 +1,48 @@
 export interface BlogPost {
+  // Core Fields
   id: number | string
   slug: string
   title: string
   excerpt: string
-  date: string
-  category: string
   content: string
-  readTime: string
+  category: string
   type: 'writeup' | 'news' | 'story'
-  pocVideoUrl?: string
-  reportUrl?: string
   tags?: string[]
+
+  // Display & UX
+  heroImage?: string
+  readTime: string
+  date: string
+
+  // Publishing Workflow
+  status?: 'draft' | 'scheduled' | 'published' | 'archived'
+  publishedAt?: string
+  createdAt?: string
+  updatedAt?: string
+
+  // Author & Attribution
+  author?: string
+  authorAvatar?: string
+  authorRole?: string
+
+  // SEO Metadata
+  seoTitle?: string
+  seoDescription?: string
+  canonicalUrl?: string
+  ogImage?: string
+
+  // Security Research (for writeups)
+  cve?: string
+  cwe?: string
+  cvss?: number
+  affectedProduct?: string
+  vendor?: string
   difficulty?: 'Low' | 'Medium' | 'High' | 'Critical'
   bountyAmount?: number
-  heroImage?: string
+
+  // External Resources
+  pocVideoUrl?: string
+  reportUrl?: string
 }
 
 export const blogPosts: BlogPost[] = [

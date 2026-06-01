@@ -2,104 +2,236 @@
 
 import { useState } from 'react'
 import { BlogPost } from '../../blog/data'
+import BlogImportPreview from './BlogImportPreview'
+import BlogImportSummary, { ImportSummaryData } from './BlogImportSummary'
+import { parseFrontmatter, extractBlogMetadata } from '@/lib/parseYaml'
+import { calculateReadTime, getReadTime } from '@/lib/calculateReadTime'
+import { validateBlogPost } from '@/lib/validateBlogPost'
+import { sanitizeJsonObject, sanitizeMarkdown, sanitizeUrl, validateFileSize, validateMimeType, createRateLimiter } from '@/lib/sanitize'
+import { detectDuplicate } from '@/lib/detectDuplicates'
+import { determineBestHeroImage } from '@/lib/heroImageHandler'
+import { extractZipFile, validateZipFile } from '@/lib/zipExtractor'
+import { recordImport } from '@/lib/importAnalytics'
 
 interface BlogImporterProps {
   onImport: (posts: BlogPost[]) => void
   onCancel: () => void
+  existingPosts?: BlogPost[]
 }
 
-export default function BlogImporter({ onImport, onCancel }: BlogImporterProps) {
-  const [error, setError] = useState<string>('')
-  const [loading, setLoading] = useState(false)
+const rateLimitImport = createRateLimiter(8, 60_000)
 
-  const parseJsonFile = (content: string): BlogPost => {
+export default function BlogImporter({ onImport, onCancel, existingPosts = [] }: BlogImporterProps) {
+  const [error, setError] = useState<string>('')
+  const [warnings, setWarnings] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
+  const [dragActive, setDragActive] = useState(false)
+  const [previewPosts, setPreviewPosts] = useState<Partial<BlogPost>[]>([])
+  const [duplicates, setDuplicates] = useState<Map<number, { similarity: number; conflictingTitle?: string }>>(new Map())
+  const [summary, setSummary] = useState<ImportSummaryData | null>(null)
+  const [stage, setStage] = useState<'upload' | 'preview' | 'summary'>('upload')
+
+  const parseJsonFile = (content: string): Partial<BlogPost> => {
     try {
-      const data = JSON.parse(content)
-      
-      // Validate required fields
-      if (!data.title || !data.slug || !data.excerpt || !data.content) {
+      const parsed = JSON.parse(content) as Record<string, unknown>
+      const data = sanitizeJsonObject(parsed) as Record<string, unknown>
+
+      if (!data.title || !data.slug || !data.excerpt || !data.content || typeof data.content !== 'string') {
         throw new Error('Missing required fields: title, slug, excerpt, content')
       }
 
-      // Generate ID based on timestamp if not provided
-      const id = data.id || Date.now()
-      
       return {
-        id,
-        slug: data.slug,
-        title: data.title,
-        excerpt: data.excerpt,
-        date: data.date || new Date().toISOString().split('T')[0],
-        category: data.category || 'Web Security',
-        content: data.content,
-        readTime: data.readTime || '5 min read',
-        type: data.type || 'writeup',
-        pocVideoUrl: data.pocVideoUrl,
-        reportUrl: data.reportUrl,
-        tags: data.tags,
-        difficulty: data.difficulty,
-        bountyAmount: data.bountyAmount,
-        heroImage: data.heroImage
+        id: (data.id as string | number) || Date.now(),
+        slug: String(data.slug),
+        title: String(data.title),
+        excerpt: String(data.excerpt),
+        date: (data.date as string) || new Date().toISOString().split('T')[0],
+        category: (data.category as string) || 'Web Security',
+        content: sanitizeMarkdown(String(data.content)),
+        readTime: getReadTime(String(data.content), data.readTime as string | undefined),
+        type: ((data.type as BlogPost['type']) || 'writeup'),
+        status: (data.status as BlogPost['status']) || 'draft',
+        publishedAt: data.publishedAt as string | undefined,
+        createdAt: (data.createdAt as string) || new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        author: (data.author as string) || 'Site Owner',
+        authorAvatar: sanitizeUrl(data.authorAvatar as string | undefined),
+        authorRole: data.authorRole as string | undefined,
+        seoTitle: (data.seoTitle as string) || String(data.title).substring(0, 60),
+        seoDescription: ((data.seoDescription as string) || String(data.excerpt)).substring(0, 160),
+        canonicalUrl: sanitizeUrl(data.canonicalUrl as string | undefined),
+        ogImage: sanitizeUrl(data.ogImage as string | undefined),
+        pocVideoUrl: sanitizeUrl(data.pocVideoUrl as string | undefined),
+        reportUrl: sanitizeUrl(data.reportUrl as string | undefined),
+        tags: Array.isArray(data.tags) ? (data.tags as string[]) : undefined,
+        difficulty: data.difficulty as BlogPost['difficulty'] | undefined,
+        bountyAmount: typeof data.bountyAmount === 'number' ? data.bountyAmount : undefined,
+        cve: data.cve as string | undefined,
+        cwe: data.cwe as string | undefined,
+        cvss: typeof data.cvss === 'number' ? data.cvss : undefined,
+        affectedProduct: data.affectedProduct as string | undefined,
+        vendor: data.vendor as string | undefined,
+        heroImage: determineBestHeroImage({
+          heroImage: sanitizeUrl(data.heroImage as string | undefined),
+          markdownContent: String(data.content),
+          category: (data.category as string) || 'Web Security',
+          title: String(data.title)
+        })
       }
     } catch (err) {
       throw new Error(`Invalid JSON format: ${err instanceof Error ? err.message : String(err)}`)
     }
   }
 
-  const parseMarkdownFile = (content: string, filename: string): BlogPost => {
-    // Extract frontmatter (YAML-like format at the top)
-    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/
-    const match = content.match(frontmatterRegex)
+  const parseMarkdownFile = (content: string, filename: string): Partial<BlogPost> => {
+    const { metadata, content: markdownBody } = parseFrontmatter(content)
+    const meta = extractBlogMetadata(metadata)
+    const sanitizedContent = sanitizeMarkdown(markdownBody)
 
-    let metadata: Record<string, string> = {}
-    let markdownContent = content
+    const slug = (meta.slug as string) || filename.replace(/\.md$/, '').toLowerCase().replace(/\s+/g, '-')
+    const title = (meta.title as string) || filename.replace(/\.md$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
 
-    if (match) {
-      const frontmatterText = match[1]
-      markdownContent = match[2]
-
-      // Parse simple YAML-like frontmatter
-      frontmatterText.split('\n').forEach(line => {
-        const [key, ...valueParts] = line.split(':')
-        if (key && valueParts.length > 0) {
-          const value = valueParts.join(':').trim().replace(/^["']|["']$/g, '')
-          metadata[key.trim()] = value
-        }
-      })
-    }
-
-    // Generate slug from filename if not in frontmatter
-    const slug = metadata.slug || filename.replace(/\.md$/, '').toLowerCase().replace(/\s+/g, '-')
-
-    // Generate title from filename if not in frontmatter
-    const title = metadata.title || filename.replace(/\.md$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-
-    // Extract first paragraph as excerpt if not in frontmatter
-    const excerptMatch = markdownContent.match(/^[^#\n][\s\S]*?(?=\n\n|\n#|$)/)
-    const excerpt = metadata.excerpt || (excerptMatch ? excerptMatch[0].substring(0, 160).trim() : 'No excerpt provided')
-
-    // Parse comma-separated tags
-    const tags = metadata.tags ? metadata.tags.split(',').map(t => t.trim()) : undefined
-
-    const id = metadata.id ? parseInt(metadata.id, 10) : Date.now()
+    const excerptMatch = sanitizedContent.match(/^[^#\n][\s\S]*?(?=\n\n|\n#|$)/)
+    const excerpt = (meta.excerpt as string) || (excerptMatch ? excerptMatch[0].substring(0, 160).trim() : title)
 
     return {
-      id,
+      id: (meta.id as string | number) || Date.now(),
       slug,
       title,
       excerpt,
-      date: metadata.date || new Date().toISOString().split('T')[0],
-      category: metadata.category || 'Web Security',
-      content: markdownContent,
-      readTime: metadata.readTime || '5 min read',
-      type: (metadata.type as 'writeup' | 'news' | 'story') || 'writeup',
-      pocVideoUrl: metadata.pocVideoUrl,
-      reportUrl: metadata.reportUrl,
-      tags,
-      difficulty: metadata.difficulty as 'Low' | 'Medium' | 'High' | 'Critical' | undefined,
-      bountyAmount: metadata.bountyAmount ? parseInt(metadata.bountyAmount, 10) : undefined,
-      heroImage: metadata.heroImage
+      date: (meta.date as string) || new Date().toISOString().split('T')[0],
+      category: (meta.category as string) || 'Web Security',
+      content: sanitizedContent,
+      readTime: getReadTime(sanitizedContent, meta.readTime as string | undefined),
+      type: ((meta.type as BlogPost['type']) || 'writeup'),
+      status: (meta.status as BlogPost['status']) || 'draft',
+      publishedAt: meta.publishedAt as string | undefined,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      author: (meta.author as string) || 'Site Owner',
+      authorAvatar: sanitizeUrl(meta.authorAvatar as string | undefined),
+      authorRole: meta.authorRole as string | undefined,
+      tags: Array.isArray(meta.tags) ? (meta.tags as string[]) : undefined,
+      difficulty: meta.difficulty as BlogPost['difficulty'] | undefined,
+      bountyAmount: typeof meta.bountyAmount === 'number' ? meta.bountyAmount : undefined,
+      cve: meta.cve as string | undefined,
+      cwe: meta.cwe as string | undefined,
+      cvss: typeof meta.cvss === 'number' ? meta.cvss : undefined,
+      affectedProduct: meta.affectedProduct as string | undefined,
+      vendor: meta.vendor as string | undefined,
+      seoTitle: ((meta.seoTitle as string) || title).substring(0, 60),
+      seoDescription: ((meta.seoDescription as string) || excerpt).substring(0, 160),
+      canonicalUrl: sanitizeUrl(meta.canonicalUrl as string | undefined),
+      ogImage: sanitizeUrl(meta.ogImage as string | undefined),
+      pocVideoUrl: sanitizeUrl(meta.pocVideoUrl as string | undefined),
+      reportUrl: sanitizeUrl(meta.reportUrl as string | undefined),
+      heroImage: determineBestHeroImage({
+        heroImage: sanitizeUrl(meta.heroImage as string | undefined),
+        markdownContent: sanitizedContent,
+        category: (meta.category as string) || 'Web Security',
+        title
+      })
     }
+  }
+
+  const detectDuplicatesForPreview = (posts: Partial<BlogPost>[]) => {
+    const map = new Map<number, { similarity: number; conflictingTitle?: string }>()
+    posts.forEach((post, index) => {
+      if (!post.slug || !post.title || !post.content || !post.excerpt) return
+      const result = detectDuplicate(
+        {
+          slug: post.slug,
+          title: post.title,
+          content: post.content,
+          excerpt: post.excerpt
+        },
+        existingPosts.map(p => ({
+          id: p.id,
+          slug: p.slug,
+          title: p.title,
+          content: p.content,
+          excerpt: p.excerpt
+        }))
+      )
+      if (result.isDuplicate) {
+        map.set(index, {
+          similarity: result.similarity,
+          conflictingTitle: result.conflictingTitle
+        })
+      }
+    })
+    setDuplicates(map)
+  }
+
+  const processFiles = async (files: FileList | File[]) => {
+    if (!rateLimitImport()) {
+      throw new Error('Too many import attempts. Please wait a moment and retry.')
+    }
+
+    const nextWarnings: string[] = []
+    const importedPosts: Partial<BlogPost>[] = []
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+
+      if (!validateMimeType(file)) {
+        nextWarnings.push(`Skipped ${file.name}: unsupported MIME type`)
+        continue
+      }
+
+      if (!validateFileSize(file, 10)) {
+        nextWarnings.push(`Skipped ${file.name}: file exceeds 10MB size limit`)
+        continue
+      }
+
+      const isZip = file.name.toLowerCase().endsWith('.zip')
+      const isJson = file.name.toLowerCase().endsWith('.json')
+      const isMd = file.name.toLowerCase().endsWith('.md')
+
+      if (!isZip && !isJson && !isMd) {
+        nextWarnings.push(`Skipped ${file.name}: only .json, .md, and .zip are supported`)
+        continue
+      }
+
+      if (isZip) {
+        const zipCheck = validateZipFile(file)
+        if (!zipCheck.valid) {
+          throw new Error(zipCheck.errors.join('; '))
+        }
+        const extracted = await extractZipFile(file)
+        if (!extracted.success) {
+          throw new Error(extracted.errors.join('; '))
+        }
+        nextWarnings.push(...extracted.errors)
+
+        for (const extractedFile of extracted.files) {
+          if (extractedFile.type === 'json') {
+            importedPosts.push(parseJsonFile(extractedFile.content))
+          }
+          if (extractedFile.type === 'markdown') {
+            importedPosts.push(parseMarkdownFile(extractedFile.content, extractedFile.name))
+          }
+        }
+        continue
+      }
+
+      const content = await file.text()
+      if (isJson) {
+        importedPosts.push(parseJsonFile(content))
+      }
+      if (isMd) {
+        importedPosts.push(parseMarkdownFile(content, file.name))
+      }
+    }
+
+    if (importedPosts.length === 0) {
+      throw new Error('No valid posts were found in the selected files.')
+    }
+
+    setWarnings(nextWarnings)
+    setPreviewPosts(importedPosts)
+    detectDuplicatesForPreview(importedPosts)
+    setStage('preview')
   }
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,40 +240,138 @@ export default function BlogImporter({ onImport, onCancel }: BlogImporterProps) 
 
     setLoading(true)
     setError('')
+    setWarnings([])
 
     try {
-      const importedPosts: BlogPost[] = []
-
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        const isJson = file.name.endsWith('.json')
-        const isMd = file.name.endsWith('.md')
-
-        if (!isJson && !isMd) {
-          throw new Error(`Unsupported file type: ${file.name}. Only .json and .md files are supported.`)
-        }
-
-        const content = await file.text()
-
-        if (isJson) {
-          const post = parseJsonFile(content)
-          importedPosts.push(post)
-        } else if (isMd) {
-          const post = parseMarkdownFile(content, file.name)
-          importedPosts.push(post)
-        }
-      }
-
-      if (importedPosts.length > 0) {
-        onImport(importedPosts)
-      }
+      await processFiles(files)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while parsing files')
     } finally {
       setLoading(false)
-      // Reset input
       e.target.value = ''
     }
+  }
+
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+
+    if (loading) return
+
+    const files = e.dataTransfer.files
+    if (!files || files.length === 0) return
+
+    setLoading(true)
+    setError('')
+    setWarnings([])
+
+    try {
+      await processFiles(files)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while parsing dropped files')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const finalizeImport = (selectedPosts: Partial<BlogPost>[]) => {
+    const finalPosts: BlogPost[] = []
+    const finalWarnings: string[] = [...warnings]
+    const finalErrors: string[] = []
+
+    selectedPosts.forEach((post, index) => {
+      const validation = validateBlogPost(post)
+      if (!validation.valid || !post.title || !post.slug || !post.excerpt || !post.content) {
+        finalErrors.push(`Post ${index + 1}: ${validation.errors.map(e => e.message).join(', ')}`)
+        return
+      }
+
+      finalPosts.push({
+        id: post.id || Date.now() + index,
+        slug: post.slug,
+        title: post.title,
+        excerpt: post.excerpt,
+        date: post.date || new Date().toISOString().split('T')[0],
+        category: post.category || 'Web Security',
+        content: post.content,
+        readTime: post.readTime || calculateReadTime(post.content),
+        type: post.type || 'writeup',
+        status: post.status || 'draft',
+        publishedAt: post.publishedAt,
+        createdAt: post.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        author: post.author || 'Site Owner',
+        authorAvatar: post.authorAvatar,
+        authorRole: post.authorRole,
+        seoTitle: (post.seoTitle || post.title).substring(0, 60),
+        seoDescription: (post.seoDescription || post.excerpt).substring(0, 160),
+        canonicalUrl: post.canonicalUrl,
+        ogImage: post.ogImage || post.heroImage,
+        cve: post.cve,
+        cwe: post.cwe,
+        cvss: post.cvss,
+        affectedProduct: post.affectedProduct,
+        vendor: post.vendor,
+        pocVideoUrl: post.pocVideoUrl,
+        reportUrl: post.reportUrl,
+        tags: post.tags,
+        difficulty: post.difficulty,
+        bountyAmount: post.bountyAmount,
+        heroImage: post.heroImage
+      })
+    })
+
+    if (finalPosts.length > 0) {
+      onImport(finalPosts)
+    }
+
+    recordImport({
+      fileCount: previewPosts.length,
+      successCount: finalPosts.length,
+      failureCount: finalErrors.length,
+      duplicateCount: duplicates.size,
+      categories: Array.from(new Set(finalPosts.map(p => p.category))),
+      tags: Array.from(new Set(finalPosts.flatMap(p => p.tags || []))),
+      totalWords: finalPosts.reduce((sum, p) => sum + p.content.split(/\s+/).length, 0),
+      errors: finalErrors
+    })
+
+    setSummary({
+      success: finalErrors.length === 0,
+      totalFiles: previewPosts.length,
+      successCount: finalPosts.length,
+      failureCount: finalErrors.length,
+      duplicateCount: duplicates.size,
+      skippedCount: Math.max(previewPosts.length - finalPosts.length, 0),
+      errors: finalErrors,
+      warnings: finalWarnings
+    })
+    setStage('summary')
+  }
+
+  if (stage === 'preview') {
+    return (
+      <BlogImportPreview
+        posts={previewPosts}
+        duplicates={duplicates}
+        onCancel={() => {
+          setStage('upload')
+          setPreviewPosts([])
+          setDuplicates(new Map())
+        }}
+        onConfirm={finalizeImport}
+      />
+    )
+  }
+
+  if (stage === 'summary' && summary) {
+    return (
+      <BlogImportSummary
+        data={summary}
+        onClose={onCancel}
+      />
+    )
   }
 
   return (
@@ -169,6 +399,9 @@ export default function BlogImporter({ onImport, onCancel }: BlogImporterProps) 
               </li>
               <li>
                 <span className="text-orange-400 font-semibold">Markdown:</span> Content file with optional frontmatter YAML
+              </li>
+              <li>
+                <span className="text-orange-400 font-semibold">ZIP:</span> Bundle .json/.md with image assets for batch import
               </li>
             </ul>
           </div>
@@ -206,15 +439,36 @@ Content with **markdown** formatting.`}
             </pre>
           </div>
 
-          {/* Error */}
+          {/* Error / Warnings */}
           {error && (
             <div className="bg-red-600/20 border border-red-600/30 rounded-lg p-3">
               <p className="text-red-400 text-sm">{error}</p>
             </div>
           )}
+          {warnings.length > 0 && (
+            <div className="bg-yellow-600/20 border border-yellow-600/30 rounded-lg p-3">
+              <p className="text-yellow-300 text-sm font-semibold mb-1">Warnings</p>
+              {warnings.slice(0, 3).map((warn, idx) => (
+                <p key={idx} className="text-yellow-200 text-xs">• {warn}</p>
+              ))}
+            </div>
+          )}
 
           {/* File Input */}
-          <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+          <div
+            onDragOver={(e) => {
+              e.preventDefault()
+              setDragActive(true)
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault()
+              setDragActive(false)
+            }}
+            onDrop={handleDrop}
+            className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200 ${
+              dragActive ? 'border-orange-500 bg-orange-500/10' : 'border-gray-600'
+            }`}
+          >
             <label className="cursor-pointer">
               <div className="flex flex-col items-center gap-2">
                 <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,13 +478,13 @@ Content with **markdown** formatting.`}
                   {loading ? 'Processing...' : 'Click to select files or drag & drop'}
                 </span>
                 <span className="text-xs text-gray-400">
-                  {loading ? 'Please wait' : 'JSON or Markdown files (up to 10 files)'}
+                  {loading ? 'Please wait' : 'JSON, Markdown, or ZIP files (up to 10 files)'}
                 </span>
               </div>
               <input
                 type="file"
                 multiple
-                accept=".json,.md"
+                accept=".json,.md,.zip"
                 onChange={handleFileSelect}
                 disabled={loading}
                 className="hidden"

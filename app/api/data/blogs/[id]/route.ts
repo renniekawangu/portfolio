@@ -54,18 +54,24 @@ export async function PUT(
     const collection = await getBlogCollection()
     
     const postData: StoredBlogPost = await request.json()
-    const { id: _id, _id: __id, ...updateData } = postData
+    const { id: _postId, _id: _mongoId, ...updateData } = postData
+    const nowIso = new Date().toISOString()
+    const nextUpdate = {
+      ...updateData,
+      status: updateData.status || 'draft',
+      updatedAt: nowIso
+    }
     
     // Try to update by ObjectId first, then by id field
     let result = await collection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: updateData }
+      { $set: nextUpdate }
     )
     
     if (result.matchedCount === 0) {
       result = await collection.updateOne(
         { id: parseInt(id) },
-        { $set: updateData }
+        { $set: nextUpdate }
       )
     }
     

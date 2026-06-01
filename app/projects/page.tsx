@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import Image from 'next/image'
 import { usePortfolioData } from '@/app/admin/data-context'
 
 export default function Projects() {
@@ -88,10 +89,12 @@ export default function Projects() {
               {/* Project Image */}
               {project.image && (
                 <div className="relative w-full h-48 overflow-hidden bg-gray-700">
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    layout="fill"
+                    objectFit="cover"
+                    className="group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none'
                     }}

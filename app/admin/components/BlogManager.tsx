@@ -5,12 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { usePortfolioData } from '@/app/admin/data-context'
 import BlogForm from './BlogForm'
 import BlogImporter from './BlogImporter'
+import ImportAnalytics from './ImportAnalytics'
 import { BlogPost } from '../../blog/data'
 
 export default function BlogManager() {
   const { blogPosts, addBlogPost, updateBlogPost, deleteBlogPost } = usePortfolioData()
   const [showForm, setShowForm] = useState(false)
   const [showImporter, setShowImporter] = useState(false)
+  const [showImportAnalytics, setShowImportAnalytics] = useState(false)
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -66,6 +68,12 @@ export default function BlogManager() {
         </div>
         <div className="flex gap-2 w-full md:w-auto">
           <button
+            onClick={() => setShowImportAnalytics(true)}
+            className="flex-1 md:flex-none bg-purple-600 hover:bg-purple-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all duration-300 text-sm md:text-base"
+          >
+            📊 Imports
+          </button>
+          <button
             onClick={() => {
               setEditingPost(null)
               setShowForm(true)
@@ -98,7 +106,15 @@ export default function BlogManager() {
           <BlogImporter
             onImport={handleImportPosts}
             onCancel={() => setShowImporter(false)}
+            existingPosts={blogPosts}
           />
+        )}
+      </AnimatePresence>
+
+      {/* Import Analytics */}
+      <AnimatePresence>
+        {showImportAnalytics && (
+          <ImportAnalytics onClose={() => setShowImportAnalytics(false)} />
         )}
       </AnimatePresence>
 
@@ -158,6 +174,17 @@ export default function BlogManager() {
                   <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
                     <span className="px-2 md:px-3 py-1 bg-orange-600/20 text-orange-400 text-xs rounded-full border border-orange-600/30">
                       {post.category}
+                    </span>
+                    <span className={`px-2 md:px-3 py-1 text-xs rounded-full border ${
+                      post.status === 'published'
+                        ? 'bg-green-600/20 text-green-400 border-green-600/30'
+                        : post.status === 'scheduled'
+                          ? 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30'
+                          : post.status === 'archived'
+                            ? 'bg-gray-600/20 text-gray-400 border-gray-600/30'
+                            : 'bg-blue-600/20 text-blue-400 border-blue-600/30'
+                    }`}>
+                      {post.status || 'draft'}
                     </span>
                     <span className="text-xs md:text-sm text-gray-500">
                       {new Date(post.date).toLocaleDateString()}

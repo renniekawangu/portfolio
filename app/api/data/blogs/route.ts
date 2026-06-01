@@ -1,29 +1,5 @@
 import { connectToDatabase } from '@/lib/mongodb'
-import { BlogPost } from '@/app/blog/data'
 import mongoose from 'mongoose'
-
-// Create blog post schema dynamically
-const getBlogSchema = () => {
-  const schema = new mongoose.Schema({
-    id: Number,
-    slug: String,
-    title: String,
-    excerpt: String,
-    date: String,
-    category: String,
-    content: String,
-    readTime: String,
-    type: { type: String, enum: ['writeup', 'news', 'story'] },
-    pocVideoUrl: String,
-    reportUrl: String,
-    tags: [String],
-    difficulty: String,
-    bountyAmount: Number,
-    heroImage: String,
-    createdAt: { type: Date, default: Date.now }
-  })
-  return schema
-}
 
 const getBlogCollection = async () => {
   await connectToDatabase()
@@ -34,11 +10,25 @@ const getBlogCollection = async () => {
   return db.collection('blogPosts')
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const collection = await getBlogCollection()
-    
-    const posts = await collection.find({}).sort({ date: -1 }).toArray()
+
+    const { searchParams } = new URL(request.url)
+    const includeDrafts = searchParams.get('includeDrafts') === '1'
+
+    const nowIso = new Date().toISOString()
+    const filter = includeDrafts
+      ? {}
+      : {
+          $or: [
+            { status: { $exists: false } },
+            { status: 'published' },
+            { status: 'scheduled', publishedAt: { $lte: nowIso } }
+          ]
+        }
+
+    const posts = await collection.find(filter).sort({ date: -1 }).toArray()
     
     return Response.json(
       posts.map(post => ({
@@ -60,11 +50,14 @@ export async function POST(request: Request) {
     const post = await request.json()
     
     // Remove id field as MongoDB will use _id
-    const { id, ...postData } = post
+    const { id: _postId, ...postData } = post
     
+    const nowIso = new Date().toISOString()
     const result = await collection.insertOne({
       ...postData,
-      createdAt: new Date()
+      status: postData.status || 'draft',
+      createdAt: postData.createdAt || nowIso,
+      updatedAt: nowIso
     })
     
     return Response.json({

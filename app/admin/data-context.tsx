@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useCallback, useContext, useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { BlogPost } from '@/app/blog/data'
 import { Project } from '@/app/admin/data/projects'
 import { Service } from '@/app/admin/data/services'
@@ -54,6 +55,7 @@ const DEFAULT_CONTACT_SETTINGS: ContactSettings = {
 }
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [projects, setProjects] = useState<Project[]>([])
   const [services, setServices] = useState<Service[]>([])
@@ -80,8 +82,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       ])
 
       // Load all data from APIs (including blogs from MongoDB)
+      const includeDrafts = pathname?.startsWith('/admin') ? '1' : '0'
       const [blogsRes, projectsRes, servicesRes, skillsRes, contactRes] = await Promise.all([
-        fetch('/api/data/blogs'),
+        fetch(`/api/data/blogs?includeDrafts=${includeDrafts}`),
         fetch('/api/data/projects'),
         fetch('/api/data/services'),
         fetch('/api/data/skills'),
@@ -167,7 +170,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [pathname])
 
   // Load data on mount
   useEffect(() => {
