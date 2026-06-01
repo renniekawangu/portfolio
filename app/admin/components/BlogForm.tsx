@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { BlogPost } from '../../blog/data'
+import { determineBestHeroImage } from '@/lib/heroImageHandler'
 
 interface BlogFormProps {
   onSubmit: (post: BlogPost) => void
@@ -78,6 +79,23 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
         slug: generateSlug(title)
       }))
     }
+  }
+
+  const handleGenerateHeroImage = () => {
+    if (formData.heroImage && !confirm('Regenerate the hero image? This will replace the current URL.')) {
+      return
+    }
+    const nextHeroImage = determineBestHeroImage({
+      heroImage: formData.heroImage,
+      markdownContent: formData.content,
+      category: formData.category,
+      title: formData.title
+    })
+
+    setFormData(prev => ({
+      ...prev,
+      heroImage: nextHeroImage
+    }))
   }
 
   return (
@@ -224,15 +242,43 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
       {/* Hero Image */}
       <div>
         <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Hero Image URL</label>
-        <input
-          type="url"
-          name="heroImage"
-          value={formData.heroImage || ''}
-          onChange={handleChange}
-          placeholder="https://..."
-          className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
-        />
+        <div className="flex flex-col md:flex-row gap-2 md:gap-3">
+          <input
+            type="url"
+            name="heroImage"
+            value={formData.heroImage || ''}
+            onChange={handleChange}
+            placeholder="https://..."
+            className="flex-1 px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+          />
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleGenerateHeroImage}
+              className="px-4 py-2 md:py-3 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-500 transition-colors duration-300 text-sm md:text-base"
+            >
+              Generate
+            </button>
+            <button
+              type="button"
+              onClick={() => setFormData(prev => ({ ...prev, heroImage: '' }))}
+              className="px-4 py-2 md:py-3 bg-gray-700 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors duration-300 text-sm md:text-base"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
         <p className="text-xs text-gray-500 mt-1">Used in the blog list and post header</p>
+        {formData.heroImage && (
+          <div className="mt-3 overflow-hidden rounded-lg border border-gray-700/60 bg-gray-900/60">
+            <img
+              src={formData.heroImage}
+              alt="Hero preview"
+              className="h-40 w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        )}
       </div>
 
       {/* Difficulty & Bounty (only for writeups) */}
