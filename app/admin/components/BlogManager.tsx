@@ -170,6 +170,16 @@ export default function BlogManager() {
               className="bg-gray-800 border border-gray-700 rounded-lg p-3 md:p-6 hover:border-gray-600 transition-all duration-300"
             >
               <div className="flex flex-col md:flex-row justify-between items-start gap-3 md:gap-4">
+                {post.heroImage && (
+                  <div className="w-full md:w-40 flex-shrink-0 overflow-hidden rounded-lg border border-gray-700/60 bg-gray-900/60">
+                    <img
+                      src={post.heroImage}
+                      alt={`${post.title} hero`}
+                      className="h-32 w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
                 <div className="flex-1 w-full">
                   <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
                     <span className="px-2 md:px-3 py-1 bg-orange-600/20 text-orange-400 text-xs rounded-full border border-orange-600/30">

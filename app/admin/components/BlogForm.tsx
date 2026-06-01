@@ -18,6 +18,7 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
       date: new Date().toISOString().split('T')[0],
       category: 'Web Security',
       content: '',
+      heroImage: '',
       readTime: '5 min read',
       type: 'writeup',
       status: 'draft',
@@ -218,6 +219,20 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
             className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
           />
         </div>
+      </div>
+
+      {/* Hero Image */}
+      <div>
+        <label className="block text-xs md:text-sm font-semibold text-white mb-1 md:mb-2">Hero Image URL</label>
+        <input
+          type="url"
+          name="heroImage"
+          value={formData.heroImage || ''}
+          onChange={handleChange}
+          placeholder="https://..."
+          className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
+        />
+        <p className="text-xs text-gray-500 mt-1">Used in the blog list and post header</p>
       </div>
 
       {/* Difficulty & Bounty (only for writeups) */}

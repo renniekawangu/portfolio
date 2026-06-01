@@ -31,11 +31,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime: post.date,
       authors: ['Your Name'],
       tags: post.tags,
+      images: post.heroImage ? [{ url: post.heroImage }] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
+      images: post.heroImage ? [post.heroImage] : undefined,
     },
   }
 }
