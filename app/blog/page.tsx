@@ -251,6 +251,16 @@ export default function Blog() {
                     className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700/50 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10 group"
                   >
                     <div className="flex flex-col gap-4">
+                      {post.heroImage && (
+                        <div className="overflow-hidden rounded-xl border border-gray-700/60 bg-gray-900/60">
+                          <img
+                            src={post.heroImage}
+                            alt={`${post.title} hero`}
+                            className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
                       <div className="flex flex-wrap items-center gap-3">
                         {/* Post Type Badge */}
                         <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border uppercase tracking-wide ${

@@ -66,10 +66,10 @@ export function validateBlogPost(post: Partial<BlogPost>): ValidationResult {
       message: 'Excerpt is too short (minimum 20 characters)',
       severity: 'warning'
     })
-  } else if (post.excerpt.length > 250) {
+  } else if (post.excerpt.length > 160) {
     warnings.push({
       field: 'excerpt',
-      message: 'Excerpt is longer than recommended (max 250 characters)',
+      message: 'Excerpt is longer than recommended (max 160 characters)',
       severity: 'warning'
     })
   }

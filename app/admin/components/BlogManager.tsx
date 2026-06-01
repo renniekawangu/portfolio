@@ -71,7 +71,7 @@ export default function BlogManager() {
             onClick={() => setShowImportAnalytics(true)}
             className="flex-1 md:flex-none bg-purple-600 hover:bg-purple-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all duration-300 text-sm md:text-base"
           >
-            📊 Imports
+            Imports 📊
           </button>
           <button
             onClick={() => {
@@ -86,7 +86,7 @@ export default function BlogManager() {
             onClick={() => setShowImporter(true)}
             className="flex-1 md:flex-none bg-blue-600 hover:bg-blue-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all duration-300 text-sm md:text-base"
           >
-            ⬆ Import
+            Import
           </button>
         </div>
       </div>

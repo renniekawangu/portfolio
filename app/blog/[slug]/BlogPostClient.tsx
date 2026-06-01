@@ -226,6 +226,19 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
               {post.title}
             </motion.h1>
 
+            {post.heroImage && (
+              <motion.div variants={itemVariants} className="mb-8">
+                <div className="overflow-hidden rounded-2xl border border-gray-700/60 bg-gray-900/60">
+                  <img
+                    src={post.heroImage}
+                    alt={`${post.title} hero`}
+                    className="h-64 w-full object-cover md:h-80"
+                    loading="lazy"
+                  />
+                </div>
+              </motion.div>
+            )}
+
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-6 text-gray-400 mb-12 pb-8 border-b border-gray-700">
               {post.difficulty && (
                 <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${

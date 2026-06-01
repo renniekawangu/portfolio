@@ -47,6 +47,7 @@ export default function BlogImportPreview({ posts, onConfirm, onCancel, duplicat
     duplicates: duplicates.size,
     errors: posts.filter((p) => !validateBlogPost(p).valid).length
   }
+  const hasErrors = stats.errors > 0
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 md:p-4 overflow-y-auto">
@@ -271,9 +272,14 @@ export default function BlogImportPreview({ posts, onConfirm, onCancel, duplicat
           >
             Cancel
           </button>
+          {hasErrors && (
+            <div className="flex-1 text-xs md:text-sm text-red-400 flex items-center">
+              Fix all issues before importing.
+            </div>
+          )}
           <button
             onClick={handleConfirm}
-            disabled={stats.selected === 0}
+            disabled={stats.selected === 0 || hasErrors}
             className="flex-1 md:flex-none px-6 py-2 btn-gradient text-white rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:shadow-lg"
           >
             Import {stats.selected > 0 ? `(${stats.selected})` : ''}

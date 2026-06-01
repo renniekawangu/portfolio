@@ -10,7 +10,6 @@ import { validateBlogPost } from '@/lib/validateBlogPost'
 import { sanitizeJsonObject, sanitizeMarkdown, sanitizeUrl, validateFileSize, validateMimeType, createRateLimiter } from '@/lib/sanitize'
 import { detectDuplicate } from '@/lib/detectDuplicates'
 import { determineBestHeroImage } from '@/lib/heroImageHandler'
-import { extractZipFile, validateZipFile } from '@/lib/zipExtractor'
 import { recordImport } from '@/lib/importAnalytics'
 
 interface BlogImporterProps {
@@ -40,6 +39,12 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
         throw new Error('Missing required fields: title, slug, excerpt, content')
       }
 
+      const parsedTags = Array.isArray(data.tags)
+        ? (data.tags as string[])
+        : typeof data.tags === 'string'
+          ? data.tags.split(',').map(tag => tag.trim()).filter(Boolean)
+          : undefined
+
       return {
         id: (data.id as string | number) || Date.now(),
         slug: String(data.slug),
@@ -63,7 +68,7 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
         ogImage: sanitizeUrl(data.ogImage as string | undefined),
         pocVideoUrl: sanitizeUrl(data.pocVideoUrl as string | undefined),
         reportUrl: sanitizeUrl(data.reportUrl as string | undefined),
-        tags: Array.isArray(data.tags) ? (data.tags as string[]) : undefined,
+        tags: parsedTags,
         difficulty: data.difficulty as BlogPost['difficulty'] | undefined,
         bountyAmount: typeof data.bountyAmount === 'number' ? data.bountyAmount : undefined,
         cve: data.cve as string | undefined,
@@ -84,9 +89,16 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
   }
 
   const parseMarkdownFile = (content: string, filename: string): Partial<BlogPost> => {
-    const { metadata, content: markdownBody } = parseFrontmatter(content)
+    const { metadata, content: markdownBody, errors } = parseFrontmatter(content)
+    if (errors.length > 0) {
+      throw new Error(`Invalid markdown frontmatter: ${errors.join('; ')}`)
+    }
     const meta = extractBlogMetadata(metadata)
     const sanitizedContent = sanitizeMarkdown(markdownBody)
+
+    if (!sanitizedContent || sanitizedContent.trim().length === 0) {
+      throw new Error('Missing required field: content')
+    }
 
     const slug = (meta.slug as string) || filename.replace(/\.md$/, '').toLowerCase().replace(/\s+/g, '-')
     const title = (meta.title as string) || filename.replace(/\.md$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
@@ -184,34 +196,11 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
         continue
       }
 
-      const isZip = file.name.toLowerCase().endsWith('.zip')
       const isJson = file.name.toLowerCase().endsWith('.json')
       const isMd = file.name.toLowerCase().endsWith('.md')
 
-      if (!isZip && !isJson && !isMd) {
-        nextWarnings.push(`Skipped ${file.name}: only .json, .md, and .zip are supported`)
-        continue
-      }
-
-      if (isZip) {
-        const zipCheck = validateZipFile(file)
-        if (!zipCheck.valid) {
-          throw new Error(zipCheck.errors.join('; '))
-        }
-        const extracted = await extractZipFile(file)
-        if (!extracted.success) {
-          throw new Error(extracted.errors.join('; '))
-        }
-        nextWarnings.push(...extracted.errors)
-
-        for (const extractedFile of extracted.files) {
-          if (extractedFile.type === 'json') {
-            importedPosts.push(parseJsonFile(extractedFile.content))
-          }
-          if (extractedFile.type === 'markdown') {
-            importedPosts.push(parseMarkdownFile(extractedFile.content, extractedFile.name))
-          }
-        }
+      if (!isJson && !isMd) {
+        nextWarnings.push(`Skipped ${file.name}: only .json and .md are supported`)
         continue
       }
 
@@ -400,9 +389,6 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
               <li>
                 <span className="text-orange-400 font-semibold">Markdown:</span> Content file with optional frontmatter YAML
               </li>
-              <li>
-                <span className="text-orange-400 font-semibold">ZIP:</span> Bundle .json/.md with image assets for batch import
-              </li>
             </ul>
           </div>
 
@@ -414,10 +400,7 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
   "title": "Post Title",
   "slug": "post-slug",
   "excerpt": "Brief summary",
-  "content": "# Full markdown content",
-  "date": "2024-12-15",
-  "category": "Web Security",
-  "type": "writeup"
+  "content": "# Full markdown content"
 }`}
             </pre>
           </div>
@@ -428,10 +411,6 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
 {`---
 title: Post Title
 slug: post-slug
-category: Web Security
-date: 2024-12-15
-type: writeup
-tags: Security, API, Auth
 ---
 
 # Full markdown content goes here
@@ -478,13 +457,13 @@ Content with **markdown** formatting.`}
                   {loading ? 'Processing...' : 'Click to select files or drag & drop'}
                 </span>
                 <span className="text-xs text-gray-400">
-                  {loading ? 'Please wait' : 'JSON, Markdown, or ZIP files (up to 10 files)'}
+                  {loading ? 'Please wait' : 'JSON or Markdown files (up to 10 files)'}
                 </span>
               </div>
               <input
                 type="file"
                 multiple
-                accept=".json,.md,.zip"
+                accept=".json,.md"
                 onChange={handleFileSelect}
                 disabled={loading}
                 className="hidden"
