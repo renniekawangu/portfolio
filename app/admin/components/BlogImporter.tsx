@@ -384,10 +384,13 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
             </p>
             <ul className="text-xs text-gray-400 space-y-2 ml-2">
               <li>
-                <span className="text-orange-400 font-semibold">JSON:</span> Include all blog post fields as JSON object
+                <span className="text-orange-400 font-semibold">JSON:</span> Must include title, slug, excerpt, content
               </li>
               <li>
-                <span className="text-orange-400 font-semibold">Markdown:</span> Content file with optional frontmatter YAML
+                <span className="text-orange-400 font-semibold">Markdown:</span> Content required; frontmatter is optional
+              </li>
+              <li>
+                <span className="text-orange-400 font-semibold">Hero image:</span> Optional. If missing, we auto-generate a banner or use the first markdown image.
               </li>
             </ul>
           </div>
@@ -400,7 +403,9 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
   "title": "Post Title",
   "slug": "post-slug",
   "excerpt": "Brief summary",
-  "content": "# Full markdown content"
+  "content": "# Full markdown content",
+  "tags": "Security, API, Auth",
+  "heroImage": "https://..."
 }`}
             </pre>
           </div>
@@ -411,6 +416,8 @@ export default function BlogImporter({ onImport, onCancel, existingPosts = [] }:
 {`---
 title: Post Title
 slug: post-slug
+tags: Security, API, Auth
+heroImage: https://...
 ---
 
 # Full markdown content goes here
