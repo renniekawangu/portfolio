@@ -104,11 +104,12 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
       .map(entry => entry.candidate)
   }, [blogPosts, post])
 
-  const { shareUrl, shareTitle } = useMemo(() => {
-    if (!post) return { shareUrl: '', shareTitle: '' }
+  const { shareUrl, shareTitle, shareImage } = useMemo(() => {
+    if (!post) return { shareUrl: '', shareTitle: '', shareImage: '' }
     return {
       shareUrl: typeof window !== 'undefined' ? window.location.href : '',
-      shareTitle: `Check out: ${post.title}`
+      shareTitle: `Check out: ${post.title}`,
+      shareImage: post.heroImage || ''
     }
   }, [post])
 
@@ -134,13 +135,12 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
 
   const shareOnFacebook = () => {
     window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareTitle)}`,
       '_blank'
     )
   }
 
   const shareOnInstagram = () => {
-    // Instagram doesn't support direct URL sharing via share dialog, so we'll copy to clipboard and show message
     navigator.clipboard.writeText(shareUrl)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -466,4 +466,3 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
     </main>
   )
 }
-
