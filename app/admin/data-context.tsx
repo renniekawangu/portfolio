@@ -188,24 +188,28 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
       if (res.ok) {
         const newPost = await res.json()
-        setBlogPosts([newPost, ...blogPosts])
+        setBlogPosts(prevPosts => [newPost, ...prevPosts])
       } else {
         // Fallback to local state
-        const nextId = Math.max(...blogPosts.map(p => typeof p.id === 'number' ? p.id : 0), 0) + 1
+        setBlogPosts(prevPosts => {
+          const nextId = Math.max(...prevPosts.map(p => typeof p.id === 'number' ? p.id : 0), 0) + 1
+          const newPost = {
+            ...post,
+            id: nextId
+          }
+          return [newPost, ...prevPosts]
+        })
+      }
+    } catch (error) {
+      console.error('Failed to add blog post:', error)
+      setBlogPosts(prevPosts => {
+        const nextId = Math.max(...prevPosts.map(p => typeof p.id === 'number' ? p.id : 0), 0) + 1
         const newPost = {
           ...post,
           id: nextId
         }
-        setBlogPosts([newPost, ...blogPosts])
-      }
-    } catch (error) {
-      console.error('Failed to add blog post:', error)
-      const nextId = Math.max(...blogPosts.map(p => typeof p.id === 'number' ? p.id : 0), 0) + 1
-      const newPost = {
-        ...post,
-        id: nextId
-      }
-      setBlogPosts([newPost, ...blogPosts])
+        return [newPost, ...prevPosts]
+      })
     }
   }
 
