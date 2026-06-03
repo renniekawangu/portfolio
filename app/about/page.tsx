@@ -173,16 +173,16 @@ export default function About() {
           <motion.p className="text-lg text-gray-400 mb-10 text-center" variants={itemVariants}>
             A group of passionate security professionals dedicated to protecting digital assets and building resilient systems.
           </motion.p>
-          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" variants={containerVariants}>
-            <motion.div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700 text-white" variants={itemVariants}>
+            <motion.div className="flex justify-center" variants={containerVariants}>
+            <motion.div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700 text-white max-w-xs" variants={itemVariants}>
               <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4">
-          <Image src="/assets/team/cto.jpg" alt="Team Member 1" width={128} height={128} className="w-full h-full object-cover" />
+              <Image src="/assets/team/cto.jpg" alt="Team Member 1" width={128} height={128} className="w-full h-full object-cover" />
               </div>
               <h3 className="text-xl font-semibold mb-1 text-white text-center">Rennie Kawangu</h3>
               <p className="text-gray-400 text-sm mb-2 text-center">Founder & CTO</p>
-              <p className="text-gray-300 text-sm text-center">Expert in web application security and penetration testing with over 3 years of experience.</p>
+              <p className="text-gray-300 text-sm text-center">Full Stack Developer and Security Expert in web application security and penetration testing with over 3 years of experience.</p>
             </motion.div>
-          </motion.div>
+            </motion.div>
         </motion.div>
 
         {/* Closing CTA Section */}
