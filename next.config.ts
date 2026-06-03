@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
         hostname: 'b34stweb.vercel.app',
         port: '',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**'
       }
     ]
   }
