@@ -176,7 +176,7 @@ export default function About() {
             <motion.div className="flex justify-center" variants={containerVariants}>
             <motion.div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700 text-white max-w-xs" variants={itemVariants}>
               <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4">
-              <Image src="/assets/team/cto.jpg" alt="Team Member 1" width={128} height={128} className="w-full h-full object-cover" />
+              <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780500012/cto_pr7v2o.jpg" alt="Team Member 1" width={128} height={128} className="w-full h-full object-cover" />
               </div>
               <h3 className="text-xl font-semibold mb-1 text-white text-center">Rennie Kawangu</h3>
               <p className="text-gray-400 text-sm mb-2 text-center">Founder & CTO</p>
