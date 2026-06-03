@@ -129,7 +129,7 @@ export default function About() {
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8" variants={containerVariants}>
           <motion.div className="group border border-gray-700 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm text-white hover:border-orange-600/30 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1" variants={itemVariants}>
             <div className="overflow-hidden rounded-lg mb-4">
-              <Image src="/assets/achivements/cyberSec-1.png" alt="Cyber Security Certification" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
+              <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780499658/cyberSec-1_gqsvhq.png" alt="Cyber Security Certification" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Cybersecurity Fundamentals</h3>
             <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://wilsescybersecurity.com/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors">Wilses Cyber Solution</a></p>
@@ -138,7 +138,7 @@ export default function About() {
           </motion.div>
           <motion.div className="group border border-gray-700 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm text-white hover:border-orange-600/30 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1" variants={itemVariants}>
             <div className="overflow-hidden rounded-lg mb-4">
-              <Image src="/assets/achivements/fullStackDev-1.png" alt="Full Stack Web Developer Certification" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
+              <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780499658/fullStackDev-1_smbnvl.png" alt="Full Stack Web Developer Certification" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Full Stack Web Development</h3>
             <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://www.scienceexplorationzambia.com" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors">Science Exploration Zambia</a></p>
@@ -147,7 +147,7 @@ export default function About() {
           </motion.div>
           <motion.div className="group border border-gray-700 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm text-white hover:border-orange-600/30 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1" variants={itemVariants}>
             <div className="overflow-hidden rounded-lg mb-4">
-              <Image src="/assets/achivements/wwCtf25-1.png" alt="World Wide CTF 2025" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
+              <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780499652/wwCtf25-1_cpxuyg.png" alt="World Wide CTF 2025" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">World Wide CTF 2025</h3>
             <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://www.linkedin.com/company/worldwideflags" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors">World Wide Flags</a></p>
@@ -156,7 +156,7 @@ export default function About() {
           </motion.div>
           <motion.div className="group border border-gray-700 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm text-white hover:border-orange-600/30 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1" variants={itemVariants}>
             <div className="overflow-hidden rounded-lg mb-4">
-              <Image src="/assets/achivements/bugbounty.jpeg" alt="Bug Bounty Achievement" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
+              <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780499643/bugbounty_kpxric.jpg" alt="Bug Bounty Achievement" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Bug Bounty Researcher</h3>
             <p className="mb-3 text-gray-400 text-sm">Active on <a href="https://zedbounty.com" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors">Zedbounty</a> and other platforms</p>
