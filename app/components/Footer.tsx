@@ -32,7 +32,8 @@ export default function Footer() {
   )
 
   return (
-    <footer className="border-t border-gray-800 bg-gradient-to-b from-gray-950 to-gray-900 text-gray-300">
+    <>
+      <footer className="border-t border-gray-800 bg-gradient-to-b from-gray-950 to-gray-900 text-gray-300">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="space-y-6">
@@ -128,9 +129,10 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Rennie Kawangu. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} eSync Enterprise. All rights reserved.</p>
         </div>
       </div>
     </footer>
+    </>
   )
 }
