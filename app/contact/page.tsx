@@ -44,28 +44,28 @@ export default function Contact() {
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white">Get In Touch</h1>
         <p className="text-xl text-center text-gray-300 mb-12 max-w-2xl mx-auto">Have a project in mind or want to collaborate? I&apos;d love to hear from you!</p>
 
-        <div className="bg-gray-800/50 backdrop-blur-sm p-8 md:p-10 rounded-xl shadow-lg border border-gray-700">
+        <div className="theme-panel p-8 md:p-10">
           <form onSubmit={handleSubmit} className="mb-10">
             <div className="mb-6">
               <label htmlFor="name" className="block text-sm font-semibold mb-2 text-gray-200">Your Name</label>
-              <input type="text" id="name" name="name" required placeholder="Rennie Kawangu" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
+              <input type="text" id="name" name="name" required placeholder="Rennie Kawangu" className="theme-input w-full px-4 py-3 placeholder-gray-500" />
             </div>
             <div className="mb-6">
               <label htmlFor="subject" className="block text-sm font-semibold mb-2 text-gray-200">Subject</label>
-              <input type="text" id="subject" name="subject" required placeholder="Project Inquiry" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
+              <input type="text" id="subject" name="subject" required placeholder="Project Inquiry" className="theme-input w-full px-4 py-3 placeholder-gray-500" />
             </div>
             <div className="mb-6">
               <label htmlFor="email" className="block text-sm font-semibold mb-2 text-gray-200">Email Address</label>
-              <input type="email" id="email" name="email" required placeholder="rennie@example.com" className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200" />
+              <input type="email" id="email" name="email" required placeholder="rennie@example.com" className="theme-input w-full px-4 py-3 placeholder-gray-500" />
             </div>
             <div className="mb-6">
               <label htmlFor="message" className="block text-sm font-semibold mb-2 text-gray-200">Your Message</label>
-              <textarea id="message" name="message" rows={6} required placeholder="Tell me about your project or inquiry..." className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-gray-700/50 text-white placeholder-gray-500 transition-all duration-200 resize-none"></textarea>
+              <textarea id="message" name="message" rows={6} required placeholder="Tell me about your project or inquiry..." className="theme-input w-full px-4 py-3 placeholder-gray-500 resize-none"></textarea>
             </div>
             <button 
               type="submit" 
               disabled={formStatus === 'sending'}
-              className="w-full btn-gradient text-white py-4 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="w-full btn-gradient text-white py-4 font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
             >
               {formStatus === 'sending' ? 'Sending...' : formStatus === 'success' ? 'Message Sent!' : formStatus === 'error' ? 'Error Sending' : 'Send Message'}
             </button>
@@ -75,11 +75,11 @@ export default function Contact() {
             <h2 className="text-2xl font-semibold mb-6 text-center text-white">Or Connect with us</h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="https://www.instagram.com/b34st_web_services" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-gray-700/50 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-300 text-gray-300 hover:text-white group">
-                <FaInstagram className="text-orange-400 group-hover:scale-110 transition-transform" />
+                <FaInstagram className="text-[#2E9BFF] group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Instagram</span>
               </a>
               <a href="https://web.facebook.com/profile.php?id=61586055807192" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-gray-700/50 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-300 text-gray-300 hover:text-white group">
-                <FaFacebook className="text-orange-400 group-hover:scale-110 transition-transform" />
+                <FaFacebook className="text-[#2E9BFF] group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Facebook</span>
               </a>
             </div>

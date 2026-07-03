@@ -49,7 +49,7 @@ export default function Services() {
           {services.map((service) => (
             <motion.div 
               key={service.id}
-              className="group bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1" 
+              className="group theme-panel p-8 text-white transition-all duration-300 transform hover:-translate-y-1" 
               variants={itemVariants}
             >
               <h2 className="text-2xl font-semibold mb-4 text-white">{service.name}</h2>
@@ -58,7 +58,7 @@ export default function Services() {
               </p>
               {service.pricing && (
                 <div className="pt-4 border-t border-gray-700">
-                  <p className="text-orange-400 font-semibold">{service.pricing}</p>
+                  <p className="text-[#2E9BFF] font-semibold">{service.pricing}</p>
                 </div>
               )}
             </motion.div>
@@ -66,7 +66,7 @@ export default function Services() {
         </motion.div>
 
         <motion.div 
-          className="mt-16 text-center bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-12" 
+          className="theme-panel mt-16 text-center p-12" 
           variants={itemVariants}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Work Together?</h2>
@@ -75,7 +75,7 @@ export default function Services() {
           </p>
           <a 
             href="/contact" 
-            className="inline-flex items-center gap-2 btn-gradient text-white px-8 py-4 rounded-lg hover:shadow-xl transition-all duration-300 font-semibold shadow-lg transform hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 btn-gradient text-white px-8 py-4 transition-all duration-300 font-semibold transform hover:-translate-y-0.5"
           >
             Get in Touch
           </a>

@@ -15,7 +15,7 @@ export default function Page({ params }: PageProps) {
     <Suspense fallback={
       <main className="min-h-screen py-20 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#2E9BFF] mb-4"></div>
           <p className="text-gray-400">Loading post...</p>
         </div>
       </main>

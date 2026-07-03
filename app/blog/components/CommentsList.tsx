@@ -68,7 +68,7 @@ export default function CommentsList({ postSlug, refreshTrigger }: CommentsListP
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-gray-800 border border-gray-700 rounded-lg p-4 hover:border-orange-500/30 transition-colors"
+              className="theme-panel p-4 transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
                 <div>

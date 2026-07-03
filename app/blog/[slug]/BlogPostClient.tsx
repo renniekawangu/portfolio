@@ -104,12 +104,11 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
       .map(entry => entry.candidate)
   }, [blogPosts, post])
 
-  const { shareUrl, shareTitle, shareImage } = useMemo(() => {
-    if (!post) return { shareUrl: '', shareTitle: '', shareImage: '' }
+  const { shareUrl, shareTitle } = useMemo(() => {
+    if (!post) return { shareUrl: '', shareTitle: '' }
     return {
       shareUrl: typeof window !== 'undefined' ? window.location.href : '',
-      shareTitle: `Check out: ${post.title}`,
-      shareImage: post.heroImage || ''
+      shareTitle: `Check out: ${post.title}`
     }
   }, [post])
 
@@ -149,7 +148,7 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
 
   const categoryColors: { [key: string]: string } = {
     'Web Security': 'bg-red-600/20 text-red-400 border-red-600/30',
-    'Access Control': 'bg-orange-600/20 text-orange-400 border-orange-600/30',
+    'Access Control': 'bg-[#2E9BFF]/15 text-[#7CC4FF] border-[#2E9BFF]/30',
     'API Security': 'bg-blue-600/20 text-blue-400 border-blue-600/30',
   }
 
@@ -163,7 +162,7 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
     return (
       <main className="min-h-screen py-20 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#2E9BFF] mb-4"></div>
           <p className="text-gray-400">Loading post...</p>
         </div>
       </main>
@@ -186,7 +185,7 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
         >
           <Link
             href="/blog"
-            className="inline-flex items-center text-orange-400 hover:text-orange-300 transition-colors duration-300 font-semibold group"
+            className="inline-flex items-center text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors duration-300 font-semibold group"
           >
             <span className="mr-2 group-hover:-translate-x-2 transition-transform duration-300">←</span>
             Back to Blog
@@ -228,7 +227,7 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
 
             {post.heroImage && (
               <motion.div variants={itemVariants} className="mb-8">
-                <div className="overflow-hidden rounded-2xl border border-gray-700/60 bg-gray-900/60">
+                <div className="overflow-hidden rounded-lg border border-gray-700/60 bg-gray-900/60">
                   <img
                     src={post.heroImage}
                     alt={`${post.title} hero`}
@@ -243,7 +242,7 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
               {post.difficulty && (
                 <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${
                   post.difficulty === 'Critical' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
-                  post.difficulty === 'High' ? 'bg-orange-600/20 text-orange-400 border-orange-600/30' :
+                  post.difficulty === 'High' ? 'bg-[#2E9BFF]/15 text-[#7CC4FF] border-[#2E9BFF]/30' :
                   post.difficulty === 'Medium' ? 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30' :
                   'bg-green-600/20 text-green-400 border-green-600/30'
                 }`}>
@@ -256,14 +255,14 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
                 </span>
               )}
               <span className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                <span className="w-2 h-2 bg-[#2E9BFF] rounded-full"></span>
                 {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </span>
               <span className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                <span className="w-2 h-2 bg-[#2E9BFF] rounded-full"></span>
                 {post.readTime}
               </span>
-              <span className="flex items-center gap-2 ml-auto text-orange-400 font-semibold">
+              <span className="flex items-center gap-2 ml-auto text-[#2E9BFF] font-semibold">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -400,7 +399,7 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
                           return <em key={i} className="italic">{part.slice(1, -1)}</em>
                         }
                         if (part.startsWith('`') && part.endsWith('`')) {
-                          return <code key={i} className="bg-gray-800 px-2 py-1 rounded text-orange-400 text-sm">{part.slice(1, -1)}</code>
+                          return <code key={i} className="bg-gray-800 px-2 py-1 rounded text-[#7CC4FF] text-sm">{part.slice(1, -1)}</code>
                         }
                         return part
                       })}
@@ -414,14 +413,14 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
           {/* Sidebar */}
           <aside className="space-y-6 self-start lg:sticky lg:top-24">
             {toc.length > 0 && (
-              <motion.div variants={itemVariants} className="rounded-2xl border border-gray-700 bg-gray-900/80 p-5">
+              <motion.div variants={itemVariants} className="theme-panel p-5">
                 <h3 className="text-lg font-bold text-white mb-4">On this page</h3>
                 <div className="space-y-2">
                   {toc.map((item) => (
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className="block text-sm text-gray-400 hover:text-orange-400 transition-colors"
+                      className="block text-sm text-gray-400 hover:text-[#7CC4FF] transition-colors"
                       style={{ paddingLeft: `${Math.max(0, item.level - 1) * 0.75}rem` }}
                     >
                       {item.text}
@@ -432,17 +431,17 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
             )}
 
             {relatedPosts.length > 0 && (
-              <motion.div variants={itemVariants} className="rounded-2xl border border-gray-700 bg-gray-900/80 p-5">
+              <motion.div variants={itemVariants} className="theme-panel p-5">
                 <h3 className="text-lg font-bold text-white mb-4">Related posts</h3>
                 <div className="space-y-4">
                   {relatedPosts.map((relatedPost) => (
                     <Link
                       key={relatedPost.id}
                       href={`/blog/${relatedPost.slug}`}
-                      className="block rounded-xl border border-gray-800 bg-gray-950/60 p-4 hover:border-orange-600/40 hover:bg-gray-900 transition-colors group"
+                      className="block rounded-lg border border-gray-800 bg-gray-950/60 p-4 hover:border-[#2E9BFF]/40 hover:bg-gray-900 transition-colors group"
                     >
                       <p className="text-xs uppercase tracking-wide text-gray-500 mb-2">{relatedPost.category}</p>
-                      <h4 className="font-semibold text-white group-hover:text-orange-400 transition-colors line-clamp-2 mb-2">
+                      <h4 className="font-semibold text-white group-hover:text-[#7CC4FF] transition-colors line-clamp-2 mb-2">
                         {relatedPost.title}
                       </h4>
                       <p className="text-sm text-gray-400 line-clamp-3">{relatedPost.excerpt}</p>

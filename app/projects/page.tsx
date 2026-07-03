@@ -83,7 +83,7 @@ export default function Projects() {
           {filteredProjects.map((project) => (
             <motion.div
               key={project.id}
-              className="group bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600 text-white transform hover:-translate-y-1 overflow-hidden flex flex-col h-full"
+              className="group theme-panel transition-all duration-300 text-white transform hover:-translate-y-1 overflow-hidden flex flex-col h-full"
               variants={itemVariants}
             >
               {/* Project Image */}
@@ -131,7 +131,7 @@ export default function Projects() {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 btn-gradient text-white px-4 py-2 rounded-lg font-semibold text-center hover:shadow-lg transition-all duration-300"
+                    className="flex-1 btn-gradient text-white px-4 py-2 font-semibold text-center transition-all duration-300"
                   >
                     View Project
                   </a>

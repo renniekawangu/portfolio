@@ -78,7 +78,7 @@ export default function Archive() {
           className="max-w-4xl mx-auto mb-16"
         >
           <motion.div variants={itemVariants} className="mb-6">
-            <span className="inline-block bg-orange-600/10 text-orange-400 px-4 py-2 rounded-full text-sm font-semibold border border-orange-600/20">
+            <span className="inline-block rounded-lg border border-[#2E9BFF]/20 bg-[#2E9BFF]/10 px-4 py-2 text-sm font-semibold text-[#7CC4FF]">
               Archive
             </span>
           </motion.div>
@@ -101,7 +101,7 @@ export default function Archive() {
               onClick={() => setSelectedYear(null)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 selectedYear === null
-                  ? 'bg-orange-600 text-white'
+                  ? 'bg-[#2E9BFF] text-white'
                   : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               }`}
             >
@@ -113,7 +113,7 @@ export default function Archive() {
                 onClick={() => setSelectedYear(Number(year))}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   selectedYear === Number(year)
-                    ? 'bg-orange-600 text-white'
+                    ? 'bg-[#2E9BFF] text-white'
                     : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                 }`}
               >
@@ -139,7 +139,7 @@ export default function Archive() {
               <motion.div key={year} variants={itemVariants} className="mb-16">
                 <div className="flex items-center gap-4 mb-8">
                   <h2 className="text-3xl font-bold text-white">{year}</h2>
-                  <div className="flex-1 h-1 bg-gradient-to-r from-orange-600 to-transparent rounded-full"></div>
+                  <div className="flex-1 h-1 bg-gradient-to-r from-[#2E9BFF] to-transparent rounded-full"></div>
                 </div>
 
                 <div className="space-y-0">
@@ -151,8 +151,8 @@ export default function Archive() {
                     })
                     .map(([month, posts]) => (
                       <div key={`${year}-${month}`} className="mb-12">
-                        <h3 className="text-lg font-semibold text-orange-400 mb-4 flex items-center gap-2">
-                          <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                        <h3 className="text-lg font-semibold text-[#7CC4FF] mb-4 flex items-center gap-2">
+                          <span className="w-2 h-2 bg-[#2E9BFF] rounded-full"></span>
                           {month}
                         </h3>
 
@@ -161,11 +161,11 @@ export default function Archive() {
                             <Link
                               key={post.id}
                               href={`/blog/${post.slug}`}
-                              className="group block p-4 rounded-lg bg-gray-800/30 hover:bg-gray-800/60 transition-all duration-300 border border-gray-700/30 hover:border-orange-600/50"
+                              className="group block p-4 rounded-lg bg-gray-800/30 hover:bg-gray-800/60 transition-all duration-300 border border-gray-700/30 hover:border-[#2E9BFF]/50"
                             >
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1">
-                                  <h4 className="font-semibold text-white group-hover:text-orange-400 transition-colors duration-300 mb-2">
+                                  <h4 className="font-semibold text-white group-hover:text-[#7CC4FF] transition-colors duration-300 mb-2">
                                     {post.title}
                                   </h4>
                                   <p className="text-sm text-gray-400">{post.excerpt}</p>

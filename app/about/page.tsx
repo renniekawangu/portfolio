@@ -24,7 +24,7 @@ export default function About() {
   const proficiencyColors = {
     'beginner': 'bg-blue-600/20 text-blue-400',
     'intermediate': 'bg-green-600/20 text-green-400',
-    'advanced': 'bg-orange-600/20 text-orange-400',
+    'advanced': 'bg-blue-600/20 text-blue-400',
     'expert': 'bg-red-600/20 text-red-400'
   }
 
@@ -55,18 +55,18 @@ export default function About() {
             My Security Philosophy
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-gray-700 hover:border-orange-600/30 text-white transition-all duration-300 hover:shadow-xl" variants={itemVariants}>
-              <div className="text-4xl mb-4 text-orange-500">01</div>
+            <motion.div className="theme-panel p-8 text-white transition-all duration-300" variants={itemVariants}>
+              <div className="text-4xl mb-4 text-[#2E9BFF]">01</div>
               <h3 className="text-xl font-semibold mb-3 text-white">Analyze</h3>
               <p className="text-gray-300">Deep dive into architecture, code, and infrastructure. Understand the system from the inside out before looking for weaknesses.</p>
             </motion.div>
-            <motion.div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-gray-700 hover:border-orange-600/30 text-white transition-all duration-300 hover:shadow-xl" variants={itemVariants}>
-              <div className="text-4xl mb-4 text-orange-500">02</div>
+            <motion.div className="theme-panel p-8 text-white transition-all duration-300" variants={itemVariants}>
+              <div className="text-4xl mb-4 text-[#2E9BFF]">02</div>
               <h3 className="text-xl font-semibold mb-3 text-white">Attack</h3>
               <p className="text-gray-300">Methodically test every component with real-world attack scenarios. Identify not just what breaks, but why and what it means.</p>
             </motion.div>
-            <motion.div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-gray-700 hover:border-orange-600/30 text-white transition-all duration-300 hover:shadow-xl" variants={itemVariants}>
-              <div className="text-4xl mb-4 text-orange-500">03</div>
+            <motion.div className="theme-panel p-8 text-white transition-all duration-300" variants={itemVariants}>
+              <div className="text-4xl mb-4 text-[#2E9BFF]">03</div>
               <h3 className="text-xl font-semibold mb-3 text-white">Secure</h3>
               <p className="text-gray-300">Provide clear, actionable recommendations. Help teams implement security fixes with practical guidance and proven patterns.</p>
             </motion.div>
@@ -82,13 +82,13 @@ export default function About() {
             Proven track record identifying and responsibly disclosing real-world vulnerabilities
           </motion.p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <motion.div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700 text-white" variants={itemVariants}>
-              <h3 className="text-orange-400 font-semibold mb-2">Vulnerability Classes Identified</h3>
+            <motion.div className="theme-panel p-6 text-white" variants={itemVariants}>
+              <h3 className="text-[#2E9BFF] font-semibold mb-2">Vulnerability Classes Identified</h3>
               <p className="text-2xl font-bold text-white mb-1">Broken Access Control • Privilege Escalation • API Security Flaws • SQL Injection • XSS • Authentication Bypass</p>
               <p className="text-gray-400 text-sm">Real vulnerabilities found in production systems and responsible disclosure through bug bounty platforms</p>
             </motion.div>
-            <motion.div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700 text-white" variants={itemVariants}>
-              <h3 className="text-orange-400 font-semibold mb-2">Security Testing Expertise</h3>
+            <motion.div className="theme-panel p-6 text-white" variants={itemVariants}>
+              <h3 className="text-[#2E9BFF] font-semibold mb-2">Security Testing Expertise</h3>
               <p className="text-lg font-semibold text-white mb-2">Web Application Penetration Testing</p>
               <p className="text-gray-300 text-sm mb-4">Comprehensive security audits covering OWASP Top 10, API security, authentication systems, and infrastructure hardening</p>
               <p className="text-gray-400 text-xs italic">Testing performed on both authorized systems and verified bug bounty programs</p>
@@ -101,7 +101,7 @@ export default function About() {
         <motion.div className="mb-16" variants={containerVariants}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {skills.map((skill) => (
-              <motion.div key={skill.id} className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-gray-700 hover:border-gray-600 text-white transition-all duration-300 hover:shadow-xl" variants={itemVariants}>
+              <motion.div key={skill.id} className="theme-panel p-8 text-white transition-all duration-300" variants={itemVariants}>
                 <motion.h3 className="text-2xl font-semibold mb-2 text-center text-white" variants={itemVariants}>{skill.category}</motion.h3>
                 <motion.div className={`text-center text-xs font-semibold px-3 py-1 rounded-full mb-4 inline-block w-full ${proficiencyColors[skill.proficiency]}`}>
                   {skill.proficiency.charAt(0).toUpperCase() + skill.proficiency.slice(1)}
@@ -109,7 +109,7 @@ export default function About() {
                 <motion.ul className="space-y-2" variants={containerVariants}>
                   {skill.skills.map((s, idx) => (
                     <motion.li key={idx} variants={itemVariants} className="text-gray-300 flex items-start gap-2">
-                      <span className="text-orange-500 mt-1">▹</span><span>{s}</span>
+                      <span className="text-[#2E9BFF] mt-1">▹</span><span>{s}</span>
                     </motion.li>
                   ))}
                 </motion.ul>
@@ -119,7 +119,7 @@ export default function About() {
         </motion.div>
 
         <motion.div className="text-center mb-16" variants={itemVariants}>
-          <a href="/assets/resume/resume.pdf" download className="inline-flex items-center gap-2 btn-gradient text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-lg transform hover:-translate-y-0.5">
+          <a href="/assets/resume/resume.pdf" download className="inline-flex items-center gap-2 btn-gradient text-white px-8 py-4 font-semibold transition-all duration-300 text-lg transform hover:-translate-y-0.5">
             Download My Resume
           </a>
         </motion.div>
@@ -127,41 +127,41 @@ export default function About() {
         <motion.h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>Achievements & Certifications</motion.h2>
         <motion.p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" variants={itemVariants}>Certifications and recognitions earned through continuous learning, hands-on security research, and competitive cybersecurity challenges</motion.p>
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8" variants={containerVariants}>
-          <motion.div className="group border border-gray-700 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm text-white hover:border-orange-600/30 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1" variants={itemVariants}>
+          <motion.div className="group theme-panel p-6 text-white transition-all duration-300 transform hover:-translate-y-1" variants={itemVariants}>
             <div className="overflow-hidden rounded-lg mb-4">
               <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780499658/cyberSec-1_gqsvhq.png" alt="Cyber Security Certification" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Cybersecurity Fundamentals</h3>
-            <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://wilsescybersecurity.com/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors">Wilses Cyber Solution</a></p>
+            <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://wilsescybersecurity.com/" target="_blank" rel="noopener noreferrer" className="text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors">Wilses Cyber Solution</a></p>
             <p className="text-gray-300 text-sm mb-4">Comprehensive certification covering security principles, threat analysis, and defensive strategies in modern infrastructure and applications.</p>
-            <a href="#" className="text-orange-400 hover:text-orange-300 transition-colors text-sm font-medium inline-flex items-center gap-1">View Certificate <span className="group-hover:translate-x-1 transition-transform">→</span></a>
+            <a href="#" className="text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors text-sm font-medium inline-flex items-center gap-1">View Certificate <span className="group-hover:translate-x-1 transition-transform">→</span></a>
           </motion.div>
-          <motion.div className="group border border-gray-700 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm text-white hover:border-orange-600/30 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1" variants={itemVariants}>
+          <motion.div className="group theme-panel p-6 text-white transition-all duration-300 transform hover:-translate-y-1" variants={itemVariants}>
             <div className="overflow-hidden rounded-lg mb-4">
               <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780499658/fullStackDev-1_smbnvl.png" alt="Full Stack Web Developer Certification" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Full Stack Web Development</h3>
-            <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://www.scienceexplorationzambia.com" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors">Science Exploration Zambia</a></p>
+            <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://www.scienceexplorationzambia.com" target="_blank" rel="noopener noreferrer" className="text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors">Science Exploration Zambia</a></p>
             <p className="text-gray-300 text-sm mb-4">Advanced training in modern web development spanning frontend frameworks, backend systems, databases, and deployment—with security integrated throughout.</p>
-            <a href="#" className="text-orange-400 hover:text-orange-300 transition-colors text-sm font-medium inline-flex items-center gap-1">View Certificate <span className="group-hover:translate-x-1 transition-transform">→</span></a>
+            <a href="#" className="text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors text-sm font-medium inline-flex items-center gap-1">View Certificate <span className="group-hover:translate-x-1 transition-transform">→</span></a>
           </motion.div>
-          <motion.div className="group border border-gray-700 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm text-white hover:border-orange-600/30 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1" variants={itemVariants}>
+          <motion.div className="group theme-panel p-6 text-white transition-all duration-300 transform hover:-translate-y-1" variants={itemVariants}>
             <div className="overflow-hidden rounded-lg mb-4">
               <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780499652/wwCtf25-1_cpxuyg.png" alt="World Wide CTF 2025" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">World Wide CTF 2025</h3>
-            <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://www.linkedin.com/company/worldwideflags" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors">World Wide Flags</a></p>
+            <p className="mb-3 text-gray-400 text-sm">Issued by <a href="https://www.linkedin.com/company/worldwideflags" target="_blank" rel="noopener noreferrer" className="text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors">World Wide Flags</a></p>
             <p className="text-gray-300 text-sm mb-4">Competitive Capture The Flag (CTF) competition participation. Solved complex security challenges involving reverse engineering, cryptography, and exploitation techniques.</p>
-            <a href="#" className="text-orange-400 hover:text-orange-300 transition-colors text-sm font-medium inline-flex items-center gap-1">View Certificate <span className="group-hover:translate-x-1 transition-transform">→</span></a>
+            <a href="#" className="text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors text-sm font-medium inline-flex items-center gap-1">View Certificate <span className="group-hover:translate-x-1 transition-transform">→</span></a>
           </motion.div>
-          <motion.div className="group border border-gray-700 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm text-white hover:border-orange-600/30 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1" variants={itemVariants}>
+          <motion.div className="group theme-panel p-6 text-white transition-all duration-300 transform hover:-translate-y-1" variants={itemVariants}>
             <div className="overflow-hidden rounded-lg mb-4">
               <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780499643/bugbounty_kpxric.jpg" alt="Bug Bounty Achievement" width={400} height={192} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Bug Bounty Researcher</h3>
-            <p className="mb-3 text-gray-400 text-sm">Active on <a href="https://zedbounty.com" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors">Zedbounty</a> and other platforms</p>
+            <p className="mb-3 text-gray-400 text-sm">Active on <a href="https://zedbounty.com" target="_blank" rel="noopener noreferrer" className="text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors">Zedbounty</a> and other platforms</p>
             <p className="text-gray-300 text-sm mb-4">Actively identifying and responsibly disclosing security vulnerabilities in production systems. Verified researcher with a track record of finding critical and high-severity issues.</p>
-            <a href="#" className="text-orange-400 hover:text-orange-300 transition-colors text-sm font-medium inline-flex items-center gap-1">View Profile <span className="group-hover:translate-x-1 transition-transform">→</span></a>
+            <a href="#" className="text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors text-sm font-medium inline-flex items-center gap-1">View Profile <span className="group-hover:translate-x-1 transition-transform">→</span></a>
           </motion.div>
         </motion.div>
 
@@ -174,7 +174,7 @@ export default function About() {
             A group of passionate security professionals dedicated to protecting digital assets and building resilient systems.
           </motion.p>
             <motion.div className="flex justify-center" variants={containerVariants}>
-            <motion.div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700 text-white max-w-xs" variants={itemVariants}>
+            <motion.div className="theme-panel p-6 text-white max-w-xs" variants={itemVariants}>
               <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4">
               <Image src="https://res.cloudinary.com/dmeofhnrx/image/upload/q_auto/f_auto/v1780500012/cto_pr7v2o.jpg" alt="Team Member 1" width={128} height={128} className="w-full h-full object-cover" />
               </div>
@@ -194,7 +194,7 @@ export default function About() {
             Whether you need a comprehensive security audit, penetration testing, or secure development guidance—let&apos;s work together to build systems that are resilient against real threats.
           </motion.p>
           <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" variants={itemVariants}>
-            <a href="/contact" className="btn-gradient text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center gap-2">
+            <a href="/contact" className="btn-gradient text-white px-8 py-4 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 inline-flex items-center justify-center gap-2">
               Request a Security Audit
             </a>
             <a href="/projects" className="border-2 border-gray-600 text-gray-300 px-8 py-4 rounded-lg font-semibold hover:bg-gray-700 hover:border-gray-500 hover:text-white transition-all duration-300 inline-flex items-center justify-center gap-2">

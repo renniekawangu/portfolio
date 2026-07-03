@@ -62,7 +62,7 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      className="bg-gray-800 rounded-lg p-6 border border-gray-700 mt-8"
+      className="theme-panel mt-8 p-6"
     >
       <h3 className="text-xl font-bold text-white mb-4">Leave a Comment</h3>
       
@@ -74,7 +74,7 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             required
-            className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:border-orange-500"
+            className="theme-input px-4 py-2 placeholder-gray-400"
           />
           <input
             type="email"
@@ -82,7 +82,7 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:border-orange-500"
+            className="theme-input px-4 py-2 placeholder-gray-400"
           />
         </div>
 
@@ -94,7 +94,7 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
           minLength={3}
           maxLength={1000}
           rows={4}
-          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 resize-none"
+          className="theme-input w-full px-4 py-2 placeholder-gray-400 resize-none"
         />
 
         <div className="flex items-center justify-between">
@@ -104,7 +104,7 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2 bg-orange-600 hover:bg-orange-500 disabled:bg-orange-800 text-white font-medium rounded transition-colors"
+            className="btn-accent px-6 py-2 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Submitting...' : 'Submit Comment'}
           </button>

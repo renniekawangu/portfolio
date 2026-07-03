@@ -66,7 +66,7 @@ export default function Blog() {
 
   const categoryColors: { [key: string]: string } = {
     'Web Security': 'bg-red-600/20 text-red-400 border-red-600/30',
-    'Access Control': 'bg-orange-600/20 text-orange-400 border-orange-600/30',
+    'Access Control': 'bg-[#2E9BFF]/15 text-[#7CC4FF] border-[#2E9BFF]/30',
     'API Security': 'bg-blue-600/20 text-blue-400 border-blue-600/30',
   }
 
@@ -81,7 +81,7 @@ export default function Blog() {
           className="max-w-4xl mx-auto mb-16"
         >
           <motion.div variants={itemVariants} className="mb-6">
-            <span className="inline-block bg-orange-600/10 text-orange-400 px-4 py-2 rounded-full text-sm font-semibold border border-orange-600/20">Blog</span>
+            <span className="inline-block rounded-lg border border-[#2E9BFF]/20 bg-[#2E9BFF]/10 px-4 py-2 text-sm font-semibold text-[#7CC4FF]">Blog</span>
           </motion.div>
           <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl font-extrabold mb-6 text-white">
             b34st Web <span className="gradient-text">BLOG</span>
@@ -97,7 +97,7 @@ export default function Blog() {
               { label: 'News', value: stats.news },
               { label: 'Stories', value: stats.stories },
             ].map((item) => (
-              <div key={item.label} className="rounded-xl border border-gray-700 bg-gray-900/60 px-4 py-4">
+              <div key={item.label} className="theme-panel px-4 py-4">
                 <p className="text-2xl font-bold text-white">{item.value}</p>
                 <p className="text-sm text-gray-400">{item.label}</p>
               </div>
@@ -131,7 +131,7 @@ export default function Blog() {
               placeholder="Search blog posts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+              className="theme-input w-full px-4 py-3 placeholder-gray-500"
             />
           </div>
 
@@ -145,7 +145,7 @@ export default function Blog() {
                   onClick={() => setSelectedType('all')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedType === 'all'
-                      ? 'bg-orange-600 text-white'
+                      ? 'bg-[#2E9BFF] text-white'
                       : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                   }`}
                 >
@@ -155,7 +155,7 @@ export default function Blog() {
                   onClick={() => setSelectedType('writeup')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedType === 'writeup'
-                      ? 'bg-red-600 text-white'
+                      ? 'bg-[#2E9BFF] text-white'
                       : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                   }`}
                 >
@@ -165,7 +165,7 @@ export default function Blog() {
                   onClick={() => setSelectedType('news')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedType === 'news'
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-[#2E9BFF] text-white'
                       : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                   }`}
                 >
@@ -175,7 +175,7 @@ export default function Blog() {
                   onClick={() => setSelectedType('story')}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedType === 'story'
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-[#2E9BFF] text-white'
                       : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                   }`}
                 >
@@ -192,8 +192,8 @@ export default function Blog() {
                   <button
                     onClick={() => setSelectedTag('all')}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedTag === 'all'
-                        ? 'bg-orange-600 text-white'
+                    selectedTag === 'all'
+                        ? 'bg-[#2E9BFF] text-white'
                         : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                     }`}
                   >
@@ -205,7 +205,7 @@ export default function Blog() {
                       onClick={() => setSelectedTag(tag)}
                       className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                         selectedTag === tag
-                          ? 'bg-orange-600 text-white'
+                          ? 'bg-[#2E9BFF] text-white'
                           : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                       }`}
                     >
@@ -225,7 +225,7 @@ export default function Blog() {
             {hasActiveFilters && (
               <button
                 onClick={resetFilters}
-                className="text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors"
+                className="text-sm font-medium text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors"
               >
                 Clear filters
               </button>
@@ -248,11 +248,11 @@ export default function Blog() {
                   <motion.article
                     key={post.id}
                     variants={itemVariants}
-                    className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700/50 hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10 group"
+                    className="theme-panel p-8 transition-all duration-300 group"
                   >
                     <div className="flex flex-col gap-4">
                       {post.heroImage && (
-                        <div className="overflow-hidden rounded-xl border border-gray-700/60 bg-gray-900/60">
+                        <div className="overflow-hidden rounded-lg border border-gray-700/60 bg-gray-900/60">
                           <img
                             src={post.heroImage}
                             alt={`${post.title} hero`}
@@ -276,7 +276,7 @@ export default function Blog() {
                         {post.difficulty && (
                           <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${
                             post.difficulty === 'Critical' ? 'bg-red-600/20 text-red-400 border-red-600/30' :
-                            post.difficulty === 'High' ? 'bg-orange-600/20 text-orange-400 border-orange-600/30' :
+                            post.difficulty === 'High' ? 'bg-[#2E9BFF]/15 text-[#7CC4FF] border-[#2E9BFF]/30' :
                             post.difficulty === 'Medium' ? 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30' :
                             'bg-green-600/20 text-green-400 border-green-600/30'
                           }`}>
@@ -306,7 +306,7 @@ export default function Blog() {
                       )}
 
                       <Link href={`/blog/${post.slug}`} className="group">
-                        <h2 className="text-xl md:text-2xl font-semibold text-white mb-3 group-hover:text-orange-400 transition-colors duration-300 line-clamp-2">
+                        <h2 className="text-xl md:text-2xl font-semibold text-white mb-3 group-hover:text-[#7CC4FF] transition-colors duration-300 line-clamp-2">
                           {post.title}
                         </h2>
                       </Link>
@@ -318,7 +318,7 @@ export default function Blog() {
                       <div className="flex items-center justify-between">
                         <Link
                           href={`/blog/${post.slug}`}
-                          className="inline-flex items-center text-orange-400 hover:text-orange-300 transition-colors duration-300 font-semibold group"
+                          className="inline-flex items-center text-[#2E9BFF] hover:text-[#7CC4FF] transition-colors duration-300 font-semibold group"
                         >
                           Read More
                           <span className="ml-2 group-hover:translate-x-2 transition-transform duration-300">→</span>
@@ -330,7 +330,7 @@ export default function Blog() {
               ) : (
                 <motion.div
                   variants={itemVariants}
-                  className="rounded-2xl border border-dashed border-gray-700 bg-gray-900/60 p-10 text-center"
+                  className="rounded-lg border border-dashed border-gray-700 bg-gray-900/60 p-10 text-center"
                 >
                   <h2 className="text-2xl font-bold text-white mb-3">No posts match your filters</h2>
                   <p className="text-gray-400 mb-6">
@@ -338,7 +338,7 @@ export default function Blog() {
                   </p>
                   <button
                     onClick={resetFilters}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-500 transition-colors"
+                    className="inline-flex items-center gap-2 btn-accent px-4 py-2 font-semibold"
                   >
                     Reset filters
                   </button>
