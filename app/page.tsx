@@ -80,7 +80,7 @@ export default function Home() {
               <div className="absolute" />
                 <div className="relative aspect-square overflow-hidden rounded-lg bg-[#05080D]">
                   <Image
-                    src="/b34st_logo.png"
+                    src="/b34st.png"
                     alt="b34st Web Services brand artwork"
                     fill
                     sizes="(min-width: 1024px) 34vw, 92vw"
