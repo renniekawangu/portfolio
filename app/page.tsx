@@ -44,17 +44,17 @@ export default function Home() {
       animate="visible"
       variants={containerVariants}
     >
-      <section className="relative overflow-hidden border-b border-slate-800/80 bg-[#0A0A0A]">
+      <section className="relative overflow-hidden border-b border-slate-800/80 bg-[#05080D]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(46,155,255,0.16),_transparent_34%)] pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#0B1220] via-[#05050A] to-transparent opacity-70 pointer-events-none" />
 
         <div className="container mx-auto px-4 py-24 md:py-32 relative z-10">
           <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] items-center">
-            <motion.div className="max-w-3xl" variants={itemVariants}>
+            <motion.div className="max-w-xl" variants={itemVariants}>
               <div className="mb-8 inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-slate-300">
                 Web Development & Cybersecurity
               </div>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold leading-tight text-white max-w-3xl">
+              <h1 className="text-3xl sm:text-6xl md:text-7xl font-semibold leading-tight text-white max-w-xl">
                 Secure websites built with an attacker&apos;s mindset.
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl leading-8 text-slate-300">
@@ -77,9 +77,8 @@ export default function Home() {
             </motion.div>
 
             <motion.div className="theme-panel relative overflow-hidden p-6 sm:p-8" variants={itemVariants}>
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(46,155,255,0.13)_0%,_transparent_58%)]" />
-              <div className="relative">
-                <div className="relative aspect-square overflow-hidden rounded-lg border border-slate-800 bg-[#05080D]">
+              <div className="absolute" />
+                <div className="relative aspect-square overflow-hidden rounded-lg bg-[#05080D]">
                   <Image
                     src="/b34st_logo.png"
                     alt="b34st Web Services brand artwork"
@@ -88,14 +87,6 @@ export default function Home() {
                     priority
                     className="object-cover opacity-90"
                   />
-                </div>
-                <div className="mt-6 space-y-4 text-slate-300">
-                  <p className="theme-eyebrow">Featured work</p>
-                  <h2 className="text-2xl font-semibold">Security-first websites with polished visual systems.</h2>
-                  <p className="text-base leading-7 text-slate-400">
-                    Every experience is crafted to feel premium, fast, and easy to manage, while keeping security front and center.
-                  </p>
-                </div>
               </div>
             </motion.div>
           </div>
