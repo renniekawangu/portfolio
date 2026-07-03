@@ -23,7 +23,6 @@ export default function Header() {
             priority
             className="h-11 w-11 rounded-lg border border-slate-800 bg-slate-950/80 object-contain shadow-lg shadow-blue-500/10"
           />
-          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-200">b34st</span>
         </Link>
 
         <div className="hidden flex-1 justify-center md:flex">
