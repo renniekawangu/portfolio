@@ -81,7 +81,7 @@ export default function Home() {
               <div className="relative">
                 <div className="relative aspect-square overflow-hidden rounded-lg border border-slate-800 bg-[#05080D]">
                   <Image
-                    src="/b34st.png"
+                    src="/b34st_logo.png"
                     alt="b34st Web Services brand artwork"
                     fill
                     sizes="(min-width: 1024px) 34vw, 92vw"
