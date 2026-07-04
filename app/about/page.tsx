@@ -1,6 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { ReactTyped } from 'react-typed'
 import { usePortfolioData } from '@/app/admin/data-context'
 
 export default function About() {
@@ -38,8 +39,14 @@ export default function About() {
       <div className="container mx-auto px-4 relative z-10">
         {/* Introduction Section */}
         <motion.section className="mb-20 max-w-4xl mx-auto" variants={containerVariants}>
-          <motion.h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-center text-white" variants={itemVariants}>
-            Building Secure Systems with an <span className="gradient-text">Attacker&apos;s Mindset</span>
+          <motion.h1 className="gradient-text text-4xl md:text-5xl font-extrabold mb-6 text-center text-white" variants={itemVariants}>
+            <ReactTyped
+              strings={["Building Secure Systems with an Attacker's Mindset"]}
+              typeSpeed={60}
+              startDelay={300}
+              loop={false}
+              showCursor={false}
+            />
           </motion.h1>
           <motion.p className="text-lg md:text-xl text-gray-300 mb-6 leading-relaxed text-center" variants={itemVariants}>
             I&apos;m a security-focused full-stack developer who helps organizations identify and eliminate vulnerabilities before attackers can exploit them. My approach combines offensive security expertise with modern development practices to create resilient, production-ready systems.
@@ -51,7 +58,7 @@ export default function About() {
 
         {/* Philosophy/Approach Section */}
         <motion.section className="mb-20 max-w-5xl mx-auto" variants={containerVariants}>
-          <motion.h2 className="text-3xl md:text-4xl font-extrabold mb-12 text-center text-white" variants={itemVariants}>
+          <motion.h2 className="gradient-text text-3xl md:text-4xl font-extrabold mb-12 text-center text-white" variants={itemVariants}>
             My Security Philosophy
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -75,7 +82,7 @@ export default function About() {
 
         {/* Credibility Section */}
         <motion.section className="mb-20 max-w-4xl mx-auto" variants={containerVariants}>
-          <motion.h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>
+          <motion.h2 className="gradient-text text-3xl md:text-4xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>
             Hands-On Security Experience
           </motion.h2>
           <motion.p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" variants={itemVariants}>
@@ -96,7 +103,7 @@ export default function About() {
           </div>
         </motion.section>
 
-        <motion.h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>Skills & Expertise</motion.h2>
+        <motion.h2 className="gradient-text text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>Skills & Expertise</motion.h2>
         <motion.p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" variants={itemVariants}>A comprehensive overview of my technical capabilities and specializations</motion.p>
         <motion.div className="mb-16" variants={containerVariants}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -124,7 +131,7 @@ export default function About() {
           </a>
         </motion.div>
 
-        <motion.h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>Achievements & Certifications</motion.h2>
+        <motion.h2 className="gradient-text text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" variants={itemVariants}>Achievements & Certifications</motion.h2>
         <motion.p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" variants={itemVariants}>Certifications and recognitions earned through continuous learning, hands-on security research, and competitive cybersecurity challenges</motion.p>
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8" variants={containerVariants}>
           <motion.div className="group theme-panel p-6 text-white transition-all duration-300 transform hover:-translate-y-1" variants={itemVariants}>
@@ -167,7 +174,7 @@ export default function About() {
 
         {/* Team Section */}
         <motion.div className="mt-20 max-w-6xl mx-auto" variants={containerVariants}>
-          <motion.h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-white text-center" variants={itemVariants}>
+          <motion.h2 className="gradient-text text-3xl md:text-4xl font-extrabold mb-8 text-white text-center" variants={itemVariants}>
             Meet the Team
           </motion.h2>
           <motion.p className="text-lg text-gray-400 mb-10 text-center" variants={itemVariants}>
@@ -187,7 +194,7 @@ export default function About() {
 
         {/* Closing CTA Section */}
         <motion.section className="mt-20 max-w-4xl mx-auto text-center" variants={containerVariants}>
-          <motion.h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-white" variants={itemVariants}>
+          <motion.h2 className="gradient-text text-3xl md:text-4xl font-extrabold mb-4 text-white" variants={itemVariants}>
             Ready to Secure Your Systems?
           </motion.h2>
           <motion.p className="text-lg text-gray-400 mb-10" variants={itemVariants}>

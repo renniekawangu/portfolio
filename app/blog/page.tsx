@@ -83,7 +83,7 @@ export default function Blog() {
           <motion.div variants={itemVariants} className="mb-6">
             <span className="inline-block rounded-lg border border-[#2E9BFF]/20 bg-[#2E9BFF]/10 px-4 py-2 text-sm font-semibold text-[#7CC4FF]">Blog</span>
           </motion.div>
-          <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl font-extrabold mb-6 text-white">
+          <motion.h1 variants={itemVariants} className="gradient-text text-5xl md:text-6xl font-extrabold mb-6 text-white">
             b34st Web <span className="gradient-text">BLOG</span>
           </motion.h1>
           <motion.p variants={itemVariants} className="text-xl text-gray-300">

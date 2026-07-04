@@ -38,7 +38,7 @@ export default function Footer() {
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="space-y-6">
             <div>
-              <h3 className="mt-4 text-2xl font-bold text-white md:text-3xl">
+              <h3 className="gradient-text mt-4 text-2xl font-bold md:text-3xl">
                 b34st Web Services
               </h3>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-[#C0C0C0] md:text-base">

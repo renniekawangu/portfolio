@@ -30,10 +30,10 @@ export default function Services() {
     >
       <div className="container mx-auto px-4 relative z-10">
         <motion.h1 
-          className="text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" 
+          className="gradient-text text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" 
           variants={itemVariants}
         >
-          My Services
+          Services
         </motion.h1>
         <motion.p 
           className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" 
@@ -69,7 +69,7 @@ export default function Services() {
           className="theme-panel mt-16 text-center p-12" 
           variants={itemVariants}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Work Together?</h2>
+          <h2 className="gradient-text text-3xl md:text-4xl font-bold text-white mb-4">Ready to Work Together?</h2>
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto text-lg">
             Let&apos;s discuss how I can help bring your project to life with professional development and security expertise.
           </p>

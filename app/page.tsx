@@ -59,22 +59,22 @@ export default function Home() {
               <div className="mb-8 inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-slate-300">
                 Web Development & Cybersecurity
               </div>
-              <h1 className="text-3xl sm:text-3xl md:text-5xl font-semibold leading-tight text-white max-w-xl">
+              <h1 className=" text-3xl sm:text-3xl md:text-5xl font-semibold leading-tight text-white max-w-xl">
                 <ReactTyped
                   strings={[greeting]}
                   startDelay={0}
-                  typeSpeed={100}
+                  typeSpeed={60}
                   backSpeed={40}
                   loop={false}
                   showCursor={false}
-                  className='inline-block'
+                  className='gradient-text'
                 />
               </h1>
               <p className="mt-6 text-lg leading-8 text-slate-400 text-center">
                 <ReactTyped
                   strings={[fullTitle]}
-                  startDelay={17000} // after the greeting finishes
-                  typeSpeed={100}
+                  startDelay={10000} // after the greeting finishes
+                  typeSpeed={60}
                   backSpeed={40}
                   loop={false}
                   showCursor={false}
@@ -84,9 +84,9 @@ export default function Home() {
               <p className="mt-6 text-lg leading-8 text-slate-400">
                 <ReactTyped
                   strings={[description]}
-                  startDelay={5000}
-                  typeSpeed={100}
-                  backSpeed={80}
+                  startDelay={3000}
+                  typeSpeed={60}
+                  backSpeed={40}
                   loop={false}
                   showCursor={false}
                   className="inline-block"
@@ -97,7 +97,7 @@ export default function Home() {
                   href="/contact"
                   className="inline-flex items-center justify-center btn-accent px-8 py-4 text-base font-semibold"
                 >
-                  Get a Security Audit
+                  Get in Touch
                 </a>
                 <a
                   href="/projects"
@@ -129,7 +129,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <p className="theme-eyebrow">What we bring to every project</p>
-            <h2 className="mt-4 text-3xl md:text-4xl font-semibold text-white">Thoughtful websites, precise execution.</h2>
+            <h2 className="gradient-text mt-4 text-3xl md:text-4xl font-semibold text-white">Thoughtful websites, precise execution.</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
