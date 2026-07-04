@@ -73,7 +73,7 @@ export default function Home() {
               <p className="mt-6 text-lg leading-8 text-slate-400 text-center">
                 <ReactTyped
                   strings={[fullTitle]}
-                  startDelay={8000} // after the greeting finishes
+                  startDelay={15000} // after the greeting finishes
                   typeSpeed={100}
                   backSpeed={40}
                   loop={false}
@@ -84,11 +84,11 @@ export default function Home() {
               <p className="mt-6 text-lg leading-8 text-slate-400">
                 <ReactTyped
                   strings={[description]}
-                  startDelay={3000}
+                  startDelay={5000}
                   typeSpeed={100}
                   backSpeed={80}
-                  loop={true}
-                  showCursor={true}
+                  loop={false}
+                  showCursor={false}
                   className="inline-block"
                 />
               </p>
