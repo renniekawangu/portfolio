@@ -56,10 +56,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-24 md:py-32 relative z-10">
           <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] items-center">
             <motion.div className="max-w-xl" variants={itemVariants}>
-              <div className="mb-8 inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-slate-300">
-                Web Development & Cybersecurity
-              </div>
-              <h1 className=" text-3xl sm:text-3xl md:text-5xl font-semibold leading-tight text-white max-w-xl">
+              <h1 className=" text-4xl md:text-5xl font-semibold leading-tight text-white max-w-xl">
                 <ReactTyped
                   strings={[greeting]}
                   startDelay={0}
