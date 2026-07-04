@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { ReactTyped } from 'react-typed'
 
 const features = [
   {
@@ -22,6 +23,10 @@ const features = [
 ]
 
 export default function Home() {
+  const fullTitle = "Secure websites built with an attacker's mindset."
+  const greeting = "Welcome to b34st web services."
+  const description = "We help businesses build, test, and secure web systems against real-world threats"
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -54,11 +59,38 @@ export default function Home() {
               <div className="mb-8 inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-slate-300">
                 Web Development & Cybersecurity
               </div>
-              <h1 className="text-3xl sm:text-6xl md:text-7xl font-semibold leading-tight text-white max-w-xl">
-                Secure websites built with an attacker&apos;s mindset.
+              <h1 className="text-3xl sm:text-3xl md:text-5xl font-semibold leading-tight text-white max-w-xl">
+                <ReactTyped
+                  strings={[greeting]}
+                  startDelay={0}
+                  typeSpeed={100}
+                  backSpeed={40}
+                  loop={false}
+                  showCursor={false}
+                  className='inline-block'
+                />
               </h1>
-              <p className="mt-6 max-w-2xl text-lg md:text-xl leading-8 text-slate-300">
-                b34st web services helps businesses build, test, and secure web systems against real-world threats before attackers find them.
+              <p className="mt-6 text-lg leading-8 text-slate-400 text-center">
+                <ReactTyped
+                  strings={[fullTitle]}
+                  startDelay={8000} // after the greeting finishes
+                  typeSpeed={100}
+                  backSpeed={40}
+                  loop={false}
+                  showCursor={false}
+                  className='inline-block'
+                />
+              </p>
+              <p className="mt-6 text-lg leading-8 text-slate-400">
+                <ReactTyped
+                  strings={[description]}
+                  startDelay={3000}
+                  typeSpeed={100}
+                  backSpeed={80}
+                  loop={true}
+                  showCursor={true}
+                  className="inline-block"
+                />
               </p>
               <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4">
                 <a
