@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { ReactTyped } from 'react-typed'
 import { usePortfolioData } from '@/app/admin/data-context'
 import { useState, useMemo } from 'react'
 import PopularPosts from './components/PopularPosts'
@@ -84,7 +85,13 @@ export default function Blog() {
             <span className="inline-block rounded-lg border border-[#2E9BFF]/20 bg-[#2E9BFF]/10 px-4 py-2 text-sm font-semibold text-[#7CC4FF]">Blog</span>
           </motion.div>
           <motion.h1 variants={itemVariants} className="gradient-text text-5xl md:text-6xl font-extrabold mb-6 text-white">
-            b34st Web <span className="gradient-text">BLOG</span>
+            <ReactTyped
+              strings={["b34st Web BLOG"]}
+              typeSpeed={60}
+              startDelay={300}
+              loop={false}
+              showCursor={false}
+            />
           </motion.h1>
           <motion.p variants={itemVariants} className="text-xl text-gray-300">
             Real-world cybersecurity stories, vulnerability breakdowns, and deep dives into how modern systems get exploited—and secured.

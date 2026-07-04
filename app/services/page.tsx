@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { ReactTyped } from 'react-typed'
 import { usePortfolioData } from '@/app/admin/data-context'
 
 export default function Services() {
@@ -33,7 +34,13 @@ export default function Services() {
           className="gradient-text text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" 
           variants={itemVariants}
         >
-          Services
+          <ReactTyped
+            strings={["Services"]}
+            typeSpeed={60}
+            startDelay={300}
+            loop={false}
+            showCursor={false}
+          />
         </motion.h1>
         <motion.p 
           className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" 

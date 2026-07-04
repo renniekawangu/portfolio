@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import Image from 'next/image'
+import { ReactTyped } from 'react-typed'
 import { usePortfolioData } from '@/app/admin/data-context'
 
 export default function Projects() {
@@ -46,7 +47,13 @@ export default function Projects() {
           className="gradient-text text-4xl md:text-5xl font-extrabold mb-4 text-center text-white" 
           variants={itemVariants}
         >
-          My Projects
+          <ReactTyped
+            strings={["My Projects"]}
+            typeSpeed={60}
+            startDelay={300}
+            loop={false}
+            showCursor={false}
+          />
         </motion.h1>
         <motion.p 
           className="text-center text-gray-400 mb-12 max-w-2xl mx-auto" 

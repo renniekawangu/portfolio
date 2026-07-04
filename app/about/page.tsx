@@ -59,7 +59,7 @@ export default function About() {
         {/* Philosophy/Approach Section */}
         <motion.section className="mb-20 max-w-5xl mx-auto" variants={containerVariants}>
           <motion.h2 className="gradient-text text-3xl md:text-4xl font-extrabold mb-12 text-center text-white" variants={itemVariants}>
-            My Security Philosophy
+            Our Security Philosophy
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <motion.div className="theme-panel p-8 text-white transition-all duration-300" variants={itemVariants}>
