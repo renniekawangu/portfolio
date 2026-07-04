@@ -73,7 +73,7 @@ export default function Home() {
               <p className="mt-6 text-lg leading-8 text-slate-400 text-center">
                 <ReactTyped
                   strings={[fullTitle]}
-                  startDelay={15000} // after the greeting finishes
+                  startDelay={16000} // after the greeting finishes
                   typeSpeed={100}
                   backSpeed={40}
                   loop={false}
