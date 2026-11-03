@@ -7,37 +7,16 @@ interface PageProps {
 
 const siteUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'https://b34stweb.vercel.app').replace(/\/$/, '')
 
-/**
- * Resolve a safe absolute URL for Open Graph / Twitter images.
- * - Prefers post.ogImage → post.heroImage
- * - Rejects data: URLs (Facebook does not support them)
- * - Always returns an absolute https URL
- * - Falls back to a proper default social card
- */
-function resolveMetadataImage(imageUrl?: string): string {
-  const defaultImage = `${siteUrl}/og-default.png`
-  const fallbackImage = `${siteUrl}/b34st_logo.png`
-
+function resolveMetadataImage(imageUrl?: string) {
   if (!imageUrl) {
-    return defaultImage
+    return `${siteUrl}/b34st_logo.png`
   }
 
-  // Facebook and most social platforms reject data: URLs
-  if (imageUrl.startsWith('data:')) {
-    return defaultImage
-  }
-
-  // Already absolute
   if (/^https?:\/\//i.test(imageUrl)) {
     return imageUrl
   }
 
-  // Relative path → make absolute
-  try {
-    return new URL(imageUrl, siteUrl).toString()
-  } catch {
-    return defaultImage
-  }
+  return new URL(imageUrl, siteUrl).toString()
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -60,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: pageTitle,
     description: pageDescription,
     keywords: post.tags,
-    authors: [{ name: post.author || 'b34st web' }],
+    authors: [{ name: post.author || 'Your Name' }],
     alternates: {
       canonical: post.canonicalUrl || url,
     },
@@ -70,16 +49,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url,
       type: 'article',
       publishedTime: post.date,
-      authors: [post.author || 'b34st web'],
+      authors: [post.author || 'Your Name'],
       tags: post.tags,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: pageTitle,
-        },
-      ],
+      images: [{ url: imageUrl }],
     },
     twitter: {
       card: 'summary_large_image',

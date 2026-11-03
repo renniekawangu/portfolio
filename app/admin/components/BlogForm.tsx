@@ -98,6 +98,44 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
     }))
   }
 
+  const handleUploadToCloudinary = async () => {
+    const currentUrl = formData.heroImage?.trim()
+    if (!currentUrl) {
+      setCloudinaryMessage('Please paste a Google Drive (or any image) URL first.')
+      return
+    }
+
+    setUploadingToCloudinary(true)
+    setCloudinaryMessage(null)
+
+    try {
+      const res = await fetch('/api/upload-to-cloudinary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl: currentUrl }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Upload failed')
+      }
+
+      setFormData(prev => ({
+        ...prev,
+        heroImage: data.url,
+        // Also set ogImage so Facebook uses the same optimized image
+        ogImage: data.url,
+      }))
+
+      setCloudinaryMessage('Uploaded successfully! Hero image is now a Cloudinary URL (optimized for Facebook).')
+    } catch (err: any) {
+      setCloudinaryMessage(err.message || 'Failed to upload image')
+    } finally {
+      setUploadingToCloudinary(false)
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
       {/* Title */}
@@ -248,10 +286,18 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
             name="heroImage"
             value={formData.heroImage || ''}
             onChange={handleChange}
-            placeholder="https://..."
+            placeholder="Paste Google Drive link or any image URL..."
             className="flex-1 px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-300 text-sm md:text-base"
           />
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={handleUploadToCloudinary}
+              disabled={uploadingToCloudinary}
+              className="px-4 py-2 md:py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-500 transition-colors duration-300 text-sm md:text-base disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {uploadingToCloudinary ? 'Uploading...' : 'Upload to Cloudinary'}
+            </button>
             <button
               type="button"
               onClick={handleGenerateHeroImage}
@@ -261,14 +307,24 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
             </button>
             <button
               type="button"
-              onClick={() => setFormData(prev => ({ ...prev, heroImage: '' }))}
+              onClick={() => {
+                setFormData(prev => ({ ...prev, heroImage: '', ogImage: '' }))
+                setCloudinaryMessage(null)
+              }}
               className="px-4 py-2 md:py-3 bg-gray-700 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors duration-300 text-sm md:text-base"
             >
               Clear
             </button>
           </div>
         </div>
-        <p className="text-xs text-gray-500 mt-1">Used in the blog list and post header</p>
+        <p className="text-xs text-gray-500 mt-1">
+          Paste a Google Drive link → click <strong>Upload to Cloudinary</strong>. This creates a proper image URL that Facebook can display.
+        </p>
+        {cloudinaryMessage && (
+          <p className={`text-xs mt-2 ${cloudinaryMessage.includes('successfully') ? 'text-green-400' : 'text-red-400'}`}>
+            {cloudinaryMessage}
+          </p>
+        )}
         {formData.heroImage && (
           <div className="mt-3 overflow-hidden rounded-lg border border-gray-700/60 bg-gray-900/60">
             <img

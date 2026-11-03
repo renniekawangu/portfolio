@@ -163,16 +163,10 @@ function isValidImageUrl(url: string): boolean {
 }
 
 /**
- * Generates SEO-friendly OG image.
- * Important: Never return data: URLs for Open Graph – Facebook rejects them.
- * Prefer a real uploaded image or the site default social card.
+ * Generates SEO-friendly OG image (defaults to hero image)
  */
 export function generateOgImage(heroImage: string): string {
-  if (!heroImage || heroImage.startsWith('data:')) {
-    // Caller should use the site default (og-default.png)
-    return ''
-  }
-  return heroImage
+  return heroImage // OG image is same as hero image
 }
 
 /**
