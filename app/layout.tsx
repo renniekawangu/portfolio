@@ -17,11 +17,33 @@ const geistMono = Geist_Mono({
 
 const siteUrl = "https://b34stweb.vercel.app";
 
+/**
+ * DEFAULT OPEN GRAPH IMAGE
+ * -------------------------
+ * Facebook (and most social platforms) require a proper social card image:
+ * - Recommended size: 1200 × 630 pixels
+ * - Minimum: 200 × 200
+ * - Aspect ratio close to 1.91:1
+ *
+ * Your current b34st_logo.png is only 847×232 — too small and wrong ratio.
+ * Replace /public/og-default.png with a real 1200×630 image for best results.
+ * Until then we fall back to the logo.
+ */
+const defaultOgImage = `${siteUrl}/og-default.png`;
+const fallbackOgImage = `${siteUrl}/b34st_logo.png`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "b34st web - Security Research & Web Development",
-  description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
-  keywords: ["security research", "cybersecurity", "bug bounties", "web development", "penetration testing"],
+  description:
+    "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
+  keywords: [
+    "security research",
+    "cybersecurity",
+    "bug bounties",
+    "web development",
+    "penetration testing",
+  ],
   authors: [{ name: "b34st web" }],
   creator: "b34st web",
   openGraph: {
@@ -29,21 +51,30 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     title: "b34st web - Security Research & Web Development",
-    description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
+    description:
+      "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
     images: [
       {
-        url: `${siteUrl}/b34st_logo.png`,
+        url: defaultOgImage,
         width: 1200,
         height: 630,
-        alt: "b34st web"
-      }
-    ]
+        alt: "b34st web - Security Research & Web Development",
+      },
+      // Fallback if og-default.png does not exist yet
+      {
+        url: fallbackOgImage,
+        width: 1200,
+        height: 630,
+        alt: "b34st web",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "b34st web - Security Research & Web Development",
-    description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
-    images: [`${siteUrl}/b34st_logo.png`]
+    description:
+      "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
+    images: [defaultOgImage, fallbackOgImage],
   },
   robots: {
     index: true,
@@ -51,11 +82,11 @@ export const metadata: Metadata = {
     "max-image-preview": "large",
     "max-snippet": -1,
     "max-video-preview": -1,
-    googleBot: "index, follow"
+    googleBot: "index, follow",
   },
   verification: {
-    google: "your-google-verification-code"
-  }
+    google: "your-google-verification-code",
+  },
 };
 
 export default function RootLayout({
