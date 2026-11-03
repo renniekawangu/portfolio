@@ -187,7 +187,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-semibold mb-1 text-white text-center">Rennie Kawangu</h3>
               <p className="text-gray-400 text-sm mb-2 text-center">Founder & CTO</p>
-              <p className="text-gray-300 text-sm text-center">Full Stack Developer and Security Expert in web application security and penetration testing with over 3 years of experience.</p>
+              <p className="text-gray-300 text-sm text-center">Full Stack Develope and Security Expert in web application security and penetration testing with over 3 years of experience.</p>
             </motion.div>
             </motion.div>
         </motion.div>
