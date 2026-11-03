@@ -9,7 +9,8 @@ import {
   FaInstagram,
   FaLinkedin,
   FaPhone,
-  FaTwitter,
+  FaYoutube,
+  FaTiktok,
 } from 'react-icons/fa'
 import { usePortfolioData } from '@/app/admin/data-context'
 
@@ -17,23 +18,23 @@ export default function Footer() {
   const { contactSettings } = usePortfolioData()
 
   const socialLinks = useMemo(
-    () => [
-      contactSettings.github && { label: 'GitHub', href: contactSettings.github, icon: FaGithub },
-      contactSettings.linkedin && { label: 'LinkedIn', href: contactSettings.linkedin, icon: FaLinkedin },
-      contactSettings.twitter && { label: 'Twitter', href: contactSettings.twitter, icon: FaTwitter },
-      contactSettings.facebook && { label: 'Facebook', href: contactSettings.facebook, icon: FaFacebook },
-      contactSettings.instagram && { label: 'Instagram', href: contactSettings.instagram, icon: FaInstagram },
-    ].filter(Boolean) as Array<{
-      label: string
-      href: string
-      icon: typeof FaGithub
-    }>,
+    () =>
+      [
+        contactSettings.github && { label: 'GitHub', href: contactSettings.github, icon: FaGithub },
+        contactSettings.linkedin && { label: 'LinkedIn', href: contactSettings.linkedin, icon: FaLinkedin },
+        contactSettings.facebook && { label: 'Facebook', href: contactSettings.facebook, icon: FaFacebook },
+        contactSettings.instagram && { label: 'Instagram', href: contactSettings.instagram, icon: FaInstagram },
+        contactSettings.tiktok && { label: 'TikTok', href: contactSettings.tiktok, icon: FaTiktok },
+        contactSettings.youtube && { label: 'YouTube', href: contactSettings.youtube, icon: FaYoutube },
+      ].filter(
+        (link): link is { label: string; href: string; icon: typeof FaGithub } => Boolean(link)
+      ),
     [contactSettings]
   )
 
   return (
     <>
-      <footer className="border-t border-slate-800 bg-gradient-to-b from-[#050708] to-[#090C12] text-[#D9D9D9]">
+      <footer className="border-t border-slate-800 bg-linear-to-b from-[#050708] to-[#090C12] text-[#D9D9D9]">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="space-y-6">
@@ -115,7 +116,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-slate-800 bg-gradient-to-br from-[#090B11] via-[#07101A] to-[#090C12] p-6">
+            <div className="rounded-lg border border-slate-800 bg-linear-to-br from-[#090B11] via-[#07101A] to-[#090C12] p-6">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#A8A8A8]">
                 Quick note
               </p>

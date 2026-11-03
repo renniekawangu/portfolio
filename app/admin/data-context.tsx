@@ -51,7 +51,9 @@ const DEFAULT_CONTACT_SETTINGS: ContactSettings = {
   linkedin: '',
   twitter: '',
   facebook: '',
-  instagram: ''
+  instagram: '',
+  tiktok: '',
+  youtube: ''
 }
 
 export function DataProvider({ children }: { children: React.ReactNode }) {

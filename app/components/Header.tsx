@@ -30,8 +30,8 @@ export default function Header() {
           <ul className="flex flex-wrap items-center justify-center gap-8 text-sm font-medium text-slate-300">
             <li><Link href="/" className="transition hover:text-white">Home</Link></li>
             <li><Link href="/services" className="transition hover:text-white">Services</Link></li>
-            <li><Link href="/projects" className="transition hover:text-white">Our Work</Link></li>
-            <li><Link href="/about" className="transition hover:text-white">About Us</Link></li>
+            <li><Link href="/projects" className="transition hover:text-white">Projects</Link></li>
+            <li><Link href="/about" className="transition hover:text-white">About</Link></li>
             <li><Link href="/blog" className="transition hover:text-white">Blog</Link></li>
           </ul>
         </div>

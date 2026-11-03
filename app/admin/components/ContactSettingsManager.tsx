@@ -109,6 +109,28 @@ export default function ContactSettingsManager() {
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-semibold text-white mb-2">TikTok</label>
+              <input
+                type="url"
+                name="tiktok"
+                value={formSettings.tiktok || ''}
+                onChange={handleChange}
+                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-white mb-2">YouTube</label>
+              <input
+                type="url"
+                name="youtube"
+                value={formSettings.youtube || ''}
+                onChange={handleChange}
+                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+              />
+            </div>
+
             <div className="flex gap-3 pt-4">
               <button
                 onClick={handleSave}
@@ -170,6 +192,22 @@ export default function ContactSettingsManager() {
                 <p className="text-sm text-gray-400">Instagram</p>
                 <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="text-lg text-orange-400 hover:text-orange-300 font-semibold">
                   {settings.instagram}
+                </a>
+              </div>
+            )}
+            {settings.tiktok && (
+              <div>
+                <p className="text-sm text-gray-400">TikTok</p>
+                <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" className="text-lg text-orange-400 hover:text-orange-300 font-semibold">
+                  {settings.tiktok}
+                </a>
+              </div>
+            )}
+            {settings.youtube && (
+              <div>
+                <p className="text-sm text-gray-400">YouTube</p>
+                <a href={settings.youtube} target="_blank" rel="noopener noreferrer" className="text-lg text-orange-400 hover:text-orange-300 font-semibold">
+                  {settings.youtube}
                 </a>
               </div>
             )}

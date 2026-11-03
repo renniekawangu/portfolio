@@ -8,6 +8,8 @@ export interface IContactSettings extends Document {
   twitter?: string
   facebook?: string
   instagram?: string
+  tiktok?: string
+  youtube?: string
   createdAt?: Date
   updatedAt?: Date
 }
@@ -23,7 +25,9 @@ const ContactSettingsSchema = new Schema(
     linkedin: String,
     twitter: String,
     facebook: String,
-    instagram: String
+    instagram: String,
+    tiktok: String,
+    youtube: String
   },
   {
     timestamps: true

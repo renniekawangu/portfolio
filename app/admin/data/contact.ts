@@ -6,6 +6,8 @@ export interface ContactSettings {
   twitter?: string
   facebook?: string
   instagram?: string
+  tiktok?: string
+  youtube?: string
 }
 
 export const contactSettings: ContactSettings = {
@@ -15,5 +17,7 @@ export const contactSettings: ContactSettings = {
   linkedin: 'https://www.linkedin.com/in/rennie-kawangu-7a3195280/',
   twitter: 'https://twitter.com',
   facebook: 'https://facebook.com/rennie.kawangu',
-  instagram: 'https://instagram.com/rennie_kawangu'
+  instagram: 'https://instagram.com/rennie_kawangu',
+  tiktok: '',
+  youtube: ''
 }
