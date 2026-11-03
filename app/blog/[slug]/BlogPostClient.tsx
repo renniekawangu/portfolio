@@ -29,39 +29,41 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
     return blogPosts.find(p => p.slug === slug)
   }, [blogPosts, slug])
 
-  // Track views on mount via API
+  // Track view once per browser session (prevents double-counting from React Strict Mode / re-renders)
   useEffect(() => {
-    if (!post) return
-    
-    const trackView = async () => {
+    if (!post || !slug) return
+
+    const storageKey = `viewed_${slug}`
+    const alreadyTracked = typeof window !== 'undefined' && sessionStorage.getItem(storageKey)
+
+    const run = async () => {
       try {
-        const response = await fetch('/api/analytics/views', {
+        if (alreadyTracked) {
+          // Just fetch current count without incrementing
+          const res = await fetch(`/api/analytics/views?slug=${encodeURIComponent(slug)}`)
+          const data = await res.json()
+          setViews(data.views || 0)
+          return
+        }
+
+        // First time this session → record the view
+        const res = await fetch('/api/analytics/views', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug })
+          body: JSON.stringify({ slug }),
         })
-        const data = await response.json()
+        const data = await res.json()
         setViews(data.views || 0)
-      } catch (error) {
-        console.error('Failed to track view:', error)
-      }
-    }
-    trackView()
-  }, [post, slug])
 
-  // Fetch current views
-  useEffect(() => {
-    const fetchViews = async () => {
-      try {
-        const response = await fetch(`/api/analytics/views?slug=${slug}`)
-        const data = await response.json()
-        setViews(data.views || 0)
+        // Mark as tracked for this session
+        sessionStorage.setItem(storageKey, '1')
       } catch (error) {
-        console.error('Failed to fetch views:', error)
+        console.error('Failed to track/fetch views:', error)
       }
     }
-    fetchViews()
-  }, [slug])
+
+    run()
+  }, [post, slug])
 
   // Call onNotFound when post not found after data loads
   useEffect(() => {
