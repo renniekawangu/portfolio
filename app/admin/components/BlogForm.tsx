@@ -20,6 +20,7 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
       category: 'Web Security',
       content: '',
       heroImage: '',
+      ogImage: '',
       readTime: '5 min read',
       type: 'writeup',
       status: 'draft',
@@ -28,6 +29,8 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
   )
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const [uploadingToCloudinary, setUploadingToCloudinary] = useState(false)
+  const [cloudinaryMessage, setCloudinaryMessage] = useState<string | null>(null)
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {}
@@ -129,8 +132,9 @@ export default function BlogForm({ onSubmit, initialPost }: BlogFormProps) {
       }))
 
       setCloudinaryMessage('Uploaded successfully! Hero image is now a Cloudinary URL (optimized for Facebook).')
-    } catch (err: any) {
-      setCloudinaryMessage(err.message || 'Failed to upload image')
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to upload image'
+      setCloudinaryMessage(message)
     } finally {
       setUploadingToCloudinary(false)
     }

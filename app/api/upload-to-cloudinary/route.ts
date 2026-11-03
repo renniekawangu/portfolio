@@ -108,17 +108,19 @@ export async function POST(request: NextRequest) {
       height: result.height,
       format: result.format,
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Cloudinary upload error:', error)
 
     // Provide helpful error messages
     let message = 'Failed to upload image'
-    if (error?.message?.includes('Invalid image file')) {
+    const err = error as { message?: string; http_code?: number }
+
+    if (err?.message?.includes('Invalid image file')) {
       message = 'The file is not a valid image or Google Drive is blocking the download. Make sure the file is shared publicly ("Anyone with the link can view").'
-    } else if (error?.http_code === 401 || error?.message?.includes('Invalid API')) {
+    } else if (err?.http_code === 401 || err?.message?.includes('Invalid API')) {
       message = 'Invalid Cloudinary credentials. Check your API Key and API Secret.'
-    } else if (error?.message) {
-      message = error.message
+    } else if (err?.message) {
+      message = err.message
     }
 
     return NextResponse.json({ error: message }, { status: 500 })
