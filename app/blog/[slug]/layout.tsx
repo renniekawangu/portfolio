@@ -51,10 +51,12 @@ async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 
     if (!post) return null
 
+    // Convert MongoDB document to BlogPost shape
+    const { _id, ...rest } = post as Record<string, unknown>
     return {
-      ...post,
-      id: post._id?.toString() || post.id,
-    } as BlogPost
+      ...rest,
+      id: (_id as { toString(): string })?.toString() || (rest.id as string | number),
+    } as unknown as BlogPost
   } catch (error) {
     console.error('Failed to fetch blog post for metadata:', error)
     return null
