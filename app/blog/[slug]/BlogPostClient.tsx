@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePortfolioData } from '@/app/admin/data-context'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import CommentForm from '../components/CommentForm'
 import CommentsList from '../components/CommentsList'
 
@@ -29,33 +29,37 @@ export default function BlogPostClient({ slug, onNotFound }: BlogPostClientProps
     return blogPosts.find(p => p.slug === slug)
   }, [blogPosts, slug])
 
-  // Track view once per browser session (prevents double-counting from React Strict Mode / re-renders)
+  // Prevent double-counting from React Strict Mode while still counting real visits
+  const viewTrackedRef = useRef(false)
+
   useEffect(() => {
     if (!post || !slug) return
+    if (viewTrackedRef.current) return
+
+    viewTrackedRef.current = true
 
     const storageKey = `viewed_${slug}`
-    const alreadyTracked = typeof window !== 'undefined' && sessionStorage.getItem(storageKey)
+    const alreadyTracked =
+      typeof window !== 'undefined' && sessionStorage.getItem(storageKey) === '1'
 
     const run = async () => {
       try {
         if (alreadyTracked) {
-          // Just fetch current count without incrementing
+          // Same browser session → only read the current count
           const res = await fetch(`/api/analytics/views?slug=${encodeURIComponent(slug)}`)
           const data = await res.json()
-          setViews(data.views || 0)
+          setViews(typeof data.views === 'number' ? data.views : 0)
           return
         }
 
-        // First time this session → record the view
+        // New session / first visit → record one view
         const res = await fetch('/api/analytics/views', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug }),
         })
         const data = await res.json()
-        setViews(data.views || 0)
-
-        // Mark as tracked for this session
+        setViews(typeof data.views === 'number' ? data.views : 0)
         sessionStorage.setItem(storageKey, '1')
       } catch (error) {
         console.error('Failed to track/fetch views:', error)
