@@ -5,6 +5,20 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
+const siteUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'https://b34stweb.vercel.app').replace(/\/$/, '')
+
+function resolveMetadataImage(imageUrl?: string) {
+  if (!imageUrl) {
+    return `${siteUrl}/b34st_logo.png`
+  }
+
+  if (/^https?:\/\//i.test(imageUrl)) {
+    return imageUrl
+  }
+
+  return new URL(imageUrl, siteUrl).toString()
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const post = blogPosts.find(p => p.slug === slug)
@@ -15,29 +29,35 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourportfolio.com'
-  const url = `${baseUrl}/blog/${post.slug}`
+  const url = `${siteUrl}/blog/${post.slug}`
+  const pageTitle = post.seoTitle || post.title
+  const pageDescription = post.seoDescription || post.excerpt
+  const imageUrl = resolveMetadataImage(post.ogImage || post.heroImage)
 
   return {
-    title: post.title,
-    description: post.excerpt,
-    keywords: post.tags?.join(', '),
-    authors: [{ name: 'Your Name' }],
+    metadataBase: new URL(siteUrl),
+    title: pageTitle,
+    description: pageDescription,
+    keywords: post.tags,
+    authors: [{ name: post.author || 'Your Name' }],
+    alternates: {
+      canonical: post.canonicalUrl || url,
+    },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: pageTitle,
+      description: pageDescription,
       url,
       type: 'article',
       publishedTime: post.date,
-      authors: ['Your Name'],
+      authors: [post.author || 'Your Name'],
       tags: post.tags,
-      images: post.heroImage ? [{ url: post.heroImage }] : undefined,
+      images: [{ url: imageUrl }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
-      images: post.heroImage ? [post.heroImage] : undefined,
+      title: pageTitle,
+      description: pageDescription,
+      images: [imageUrl],
     },
   }
 }

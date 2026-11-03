@@ -15,7 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://b34stweb.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "b34st web - Security Research & Web Development",
   description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
   keywords: ["security research", "cybersecurity", "bug bounties", "web development", "penetration testing"],
@@ -24,12 +27,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://b34stweb.vercel.app",
+    url: siteUrl,
     title: "b34st web - Security Research & Web Development",
     description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
     images: [
       {
-        url: "https://b34stweb.vercel.app/og-image.jpg",
+        url: `${siteUrl}/b34st_logo.png`,
         width: 1200,
         height: 630,
         alt: "b34st web"
@@ -40,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "b34st web - Security Research & Web Development",
     description: "Security researcher and web developer. Cybersecurity writeups, bug bounties, and full-stack development services.",
-    images: ["https://b34stweb.vercel.app/og-image.jpg"]
+    images: [`${siteUrl}/b34st_logo.png`]
   },
   robots: {
     index: true,
